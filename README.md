@@ -4,13 +4,14 @@ Behavioral driven development library for [PBRaiders Vanilla](https://github.com
 
 ## Table of Contents
 
-- [Requirements](#requirements) | [Installation](#installation) | [Documentation](#documentation) | [Contributing](#contributing) | [License](#license)
+- [Requirements](#requirements) | [Installation](#installation) | [Running the tests](#running) | [Documentation](#documentation) | [Contributing](#contributing) | [License](#license)
 
 ## Requirements
 
 - python: ^3.8
 - python3-pip: ^20.1
-- python modules: pipenv, selenium, pytest, pytest-bdd, pytest-splinter
+- python3-venv: ^3.8
+- python modules: selenium, pytest, pytest-bdd, pytest-splinter
 - web drivers: chromium-chromedriver or/and firefox-geckodriver
 
 ## Installation
@@ -35,33 +36,27 @@ apt-get install chromium-chromedriver firefox-geckodriver
 This project requires an up-to-date version of Python 3. Run:
 
 ```bash
-apt-get install python3 python3-pip
+apt-get install python3 python3-pip python3-venv
 ```
 
 ### Installing Python modules
 
-This project uses pipenv to manage packages in an virtual environment.
-
-Install pipenv using Pipx:
-
-```bash
-pip install --user pipx
-pipx install pipenv
-```
-
-or install pipenv without pipx:
-
-```bash
-pipx install --user pipenv
-```
-
-### Setup
-
-To set up this project on your local machine:
+This project uses [venv](https://docs.python.org/3.8/tutorial/venv.html) to manage packages in an virtual environment.
+To set up the project on your local machine:
 
 1. Clone it from this GitHub repository.
-2. Run pipenv install from the command line in the project's root directory.
-3. ...
+2. Run: `python3 -m venv .venv` from the command line in the project's root directory to create the virtual environment.
+3. Run: `source .venv/bin/activate` to activate the virtual environment.
+4. Run: `pip install -r requirements.txt` to install all the necessary packages.
+
+## Running the tests
+
+Once the virtual environment activzted, the command used to run the tests is `python -m pytest`.
+Also, there is a provision to run the tests by providing the tag names.
+It can be achieved by appending `-k` and the tag name. e.g. `python -m pytest -k adm`
+
+This framework uses pytest-html plugin to generate html reports for the test runs.
+To generate a report, run the command pipenv run python -m pytest -k automated --html=report.html
 
 ## Documentation
 
