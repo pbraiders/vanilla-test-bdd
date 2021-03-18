@@ -32,13 +32,15 @@ apt-get install chromium-chromedriver firefox-geckodriver
 
 ### Installing Python
 
-Run:
+This project requires an up-to-date version of Python 3. Run:
 
 ```bash
 apt-get install python3 python3-pip
 ```
 
 ### Installing Python modules
+
+This project uses pipenv to manage packages in an virtual environment.
 
 Install pipenv using Pipx:
 
@@ -53,12 +55,13 @@ or install pipenv without pipx:
 pipx install --user pipenv
 ```
 
-Clone the repository and run:
+### Setup
 
-```bash
-cd vanilla-test-bdd
-pipenv install selenium pytest pytest-bdd pytest-splinter
-```
+To set up this project on your local machine:
+
+1. Clone it from this GitHub repository.
+2. Run pipenv install from the command line in the project's root directory.
+3. ...
 
 ## Documentation
 
