@@ -5,45 +5,40 @@ The fixtures set up and clean up the ChromeDriver instance.
 """
 
 import pytest
-
-from selenium.webdriver import Chrome
+from pytest_bdd import scenarios, scenario, given, when, then, parsers
 from selenium.webdriver.common.keys import Keys
 
-@pytest.fixture
-def browser():
-  # Initialize ChromeDriver
-  driver = Chrome()
-  # Wait implicitly for elements to be ready before attempting interactions
-  driver.implicitly_wait(10)
-  # Return the driver object at the end of setup
-  yield driver
-  # For cleanup, quit the driver
-  driver.quit()
+DDG_URL = 'https://www.duckduckgo.com'
+SEARCH = 'panda'
 
-def test_basic_duckduckgo_search(browser):
-  # Set up some test case data
-  URL = 'https://www.duckduckgo.com'
-  PHRASE = 'panda'
+#scenarios('../features/duckduckgo.feature')
 
-  # Navigate to the DuckDuckGo home page
-  browser.get(URL)
+@scenario('../features/duckduckgo.feature', 'Duckduckgo basic search')
+def test_scenario_basic_search():
+    pass
 
+@given('I visit the duckduckgo homepage')
+def visit_homepage(browser):
+    browser.get(DDG_URL)
+
+@then('I can do a basic search')
+def duckduckgo_basic_search(browser):
   # Find the search input element
   # In the DOM, it has an 'id' attribute of 'search_form_input_homepage'
   search_input = browser.find_element_by_id('search_form_input_homepage')
 
   # Send a search phrase to the input and hit the RETURN key
-  search_input.send_keys(PHRASE + Keys.RETURN)
+  search_input.send_keys(SEARCH + Keys.RETURN)
 
   # Verify that results appear on the results page
   link_divs = browser.find_elements_by_css_selector('#links > div')
   assert len(link_divs) > 0
 
   # Verify that at least one search result contains the search phrase
-  xpath = f"//div[@id='links']//*[contains(text(), '{PHRASE}')]"
+  xpath = f"//div[@id='links']//*[contains(text(), '{SEARCH}')]"
   phrase_results = browser.find_elements_by_xpath(xpath)
   assert len(phrase_results) > 0
 
   # Verify that the search phrase is the same
   search_input = browser.find_element_by_id('search_form_input')
-  assert search_input.get_attribute('value') == PHRASE
+  assert search_input.get_attribute('value') == SEARCH

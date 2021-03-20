@@ -1,5 +1,5 @@
-@web @google
-Feature: Google homepage
+@duckduckgo
+Feature: basic search with duckduckgo
   As ...,
   I want to ...,
   So I can ....
@@ -8,7 +8,6 @@ Feature: Google homepage
   # Don't get caught up in button names and layouts at the Gherkin level.
   # Note that these scenarios use Selenium WebDriver to do browser interactions.
 
-  Scenario: Launch Google homepage
-    Given Chrome browser is ready
-    When user go to Google site
-    Then Google homepage is launch
+  Scenario: Duckduckgo basic search
+    Given I visit the duckduckgo homepage
+    Then I can do a basic search
