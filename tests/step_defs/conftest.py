@@ -3,20 +3,22 @@ This module contains shared fixtures, steps, and hooks.
 """
 
 import pytest
-from selenium.webdriver import Chrome
-
+#from selenium.webdriver import Chrome
+from splinter import Browser
 
 
 @pytest.fixture
-def browser():
+def theBrowser():
   # Initialize ChromeDriver
-  driver = Chrome()
+  #driver = Browser('chrome', headless=True)
+  pBrowser = Browser('chrome')
+  #driver.maximize_window()
   # Wait implicitly for elements to be ready before attempting interactions
-  driver.implicitly_wait(10)
+  #pBrowser.implicitly_wait(10)
   # Return the driver object at the end of setup
-  yield driver
+  yield pBrowser
   # For cleanup, quit the driver
-  driver.quit()
+  pBrowser.quit()
 
 
 

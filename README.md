@@ -1,6 +1,6 @@
 # PBRaiders Vanilla BDD library
 
-Behavioral driven development library for [PBRaiders Vanilla](https://github.com/pbraiders/vanilla) using [pytest-bdd](https://github.com/pytest-dev/pytest-bdd)
+Behavioral driven development library for [PBRaiders Vanilla](https://github.com/pbraiders/vanilla) using [pytest-bdd](https://github.com/pytest-dev/pytest-bdd) and [pytest-splinter](https://github.com/pytest-dev/pytest-splinter)
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ Behavioral driven development library for [PBRaiders Vanilla](https://github.com
 
 ## Installation
 
-*On Ubuntu Desktop 20.04*
+*On Ubuntu Desktop 20.10*
 
 ### Installing Web Drivers
 
