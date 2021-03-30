@@ -1,0 +1,11 @@
+{
+    "url": "https://www.duckduckgo.com",
+    "admin": {
+        "login": "adminlogin",
+        "password": "adminpassword"
+    },
+    "user": {
+        "login": "userlogin",
+        "password": "userpassword"
+    }
+}

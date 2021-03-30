@@ -12,15 +12,18 @@ from pytest_bdd import scenarios, scenario, given, when, then, parsers
 DDG_URL = 'https://www.duckduckgo.com'
 SEARCH = 'splinter - python acceptance testing for web applications'
 
-#scenarios('../features/duckduckgo.feature')
+# scenarios('../features/duckduckgo.feature')
+
 
 @scenario('duckduckgo.feature', 'Duckduckgo basic search')
 def test_scenario_basic_search():
     pass
 
+
 @given('I visit the duckduckgo homepage')
-def visit_homepage(theBrowser):
+def visit_homepage(theBrowser, theConfig):
     theBrowser.visit(DDG_URL)
+
 
 @then('I can do a basic search')
 def duckduckgo_basic_search(theBrowser):
@@ -34,4 +37,4 @@ def duckduckgo_basic_search(theBrowser):
         assert theBrowser.find_by_id('search_form_input').first.value == SEARCH
 
     except e:
-        print ("Oops, I failed with the status code %s and reason %s" % (e.status_code, e.reason))
+        print("Oops, I failed with the status code %s and reason %s" % (e.status_code, e.reason))
