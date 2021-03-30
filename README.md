@@ -8,6 +8,7 @@ Behavioral driven development library for [PBRaiders Vanilla](https://github.com
 
 ## Requirements
 
+- pbraiders: latest vanilla
 - python: ^3.8
 - python3-pip: ^20.1
 - python3-venv: ^3.8
@@ -17,6 +18,11 @@ Behavioral driven development library for [PBRaiders Vanilla](https://github.com
 ## Installation
 
 *On Ubuntu Desktop 20.10*
+
+
+### Installing PBRaiders
+
+Install the latest [PBRaiders vanilla version](https://github.com/pbraiders/vanilla) using the [documentation](https://github.com/pbraiders/vanilla/blob/master/doc/install/install.fr_FR.md)
 
 ### Installing Web Drivers
 
@@ -51,7 +57,9 @@ To set up the project on your local machine:
 
 ## Running the tests
 
-Once the virtual environment activzted, the command used to run the tests is `python -m pytest`.
+Update the website [configuration file](tests/config.json)
+
+Once the virtual environment activated, the command used to run the tests is `python -m pytest`.
 Also, there is a provision to run the tests by providing the tag names.
 It can be achieved by appending `-k` and the tag name. e.g. `python -m pytest -k adm`
 

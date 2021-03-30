@@ -1,11 +1,11 @@
 {
-    "url": "https://www.duckduckgo.com",
+    "url": "http://www.pbraiders.local",
     "admin": {
-        "login": "adminlogin",
+        "login": "admin",
         "password": "adminpassword"
     },
     "user": {
-        "login": "userlogin",
+        "login": "user",
         "password": "userpassword"
     }
 }
