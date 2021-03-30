@@ -21,7 +21,7 @@ def test_scenario_basic_search():
 
 
 @given('I visit the duckduckgo homepage')
-def visit_homepage(theBrowser, theConfig):
+def visit_homepage(theBrowser):
     theBrowser.visit(DDG_URL)
 
 
