@@ -2,10 +2,6 @@
 
 Behavioral driven development library for [PBRaiders Vanilla](https://github.com/pbraiders/vanilla) using [pytest-bdd](https://github.com/pytest-dev/pytest-bdd) and [pytest-splinter](https://github.com/pytest-dev/pytest-splinter)
 
-## Table of Contents
-
-- [Requirements](#requirements) | [Installation](#installation) | [Running the tests](#running) | [Documentation](#documentation) | [Contributing](#contributing) | [License](#license)
-
 ## Requirements
 
 - pbraiders: latest vanilla
@@ -18,7 +14,6 @@ Behavioral driven development library for [PBRaiders Vanilla](https://github.com
 ## Installation
 
 *On Ubuntu Desktop 20.10*
-
 
 ### Installing PBRaiders
 
@@ -57,7 +52,7 @@ To set up the project on your local machine:
 
 ## Running the tests
 
-Update the website [configuration file](tests/config.json)
+Go to the [tests](tests) folder and update the website [configuration file](tests/config.json)
 
 Once the virtual environment activated, the command used to run the tests is `python -m pytest`.
 Also, there is a provision to run the tests by providing the tag names.
@@ -73,6 +68,7 @@ To generate a report, run the command pipenv run python -m pytest -k automated -
 - [pipenv](https://pipenv.pypa.io/en/latest/install/#installing-pipenv)
 - [pytest](https://docs.pytest.org/en/stable/contents.html)
 - [pytest-bdd](https://pytest-bdd.readthedocs.io/en/stable/)
+- [pbraiders](https://github.com/pbraiders/vanilla/blob/master/doc/install/install.fr_FR.md)
 
 ## Contributing
 

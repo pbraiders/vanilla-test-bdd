@@ -15,7 +15,7 @@ SEARCH = 'splinter - python acceptance testing for web applications'
 # scenarios('../features/duckduckgo.feature')
 
 
-@scenario('duckduckgo.feature', 'Duckduckgo basic search')
+@scenario('ddg/duckduckgo.feature', 'Duckduckgo basic search')
 def test_scenario_basic_search():
     pass
 
