@@ -1,20 +1,22 @@
 {
     "urls": {
         "home": "http://www.pbraiders.local",
-        "users": "http://www.pbraiders.local/users.php"
+        "login": "login.php",
+        "logout": "logout.php",
+        "users": "users.php"
     },
     "users": {
         "admin": {
-            "login": "admin",
+            "login": "test-admin",
             "password": "adminpassword"
         },
-        "user": {
-            "login": "user",
-            "password": "userpassword"
+        "simple": {
+            "login": "test-user",
+            "password": "simplepassword"
         },
-        "user-disabled": {
-            "login": "user-d",
-            "password": "user-d-password"
+        "disabled": {
+            "login": "test-disabled",
+            "password": "disabledpassword"
         }
     }
 }

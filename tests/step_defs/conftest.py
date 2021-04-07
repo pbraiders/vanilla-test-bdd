@@ -15,6 +15,7 @@ import json
 import pytest
 from splinter import Browser
 from types import SimpleNamespace
+from pbraiders.login.User import User
 
 CONFIG_PATH = 'config.json'
 
@@ -35,14 +36,19 @@ def theBrowser(theDriver):
     yield pBrowser
     pBrowser.quit()
 
+@pytest.fixture(scope="module")
+def theUser():
+    pUser = User
+    return pUser
 
 @pytest.fixture(scope="session")
 def theConfig():
+    data = '{}'
     try:
         with open(CONFIG_PATH) as sConfig:
             data = json.load(sConfig)
     except:
-        print(f'Something goes wrong with the config file: {CONFIG_PATH}')
+        print(f'Something goes wrong when loading data from the config file: {CONFIG_PATH}')
     return data
 
 
