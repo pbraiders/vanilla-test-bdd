@@ -1,4 +1,6 @@
-from __future__ import annotations
+# coding=utf-8
+"""Factories used to create user."""
+
 from abc import ABC, abstractmethod
 from pbraiders.login.User import User
 from urllib.parse import urljoin
@@ -7,12 +9,12 @@ from urllib.parse import urljoin
 class UserFactory(ABC):
 
     @abstractmethod
-    def create(self, config: dict):
+    def create(self, config: dict) -> User:
         pass
 
-    def initialize(self, theConfig) -> User:
-        pUser = self.create(theConfig['users'])
-        pUser.logouturl = urljoin(theConfig['urls']['home'], theConfig['urls']['logout'])
+    def initialize(self, config: dict) -> User:
+        pUser = self.create(config['users'])
+        pUser.logouturl = urljoin(config['urls']['home'], config['urls']['logout'])
         return pUser
 
 
