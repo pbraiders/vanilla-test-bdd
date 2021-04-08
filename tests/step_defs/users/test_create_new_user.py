@@ -8,8 +8,8 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.login.PageLogin import PageLogin
-from pbraiders.login.UserFactories import AdminFactory
+from pbraiders.signin.PageSignin import PageSignin
+from pbraiders.signin.UserFactories import AdminFactory
 
 scenario = partial(scenario, 'users/create_new_user.feature')
 
@@ -22,7 +22,7 @@ def test_name_is_mandatory_when_creating_user():
 @given('I am logged in as the administrator')
 def sign_in_as_administrator(theBrowser, theConfig):
     """I am logged in as the administrator."""
-    PageLogin(browser=theBrowser, config=theConfig['urls'], user=AdminFactory().initialize(theConfig)).connectSuccess()
+    PageSignin(browser=theBrowser, config=theConfig['urls'], user=AdminFactory().initialize(theConfig)).connectSuccess()
 
 
 @ given('I am on the users page')

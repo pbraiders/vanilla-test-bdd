@@ -1,14 +1,14 @@
 # coding=utf-8
-"""Login page."""
+"""Sign in page."""
 
 from dataclasses import dataclass
-from pbraiders.login.User import User
+from pbraiders.signin.User import User
 from splinter import Browser
 from urllib.parse import urljoin
 
 
 @dataclass
-class PageLogin:
+class PageSignin:
     browser: Browser
     config: dict
     user: User
@@ -18,9 +18,10 @@ class PageLogin:
     _PASSWORD_FIELD = 'loginpwd'
     _LOGIN_BUTTON = 'login'
     _SUCCESS_MESSAGE = 'Connecté en tant que {}'
+    _FAILURE_MESSAGE = 'Le nom d\'utilisateur ou le mot de passe que vous avez saisi est incorrect.'
 
     def goTo(self):
-        self.browser.visit(urljoin(str(self.config['home']), str(self.config['login'])))
+        self.browser.visit(urljoin(str(self.config['home']), str(self.config['signin'])))
 
     def fillName(self):
         self.browser.find_by_id(self._USERNAME_FIELD).first.fill(str(self.user.login))
@@ -41,3 +42,6 @@ class PageLogin:
         self.fillPassword()
         self.click()
         assert self.browser.is_text_present(self._SUCCESS_MESSAGE.format(self.user.login)) == 1
+
+    def hasFail(self):
+        assert self.browser.is_text_present(self._FAILURE_MESSAGE) == 1

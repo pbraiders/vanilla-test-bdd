@@ -2,7 +2,7 @@
 """Factories used to create user."""
 
 from abc import ABC, abstractmethod
-from pbraiders.login.User import User
+from pbraiders.signin.User import User
 from urllib.parse import urljoin
 
 

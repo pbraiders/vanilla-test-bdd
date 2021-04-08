@@ -15,7 +15,6 @@ import json
 import pytest
 from splinter import Browser
 from types import SimpleNamespace
-from pbraiders.login.User import User
 
 CONFIG_PATH = 'config.json'
 
@@ -35,11 +34,6 @@ def theBrowser(theDriver):
     pBrowser = Browser(theDriver, incognito=True, wait_time=2, headless=False)
     yield pBrowser
     pBrowser.quit()
-
-@pytest.fixture(scope="module")
-def theUser():
-    pUser = User
-    return pUser
 
 @pytest.fixture(scope="session")
 def theConfig():
