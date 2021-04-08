@@ -1,0 +1,98 @@
+# coding=utf-8
+"""Creating a new user feature tests."""
+
+from functools import partial
+from pytest_bdd import (
+    given,
+    scenario,
+    then,
+    when,
+)
+from pbraiders.signin.PageSignin import PageSignin
+from pbraiders.signin.UserFactories import AdminFactory
+from pbraiders.users.PageUsers import PageUsers
+
+scenario = partial(scenario, 'users/create_new_user.feature')
+
+
+@scenario('Name is mandatory when creating user')
+def test_name_is_mandatory():
+    """Name is mandatory when creating user."""
+
+
+@scenario('Confirmed password is mandatory when creating user')
+def test_confirmed_password_is_mandatory():
+    """Confirmed password is mandatory when creating user."""
+
+
+@scenario('Password is mandatory when creating user')
+def test_password_is_mandatory():
+    """Password is mandatory when creating user."""
+
+
+@scenario('Creating a new user')
+def test_creating_user():
+    """Creating a new user."""
+
+
+@given('I am logged in as the administrator')
+def sign_in_as_administrator(theBrowser, theConfig):
+    """I am logged in as the administrator."""
+    pPage = PageSignin(browser=theBrowser, config=theConfig['urls'], user=AdminFactory().initialize(theConfig))
+    pPage.connectIfNotConnected()
+    del pPage
+
+
+@given('I am on the users page', target_fixture="users_page")
+def users_page(theBrowser, theConfig):
+    pPage = PageUsers(browser=theBrowser, config=theConfig['urls'])
+    pPage.goTo()
+    return pPage
+
+
+@given('I confirm the password')
+def confirm_password():
+    """I confirm the password."""
+    raise NotImplementedError
+
+
+@given('I confirm the password field')
+def i_confirm_the_password_field():
+    """I confirm the password field."""
+    pass  # raise NotImplementedError
+
+
+@given('I fill the password field')
+def i_fill_the_password_field():
+    """I fill the password field."""
+    raise NotImplementedError
+
+
+@given('I fill the username field')
+def i_fill_the_username_field():
+    """I fill the username field."""
+    raise NotImplementedError
+
+
+@when('I press the send button')
+def i_press_the_send_button():
+    """I press the send button."""
+    raise NotImplementedError
+
+
+@then('I should see the activated user on the list')
+def i_should_see_the_activated_user_on_the_list():
+    """I should see the activated user on the list."""
+    raise NotImplementedError
+
+
+@then('I should see the error message')
+def i_should_see_the_error_message():
+    """I should see the error message."""
+    raise NotImplementedError
+
+
+@then('I should see the success message')
+def i_should_see_the_success_message():
+    """I should see the success message."""
+    raise NotImplementedError

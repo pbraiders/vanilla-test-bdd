@@ -3,8 +3,7 @@ Feature: Creating a new user
     administrator tool.
 
     Background:
-        Given I am logged in as the administrator
-        And I am on the users page
+        Given I am on the users page
 
     Scenario: Name is mandatory when creating user
         Given I fill the password field

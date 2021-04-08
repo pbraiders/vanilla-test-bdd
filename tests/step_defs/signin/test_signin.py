@@ -10,7 +10,6 @@ from pytest_bdd import (
 )
 from pbraiders.signin.PageSignin import PageSignin
 from pbraiders.signin.UserFactories import AdminFactory
-from urllib.parse import urljoin
 
 scenario = partial(scenario, 'signin/signin.feature')
 

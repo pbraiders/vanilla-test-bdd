@@ -2,7 +2,7 @@
     "urls": {
         "home": "http://www.pbraiders.local",
         "signin": "login.php",
-        "logout": "logout.php",
+        "signout": "logout.php",
         "users": "users.php"
     },
     "users": {

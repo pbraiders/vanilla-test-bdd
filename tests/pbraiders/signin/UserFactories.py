@@ -14,7 +14,7 @@ class UserFactory(ABC):
 
     def initialize(self, config: dict) -> User:
         pUser = self.create(config['users'])
-        pUser.logouturl = urljoin(config['urls']['home'], config['urls']['logout'])
+        # ... other commands if needed
         return pUser
 
 
@@ -22,13 +22,11 @@ class AdminFactory(UserFactory):
 
     def create(self, config: dict) -> User:
         return User(login=config['admin']['login'],
-                    password=config['admin']['password'],
-                    logouturl='')
+                    password=config['admin']['password'])
 
 
 class SimpleFactory(UserFactory):
 
     def create(self, config: dict) -> User:
         return User(login=config['simple']['login'],
-                    password=config['simple']['password'],
-                    logouturl='')
+                    password=config['simple']['password'])

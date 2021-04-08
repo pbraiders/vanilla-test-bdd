@@ -31,9 +31,10 @@ def theDriver(pytestconfig):
 
 @pytest.fixture(scope="module")
 def theBrowser(theDriver):
-    pBrowser = Browser(theDriver, incognito=True, wait_time=2, headless=False)
+    pBrowser = Browser(theDriver, incognito=False, wait_time=2, headless=False)
     yield pBrowser
     pBrowser.quit()
+
 
 @pytest.fixture(scope="session")
 def theConfig():
