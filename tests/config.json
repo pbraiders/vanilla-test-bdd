@@ -1,6 +1,6 @@
 {
     "urls": {
-        "home": "http://www.pbraiders.local",
+        "home": "https://www.pbraiders.fr",
         "signin": "login.php",
         "signout": "logout.php",
         "users": "users.php"

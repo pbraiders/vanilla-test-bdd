@@ -13,8 +13,10 @@ class PageUsers:
 
     # locators
     _TITLE = 'PBRaiders - Utilisateurs'
+    _LINK_USERS = 'Utilisateurs'
 
     def goTo(self):
         self.browser.visit(urljoin(str(self.config['home']), str(self.config['users'])))
+        # self.browser.click_link_by_text(self._LINK_USERS)
         assert self.browser.title == self._TITLE
         return self
