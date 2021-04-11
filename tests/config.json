@@ -1,4 +1,12 @@
 {
+    "db": {
+        "server": "localhost",
+        "port": "3306",
+        "dbname": "pbraidersdb",
+        "charset": "utf8mb4",
+        "user": "pbraidersdbuser",
+        "password": "pbrusrpwd"
+    },
     "urls": {
         "home": "https://www.pbraiders.fr",
         "signin": "login.php",
