@@ -2,28 +2,47 @@
 """Database"""
 
 from dataclasses import dataclass
-import sqlalchemy
-from sqlalchemy import create_engine
+import pymysql
+import pymysql.cursors
 
 
 @dataclass
 class Db:
+    host: str = 'localhost'
+    port: str = 3306
     user: str = ''
     password: str = ''
-    server: str = 'localhost'
-    port: str = '3306'
-    dbname: str = ''
+    database: str = ''
     charset: str = 'utf8mb4'
-    _pEngine: sqlalchemy.engine.Engine = None
+    _pConnection: pymysql.connections.Connection = None
 
     # locators
-    _URL = "mysql+pymysql://{u}:{w}@{s}:{p}/{n}?charset={c}"
 
     def connect(self):
-        self._pEngine = create_engine(self._URL.format(u=self.user, w=self.password, s=self.server,
-                                                       p=self.port, n=self.dbname, c=self.charset))
+        self.quit()
+        self._pConnection = pymysql.connect(
+            host=self.host,
+            port=self.port,
+            user=self.user,
+            password=self.password,
+            database=self.database,
+            charset=self.charset,
+            cursorclass=pymysql.cursors.DictCursor
+        )
 
     def quit(self):
-        if isinstance(self._pEngine, sqlalchemy.engine.Engine):
-            self._pEngine.dispose()
-            del self._pEngine
+        if isinstance(self._pConnection, pymysql.connections.Connection):
+            self._pConnection.close()
+            del self._pConnection
+        self._pConnection = None
+
+    def deleteData(self):
+        with self._pConnection:
+            with self._pConnection.cursor() as cursor:
+                # Create a new record
+                sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
+                cursor.execute(sql, ('webmaster@python.org', 'very-secret'))
+
+            # connection is not autocommit by default. So you must commit to save
+            # your changes.
+            self._pConnection.commit()

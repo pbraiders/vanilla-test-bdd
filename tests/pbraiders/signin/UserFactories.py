@@ -13,20 +13,26 @@ class UserFactory(ABC):
         pass
 
     def initialize(self, config: dict) -> User:
-        pUser = self.create(config['users'])
+        pUser = self.create(config)
         # ... other commands if needed
         return pUser
 
 
-class AdminFactory(UserFactory):
+class AdminUserFactory(UserFactory):
 
     def create(self, config: dict) -> User:
         return User(login=config['admin']['login'],
                     password=config['admin']['password'])
 
 
-class SimpleFactory(UserFactory):
+class SimpleUserFactory(UserFactory):
 
     def create(self, config: dict) -> User:
         return User(login=config['simple']['login'],
                     password=config['simple']['password'])
+
+class DisabledUserFactory(UserFactory):
+
+    def create(self, config: dict) -> User:
+        return User(login=config['disabled']['login'],
+                    password=config['disabled']['password'])

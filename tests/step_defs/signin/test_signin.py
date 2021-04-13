@@ -9,7 +9,7 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.signin.PageSignin import PageSignin
-from pbraiders.signin.UserFactories import AdminFactory
+from pbraiders.signin.UserFactories import AdminUserFactory
 
 scenario = partial(scenario, 'signin/signin.feature')
 
@@ -37,7 +37,9 @@ def test_wrong_password():
 @given('I am on the signin page', target_fixture="signin_page")
 def signin_page(theBrowser, theConfig):
     """I am on the signin page."""
-    pPage = PageSignin(browser=theBrowser, config=theConfig['urls'], user=AdminFactory().initialize(theConfig))
+    pPage = PageSignin(
+        browser=theBrowser, config=theConfig['urls'],
+        user=AdminUserFactory().initialize(theConfig["data"]["users"]))
     pPage.visit()
     return pPage
 

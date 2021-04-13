@@ -13,7 +13,7 @@ Fixtures are created when first requested by a test, and are destroyed based on 
 
 import json
 import pytest
-from pbraiders.database.DbFactories import SqlAlchemyFactory
+from pbraiders.database.DbFactories import PyMySQLFactory
 from splinter import Browser
 from types import SimpleNamespace
 
@@ -43,13 +43,13 @@ def theConfig():
 
 @pytest.fixture(scope="session")
 def theDB(theConfig):
-    pDB = SqlAlchemyFactory().initialize(theConfig)
+    pDB = PyMySQLFactory().initialize(theConfig['db'], theConfig['data']['users'])
     yield pDB
     pDB.quit()
 
 
 @pytest.fixture(scope="module")
-def theBrowser(theDriver):
+def theBrowser(theDriver, theDB):
     pBrowser = Browser(theDriver, incognito=True, wait_time=2, headless=False)
     yield pBrowser
     pBrowser.quit()

@@ -9,7 +9,7 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.signin.PageSignin import PageSignin
-from pbraiders.signin.UserFactories import AdminFactory
+from pbraiders.signin.UserFactories import AdminUserFactory
 from pbraiders.users.PageUsers import PageUsers
 from pbraiders.parameters.PageParameters import PageParameters
 
@@ -24,7 +24,7 @@ def test_name_is_mandatory():
 @given('I am on the users page', target_fixture="users_page")
 def users_page(theConfig, theBrowser):
     """I am logged in as the administrator."""
-    pPage = PageSignin(browser=theBrowser, config=theConfig['urls'], user=AdminFactory().initialize(theConfig))
+    pPage = PageSignin(browser=theBrowser, config=theConfig['urls'], user=AdminUserFactory().initialize(theConfig))
     pPage.connectSuccess()
     del pPage
     #pPage = PageParameters(browser=theBrowser, config=theConfig['urls'])

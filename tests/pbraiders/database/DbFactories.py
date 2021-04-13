@@ -11,17 +11,17 @@ class DbFactories(ABC):
     def create(self, config: dict) -> Db:
         pass
 
-    def initialize(self, config: dict) -> Db:
-        pDB = self.create(config['db'])
+    def initialize(self, configDB: dict, configUsers: dict) -> Db:
+        pDB = self.create(configDB)
         pDB.connect()
         return pDB
 
 
-class SqlAlchemyFactory(DbFactories):
+class PyMySQLFactory(DbFactories):
 
     def create(self, config: dict) -> Db:
         return Db(
-            user=config['user'],
-            password=config['password'],
-            server=config['server'],
-            dbname=config['dbname'])
+            user=config['credential']['user'],
+            password=config['credential']['password'],
+            host=config['host']['host'],
+            database=config['host']['dbname'])
