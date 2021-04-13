@@ -1,11 +1,16 @@
 {
     "db": {
-        "server": "localhost",
-        "port": "3306",
-        "dbname": "pbraidersdb",
-        "charset": "utf8mb4",
-        "user": "pbraidersdbuser",
-        "password": "pbrusrpwd"
+        "host": {
+            "host": "localhost",
+            "port": 3306,
+            "dbname": "pbraidersdb",
+            "charset": "utf8mb4"
+        },
+        "credential": {
+            "user": "pbraidersdbuser",
+            "password": "pbrusrpwd"
+        },
+        "schema": {}
     },
     "urls": {
         "home": "https://www.pbraiders.fr",
@@ -13,18 +18,20 @@
         "signout": "logout.php",
         "users": "users.php"
     },
-    "users": {
-        "admin": {
-            "login": "test-admin",
-            "password": "adminpassword"
-        },
-        "simple": {
-            "login": "test-user",
-            "password": "simplepassword"
-        },
-        "disabled": {
-            "login": "test-disabled",
-            "password": "disabledpassword"
+    "data": {
+        "users": {
+            "admin": {
+                "login": "test-admin",
+                "password": "adminpassword"
+            },
+            "simple": {
+                "login": "test-user",
+                "password": "simplepassword"
+            },
+            "disabled": {
+                "login": "test-disabled",
+                "password": "disabledpassword"
+            }
         }
     }
 }
