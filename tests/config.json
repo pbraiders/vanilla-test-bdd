@@ -9,8 +9,7 @@
         "credential": {
             "user": "pbraidersdbuser",
             "password": "pbrusrpwd"
-        },
-        "schema": {}
+        }
     },
     "urls": {
         "home": "https://www.pbraiders.fr",
