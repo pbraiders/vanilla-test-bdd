@@ -21,7 +21,9 @@ class PageSignin:
     _SUCCESS_MESSAGE = 'Connecté en tant que {}'
     _FAILURE_MESSAGE = 'Le nom d\'utilisateur ou le mot de passe que vous avez saisi est incorrect.'
 
-    def goTo(self):
+    def visit(self, stay_on_the_page: bool = False):
+        if self.browser.title == self._TITLE and stay_on_the_page == True:
+            return self
         self.browser.visit(urljoin(str(self.config['home']), str(self.config['signin'])))
         assert self.browser.title == self._TITLE
         return self

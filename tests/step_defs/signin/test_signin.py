@@ -29,11 +29,16 @@ def test_no_username():
     """I have no username."""
 
 
+@scenario('I have a wrong password')
+def test_wrong_password():
+    """I have a wrong password."""
+
+
 @given('I am on the signin page', target_fixture="signin_page")
 def signin_page(theBrowser, theConfig):
     """I am on the signin page."""
     pPage = PageSignin(browser=theBrowser, config=theConfig['urls'], user=AdminFactory().initialize(theConfig))
-    pPage.goTo()
+    pPage.visit()
     return pPage
 
 
@@ -41,6 +46,15 @@ def signin_page(theBrowser, theConfig):
 def fill_password(signin_page):
     """I fill the password field."""
     signin_page.fillPassword()
+
+
+@given('I fill the password field with the wrong password')
+def fill_wrong_password(signin_page):
+    """I fill the password field."""
+    sPassword = signin_page.user.password
+    signin_page.user.password = sPassword + ' wrong password'
+    signin_page.fillPassword()
+    signin_page.user.password = sPassword
 
 
 @given('I fill the username field')

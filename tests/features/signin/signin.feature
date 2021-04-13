@@ -18,3 +18,9 @@ Feature: Signin error tests
         Given I fill the username field
         When I press the connect button
         Then I should see the error message
+
+    Scenario: I have a wrong password
+        Given I fill the username field
+        And I fill the password field with the wrong password
+        When I press the connect button
+        Then I should see the error message
