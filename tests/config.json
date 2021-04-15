@@ -21,15 +21,21 @@
         "users": {
             "admin": {
                 "login": "test-admin",
-                "password": "adminpassword"
+                "password": "adminpassword",
+                "role": 10,
+                "state": 1
             },
             "simple": {
                 "login": "test-user",
-                "password": "simplepassword"
+                "password": "simplepassword",
+                "role": 0,
+                "state": 1
             },
             "disabled": {
                 "login": "test-disabled",
-                "password": "disabledpassword"
+                "password": "disabledpassword",
+                "role": 10,
+                "state": 0
             }
         }
     }

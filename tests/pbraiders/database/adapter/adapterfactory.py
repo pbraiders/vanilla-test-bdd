@@ -5,13 +5,13 @@ from abc import ABC, abstractmethod
 from pbraiders.database.adapter import AbstractAdapter
 
 
-class DbAdapterFactories(ABC):
+class AdapterFactory(ABC):
 
     @abstractmethod
     def create(self, config: dict) -> AbstractAdapter:
         pass
 
-    def initialize(self, configDB: dict, configUsers: dict) -> AbstractAdapter:
-        pDB = self.create(configDB)
+    def initialize(self, configDB: dict, configData: dict) -> AbstractAdapter:
+        pDB = self.create(configDB).connect()
         # pDB.connect().deleteLog().deleteData().insertData()
         return pDB
