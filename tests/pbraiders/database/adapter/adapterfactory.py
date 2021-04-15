@@ -3,6 +3,7 @@
 
 from abc import ABC, abstractmethod
 from pbraiders.database.adapter import AbstractAdapter
+from pbraiders.database.processor.init.teardown import Log
 
 
 class AdapterFactory(ABC):
@@ -12,6 +13,7 @@ class AdapterFactory(ABC):
         pass
 
     def initialize(self, configDB: dict, configData: dict) -> AbstractAdapter:
-        pDB = self.create(configDB).connect()
-        # pDB.connect().deleteLog().deleteData().insertData()
+        pDB = self.create(configDB)
+        pDB.connect()
+        # deleteLog().deleteData().insertData()
         return pDB

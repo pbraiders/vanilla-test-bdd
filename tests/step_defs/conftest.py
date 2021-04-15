@@ -49,7 +49,7 @@ def theDB(theConfig):
 
 
 @pytest.fixture(scope="module")
-def theBrowser(theDriver, theDB):
+def theBrowser(theDriver):
     pBrowser = Browser(theDriver, incognito=True, wait_time=2, headless=False)
     yield pBrowser
     pBrowser.quit()

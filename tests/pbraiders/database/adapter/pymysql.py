@@ -23,6 +23,7 @@ class PyMySQLAdapter(AbstractAdapter):
             charset=self.charset,
             cursorclass=pymysql.cursors.DictCursor
         )
+        assert True == self._pConnection.open
 
     def quit(self):
         if isinstance(self._pConnection, pymysql.connections.Connection):
@@ -33,22 +34,22 @@ class PyMySQLAdapter(AbstractAdapter):
 
     def execute(self, query: str, args: dict = None):
         try:
+            self.connect()
             with self._pConnection:
                 with self._pConnection.cursor() as pCursor:
                     sSql = query.format(d=self.database)
                     pCursor.execute(sSql, args)
                 self._pConnection.commit()
         except Exception as e:
-            self._pConnection.rollback()
-            print("Exception occured:{}".format(e))
+            print("Exception occured while running execute command:{}".format(e))
 
     def executemany(self, query: str, args: dict = None):
         try:
+            self.connect()
             with self._pConnection:
                 with self._pConnection.cursor() as pCursor:
                     sSql = query.format(d=self.database)
                     pCursor.executemany(sSql, args)
                 self._pConnection.commit()
         except Exception as e:
-            self._pConnection.rollback()
-            print("Exception occured:{}".format(e))
+            print("Exception occured while running executemany command:{}".format(e))
