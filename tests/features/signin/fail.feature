@@ -1,4 +1,4 @@
-@admin @signin
+@signin
 Feature: Signin error tests
     Signin error tests.
 

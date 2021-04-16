@@ -2,7 +2,7 @@
 """Sign in page."""
 
 from dataclasses import dataclass
-from pbraiders.signin.User import User
+from pbraiders.user import User
 from splinter import Browser
 from urllib.parse import urljoin
 

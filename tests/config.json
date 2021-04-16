@@ -28,7 +28,7 @@
             "simple": {
                 "login": "test-user",
                 "password": "simplepassword",
-                "role": 0,
+                "role": 1,
                 "state": 1
             },
             "disabled": {

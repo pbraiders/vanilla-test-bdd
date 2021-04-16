@@ -8,10 +8,10 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin.PageSignin import PageSignin
-from pbraiders.signin.UserFactories import AdminUserFactory
-from pbraiders.users.PageUsers import PageUsers
-from pbraiders.parameters.PageParameters import PageParameters
+from pbraiders.signin import PageSignin
+from pbraiders.user import AdminUserFactory
+from pbraiders.option.users.PageUsers import PageUsers
+from pbraiders.option.parameters.PageParameters import PageParameters
 
 scenario = partial(scenario, 'users/create_new_user.feature')
 

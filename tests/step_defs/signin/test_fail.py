@@ -8,10 +8,10 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin.PageSignin import PageSignin
-from pbraiders.signin.UserFactories import AdminUserFactory
+from pbraiders.signin import PageSignin
+from pbraiders.user import AdminUserFactory
 
-scenario = partial(scenario, 'signin/signin.feature')
+scenario = partial(scenario, 'signin/fail.feature')
 
 
 @scenario('I have no credentials')
