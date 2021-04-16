@@ -7,6 +7,7 @@ from pbraiders.database.processor import AbstractProcessor
 class Data(AbstractProcessor):
 
     def execute(self, config: dict = None):
+        print('Deleting tables')
         self._pAdapter.execute('truncate table `{d}`.`session`;')
         self._pAdapter.execute('truncate table `{d}`.`reservation`;')
         self._pAdapter.execute('delete from `{d}`.`contact`;')

@@ -11,6 +11,7 @@ class Users(AbstractProcessor):
         config['password'] = hashlib.sha1(config['password'].encode()).hexdigest()
 
     def execute(self, config: dict):
+        print('Inserting users')
         # Encrypt password wiht SHA1
         self.encrypt(config['admin'])
         self.encrypt(config['simple'])

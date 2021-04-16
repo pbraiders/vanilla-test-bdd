@@ -35,7 +35,7 @@ def test_wrong_password():
 
 
 @given('I am on the signin page', target_fixture="signin_page")
-def signin_page(theBrowser, theConfig):
+def signin_page(theBrowser, theConfig, theDB):
     """I am on the signin page."""
     pPage = PageSignin(
         browser=theBrowser, config=theConfig['urls'],
