@@ -8,54 +8,7 @@ Fixtures are created when first requested by a test, and are destroyed based on 
     module: the fixture is destroyed during teardown of the last test in the module.
     package: the fixture is destroyed during teardown of the last test in the package.
     session: the fixture is destroyed at the end of the test session.
-"""
 
-
-import json
-import pytest
-from pbraiders.database.adapter import PyMySQLAdapterFactory
-from splinter import Browser
-from types import SimpleNamespace
-
-CONFIG_PATH = 'config.json'
-
-
-def pytest_addoption(parser):
-    parser.addoption('--driver', action='store', default='chrome',
-                     help='driver choices: chrome or firefox')
-
-
-@pytest.fixture(scope="session")
-def theDriver(pytestconfig):
-    return pytestconfig.getoption('driver')
-
-
-@pytest.fixture(scope="session")
-def theConfig():
-    data = '{}'
-    try:
-        with open(CONFIG_PATH) as sConfig:
-            data = json.load(sConfig)
-    except:
-        print(f'Something goes wrong when loading data from the config file: {CONFIG_PATH}')
-    return data
-
-
-@pytest.fixture(scope="session")
-def theDB(theConfig):
-    pDB = PyMySQLAdapterFactory().initialize(theConfig['db'], theConfig['data'])
-    yield pDB
-    pDB.quit()
-
-
-@pytest.fixture(scope="module")
-def theBrowser(theDriver):
-    pBrowser = Browser(theDriver, incognito=True, wait_time=2, headless=False)
-    yield pBrowser
-    pBrowser.quit()
-
-
-"""
 Hooks
     pytest_bdd_before_scenario(request, feature, scenario) - Called before scenario is executed
     pytest_bdd_after_scenario(request, feature, scenario) - Called after scenario is executed (even if one of steps has failed)
@@ -67,5 +20,54 @@ Hooks
 """
 
 
+import json
+import pytest
+from pbraiders.database.adapter import PyMySQLAdapterFactory
+from splinter import Browser
+
+CONFIG_PATH = 'config.json'
+
+
+def pytest_addoption(parser):
+    """Loads the command line args"""
+    parser.addoption('--driver', action='store', default='chrome',
+                     help='driver choices: chrome or firefox')
+
+
+@pytest.fixture(scope="session")
+def the_driver(pytestconfig):
+    """Set the user defined driver"""
+    return pytestconfig.getoption('driver')
+
+
+@pytest.fixture(scope="session")
+def the_config():
+    """Loads the config file"""
+    data = '{}'
+    try:
+        with open(CONFIG_PATH) as s_config:
+            data = json.load(s_config)
+    except:
+        print(f'Something goes wrong when loading data from the config file: {CONFIG_PATH}')
+    return data
+
+
+@pytest.fixture(scope="session")
+def the_database(the_config):
+    """Loads and initialize the database"""
+    p_database = PyMySQLAdapterFactory().initialize(the_config['db'], the_config['data'])
+    yield p_database
+    p_database.quit()
+
+
+@pytest.fixture(scope="module")
+def the_browser(the_driver):
+    """Loads firefox or chrome"""
+    p_browser = Browser(the_driver, incognito=True, wait_time=2, headless=False)
+    yield p_browser
+    p_browser.quit()
+
+
 def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
+    """Called when step function failed to execute"""
     print(f'Step failed: {step}')

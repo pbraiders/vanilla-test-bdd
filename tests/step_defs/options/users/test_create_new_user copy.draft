@@ -36,16 +36,16 @@ def test_creating_user():
 
 
 @given('I am logged in as the administrator')
-def sign_in_as_administrator(theBrowser, theConfig):
+def sign_in_as_administrator(the_browser, the_config):
     """I am logged in as the administrator."""
-    pPage = PageSignin(browser=theBrowser, config=theConfig['urls'], user=AdminFactory().initialize(theConfig))
+    pPage = PageSignin(browser=the_browser, config=the_config['urls'], user=AdminFactory().initialize(the_config))
     pPage.connectIfNotConnected()
     del pPage
 
 
 @given('I am on the users page', target_fixture="users_page")
-def users_page(theBrowser, theConfig):
-    pPage = PageUsers(browser=theBrowser, config=theConfig['urls'])
+def users_page(the_browser, the_config):
+    pPage = PageUsers(browser=the_browser, config=the_config['urls'])
     pPage.goTo()
     return pPage
 

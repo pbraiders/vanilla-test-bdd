@@ -1,62 +1,73 @@
 # coding=utf-8
 """Sign in page."""
 
+from urllib.parse import urljoin
 from dataclasses import dataclass
 from pbraiders.user import User
 from splinter import Browser
-from urllib.parse import urljoin
+
+TITLE = "PBRaiders - Connexion"
+USERNAME_FIELD = "loginusr"
+PASSWORD_FIELD = "loginpwd"
+LOGIN_BUTTON = "login"
+SUCCESS_MESSAGE = "Connecté en tant que {}"
+FAILURE_MESSAGE = "Le nom d\'utilisateur ou le mot de passe que vous avez saisi est incorrect."
 
 
 @dataclass
-class PageSignin:
+class PageSignin(object):
+    """Signin page html elements and actions"""
     browser: Browser
     config: dict
     user: User
 
-    # locators
-    _TITLE = 'PBRaiders - Connexion'
-    _USERNAME_FIELD = 'loginusr'
-    _PASSWORD_FIELD = 'loginpwd'
-    _LOGIN_BUTTON = 'login'
-    _SUCCESS_MESSAGE = 'Connecté en tant que {}'
-    _FAILURE_MESSAGE = 'Le nom d\'utilisateur ou le mot de passe que vous avez saisi est incorrect.'
-
     def visit(self, stay_on_the_page: bool = False):
-        if self.browser.title == self._TITLE and stay_on_the_page == True:
+        """Goes to the page"""
+        if self.browser.title == TITLE and stay_on_the_page is True:
             return self
         self.browser.visit(urljoin(str(self.config['home']), str(self.config['signin'])))
-        assert self.browser.title == self._TITLE
+        assert self.browser.title == TITLE
         return self
 
-    def signOut(self):
+    def sign_out(self):
+        """Goes to the sign out page"""
         self.browser.visit(urljoin(str(self.config['home']), str(self.config['signout'])))
         return self
 
-    def fillName(self):
-        self.browser.find_by_id(self._USERNAME_FIELD).first.fill(str(self.user.login))
+    def fill_name(self):
+        """Fills the name field"""
+        self.browser.find_by_id(USERNAME_FIELD).first.fill(str(self.user.login))
         return self
 
-    def fillPassword(self):
-        self.browser.find_by_id(self._PASSWORD_FIELD).first.fill(str(self.user.password))
+    def fill_password(self):
+        """Fills the password field"""
+        self.browser.find_by_id(PASSWORD_FIELD).first.fill(str(self.user.password))
         return self
 
-    def fillCredentials(self):
-        self.fillName()
-        self.fillPassword()
+    def fill_credentials(self):
+        """Fills the credential fields"""
+        self.fill_name()
+        self.fill_password()
         return self
 
     def click(self):
-        self.browser.find_by_name(self._LOGIN_BUTTON).first.click()
+        """Clicks the button"""
+        self.browser.find_by_name(LOGIN_BUTTON).first.click()
 
-    def connectSuccess(self):
-        self.goTo()
-        self.fillName()
-        self.fillPassword()
+    def connect_success(self):
+        """Connecting"""
+        self.visit()
+        self.fill_name()
+        self.fill_password()
         self.click()
-        assert self.connected() == True
+        assert self.connected() is True
 
     def connected(self) -> bool:
-        return self.browser.is_text_present(self._SUCCESS_MESSAGE.format(self.user.login), wait_time=2) == True
+        """Tests if user is connected"""
+        return self.browser.is_text_present(
+            SUCCESS_MESSAGE.format(self.user.login),
+            wait_time=2) is True
 
-    def hasFail(self):
-        assert self.browser.is_text_present(self._FAILURE_MESSAGE) == True
+    def has_failed(self):
+        """Test if an error is displayed"""
+        assert self.browser.is_text_present(FAILURE_MESSAGE) is True
