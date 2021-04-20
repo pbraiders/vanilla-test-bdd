@@ -72,4 +72,5 @@ class PageSignin(object):
 
     def has_failed(self) -> bool:
         """Test if an error is displayed"""
-        return self.browser.is_text_present(FAILURE_MESSAGE) is True
+        return self.browser.is_text_present(FAILURE_MESSAGE,
+                                            wait_time=2) is True
