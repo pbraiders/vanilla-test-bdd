@@ -8,3 +8,4 @@ from dataclasses import dataclass
 class User:
     login: str = ''
     password: str = ''
+    passwordc: str = ''

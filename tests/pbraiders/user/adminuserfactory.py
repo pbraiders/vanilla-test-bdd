@@ -9,4 +9,5 @@ class AdminUserFactory(UserFactory):
 
     def create(self, config: dict) -> User:
         return User(login=config['admin']['login'],
-                    password=config['admin']['password'])
+                    password=config['admin']['password'],
+                    passwordc=config['admin']['password'])
