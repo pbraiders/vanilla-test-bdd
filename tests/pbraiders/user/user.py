@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class User:
+class User(object):
     login: str = ''
     password: str = ''
     passwordc: str = ''
