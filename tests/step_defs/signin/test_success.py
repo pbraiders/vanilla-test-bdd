@@ -8,10 +8,10 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin
-from pbraiders.user import AdminUserFactory
-from pbraiders.user import SimpleUserFactory
-from pbraiders.user import DisabledUserFactory
+from pbraiders.signin import PageSignin  # pylint: disable=import-error
+from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
+from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
+from pbraiders.user import DisabledUserFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'signin/success.feature')
 
@@ -58,9 +58,7 @@ def signin_page(type, the_browser, the_config, the_database):
 @when('I fill the credentials')
 def fill_the_credentials(signin_page):
     """I fill the credentials."""
-    signin_page.fill_name()
-    signin_page.fill_password()
-    signin_page.click()
+    signin_page.fill_name().fill_password().click()
 
 
 @then('I should be connected')
@@ -72,4 +70,4 @@ def connected(signin_page):
 @then('I should not be connected')
 def not_connected(signin_page):
     """I should not be connected."""
-    signin_page.has_failed()
+    assert signin_page.has_failed() is True

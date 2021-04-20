@@ -8,8 +8,8 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin
-from pbraiders.user import AdminUserFactory
+from pbraiders.signin import PageSignin  # pylint: disable=import-error
+from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'signin/fail.feature')
 
@@ -74,4 +74,4 @@ def connect(signin_page):
 @then('I should see the error message')
 def error_message(signin_page):
     """I should see the error message."""
-    signin_page.has_failed()
+    assert signin_page.has_failed() is True
