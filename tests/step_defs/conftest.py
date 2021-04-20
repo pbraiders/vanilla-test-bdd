@@ -19,11 +19,13 @@ Hooks
     pytest_bdd_step_func_lookup_error(request, feature, scenario, step, exception) - Called when step lookup failed
 """
 
-
 import json
 import pytest
-from pbraiders.database.adapter import PyMySQLAdapterFactory
+import random
+from faker import Faker
+from faker.providers import person
 from splinter import Browser
+from pbraiders.database.adapter import PyMySQLAdapterFactory  # pylint: disable=import-error
 
 CONFIG_PATH = 'config.json'
 
@@ -66,6 +68,24 @@ def the_browser(the_driver):
     p_browser = Browser(the_driver, incognito=True, wait_time=2, headless=False)
     yield p_browser
     p_browser.quit()
+
+
+@pytest.fixture(scope="function")
+def the_faker():
+    """Loads the faker"""
+    # I do not use the default faker fixtures because it does not work. I can't do what I want to do
+    # And if I follow the doc I've got many:
+    #   NotImplementedError: Proxying calls to `add_provider` is not implemented in multiple locale mode.
+    #   or any_non_session_scope' is not defined ...
+    # Locale choice
+    d_locales = {0: "fr_FR", 1: "ja_JP", 2: "ru_RU"}
+    s_local = d_locales[random.randint(0, 2)]
+    print('locale choice:' + s_local)
+    # Faker
+    p_faker = Faker(s_local)
+    p_faker.add_provider(person)
+    p_faker.seed_instance(random.randint(0, 999))
+    return p_faker
 
 
 def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
