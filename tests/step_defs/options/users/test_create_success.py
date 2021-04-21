@@ -16,57 +16,66 @@ from pbraiders.user import User  # pylint: disable=import-error
 scenario = partial(scenario, 'options/users/create_success.feature')
 
 
-@scenario('I successfully created a new user')
+@scenario('Create the user')
 def test_successful():
-    """I successfully created a new user."""
+    """Create the user."""
 
 
-@scenario('I successfully sign in with a new created user')
+@scenario('Successfully sign in with a new created user')
 def test_connect():
-    """I successfully sign in with a new created user."""
+    """Successfully sign in with a new created user."""
 
 
-@given('I am on the users page', target_fixture="users_page")
-def users_page(the_config, the_browser, the_database, the_faker):
+@given('I am on the users page', target_fixture="page_users")
+def page_users(the_config, the_browser, the_database) -> PageUsers:
     """I am on the users page."""
-    # Sign in
-    p_page = PageSignin(
-        browser=the_browser, config=the_config['urls'],
-        user=AdminUserFactory().initialize(the_config["data"]["users"]))
-    p_page.connect_success()
-    del p_page
+    p_pageusers = PageUsers(
+        browser=the_browser,
+        config=the_config['urls'],
+        user=None)
+    if p_pageusers.on_page() is False:
+        # Sign in
+        p_pagesignin = PageSignin(
+            browser=the_browser, config=the_config['urls'],
+            user=AdminUserFactory().initialize(the_config["data"]["users"]))
+        p_pagesignin.connect_success()
+        del p_pagesignin
+        # Visit users page
+        p_pageusers.visit()
+    return p_pageusers
+
+
+@given('I have a new user to create', target_fixture="new_user")
+def new_user(the_faker) -> User:
+    """I have a new user to create."""
     # Generate test data
     s_name = the_faker.first_name()
     s_passwd = s_name + 'password'
-    # Visit users page
-    p_page = PageUsers(browser=the_browser, config=the_config['urls'], user=User(
-        login=s_name, password=s_passwd, passwordc=s_passwd))
-    p_page.visit()
-    return p_page
+    return User(login=s_name, password=s_passwd, passwordc=s_passwd)
 
 
-@when('I send the new credential')
-def enter_credential(users_page):
+@when('I send the credential')
+def send_credential(page_users, new_user):
     """I send the new credential."""
-    users_page.fill_name().fill_password().confirm_password().click()
+    page_users.set_user(new_user).fill_name().fill_password().confirm_password().click()
 
 
 @when('I successfully create the new user')
-def creates_user(users_page):
+def creates_user(page_users, new_user):
     """I successfully create the new user."""
-    assert users_page.fill_name().fill_password().confirm_password().click().has_succeeded() is True
+    assert page_users.set_user(new_user).fill_name().fill_password().confirm_password().click().has_succeeded() is True
 
 
 @then('I should see the success message')
-def success_message(users_page):
+def success_message(page_users):
     """I should see the success message."""
-    assert users_page.has_succeeded() is True
+    assert page_users.has_succeeded() is True
 
 
 @then('I can sign in to this new user account')
-def connect(the_config, the_browser, users_page):
+def connect(the_config, the_browser, page_users):
     """ I can sign in to this new user account."""
     p_page = PageSignin(
         browser=the_browser, config=the_config['urls'],
-        user=users_page.user)
+        user=page_users.user)
     p_page.connect_success()

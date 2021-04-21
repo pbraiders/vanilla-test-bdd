@@ -61,18 +61,20 @@ class PageUsers(object):
         self.browser.find_by_name(BUTTON_SEND).first.click()
         return self
 
-    def exists(self) -> bool:
-        """Test if the user already exists in the list"""
-        return self.browser.is_text_present(self.user.login + USER_LIST_NAME, wait_time=1)
-
     def has_failed(self) -> bool:
         """Test if the new user creation has failed"""
-        return self.browser.is_text_present(FAILURE_MESSAGE, wait_time=1) and self.exists() is False
+        return self.browser.is_text_present(
+            FAILURE_MESSAGE, wait_time=1) and self.browser.is_text_present(
+            self.user.login + USER_LIST_NAME, wait_time=1) is False
 
     def has_failed_exist(self) -> bool:
         """Test if the new user creation has failed because he's already exist"""
-        return self.browser.is_text_present(EXIST_MESSAGE, wait_time=1) and self.exists() is True
+        return self.browser.is_text_present(
+            EXIST_MESSAGE, wait_time=1) and self.browser.is_text_present(
+            self.user.login + USER_LIST_NAME, wait_time=1)
 
     def has_succeeded(self) -> bool:
         """Test if the new user creation has successded"""
-        return self.browser.is_text_present(SUCCESS_MESSAGE, wait_time=1) and self.exists() is True
+        return self.browser.is_text_present(
+            SUCCESS_MESSAGE, wait_time=1) and self.browser.is_text_present(
+            self.user.login + USER_LIST_ACTIF, wait_time=1)

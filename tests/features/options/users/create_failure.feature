@@ -1,4 +1,4 @@
-@admin @usermgnt @onlyone
+@admin @usermgnt
 Feature: User creation, failure cases
 
     Background:
