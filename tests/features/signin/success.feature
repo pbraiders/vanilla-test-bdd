@@ -1,15 +1,15 @@
 @signin
-Feature: Successful Signin tests
-    Successful Signin tests
+Feature: Sign in, success cases
 
-    Scenario: Connect deactivated
-        Given I am the deactivated user
-        When I fill the credentials
+    Background:
+        Given I am on the signin page
+
+    Scenario: Account deactivated
+        When I am the deactivated user
         Then I should not be connected
 
     Scenario Outline: Connecting
-        Given I am the <type> user
-        When I fill the credentials
+        When I am the <type> user
         Then I should be connected
 
         Examples: Connecting

@@ -20,12 +20,19 @@ class PageSignin(object):
     """Signin page html elements and actions"""
     browser: Browser
     config: dict
-    user: User
+    user: User = None
 
-    def visit(self, stay_on_the_page: bool = False) -> PageSignin:
+    def set_user(self, user: User = None) -> PageSignin:
+        """User setter"""
+        self.user = user
+        return self
+
+    def on_page(self) -> bool:
+        """Test if we already are on the page"""
+        return self.browser.title.lower() == TITLE.lower()
+
+    def visit(self) -> PageSignin:
         """Goes to the page"""
-        if self.browser.title == TITLE and stay_on_the_page is True:
-            return self
         self.browser.visit(urljoin(str(self.config['home']), str(self.config['signin'])))
         assert self.browser.title == TITLE
         return self
@@ -45,7 +52,7 @@ class PageSignin(object):
         self.browser.find_by_id(PASSWORD_FIELD).first.fill(str(self.user.password))
         return self
 
-    def fill_credentials(self) -> PageSignin:
+    def fill_credential(self) -> PageSignin:
         """Fills the credential fields"""
         self.fill_name()
         self.fill_password()
@@ -68,9 +75,8 @@ class PageSignin(object):
         """Tests if user is connected"""
         return self.browser.is_text_present(
             SUCCESS_MESSAGE.format(self.user.login),
-            wait_time=2) is True
+            wait_time=1)
 
     def has_failed(self) -> bool:
         """Test if an error is displayed"""
-        return self.browser.is_text_present(FAILURE_MESSAGE,
-                                            wait_time=2) is True
+        return self.browser.is_text_present(FAILURE_MESSAGE, wait_time=1)

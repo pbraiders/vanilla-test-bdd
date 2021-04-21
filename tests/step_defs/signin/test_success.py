@@ -1,5 +1,5 @@
 # coding=utf-8
-"""Successful Signin feature tests."""
+"""Successful signin feature tests."""
 
 from functools import partial
 from pytest_bdd import (
@@ -16,58 +16,52 @@ from pbraiders.user import DisabledUserFactory  # pylint: disable=import-error
 scenario = partial(scenario, 'signin/success.feature')
 
 
+@scenario('Account deactivated')
+def test_deactivated() -> None:
+    """Account deactivated."""
+
+
 @scenario('Connecting', example_converters=dict(type=str))
-def test_connecting():
+def test_connecting() -> None:
     """Connecting."""
 
 
-@scenario('Connect deactivated')
-def test_deactivated():
-    """Connect deactivated."""
-
-
-@given('I am the deactivated user', target_fixture="signin_page")
-def signin_page(the_browser, the_config, the_database):
-    """I am the deactivated user."""
+@given('I am on the signin page', target_fixture="page_signin")
+def page_signin(the_browser, the_config, the_database) -> PageSignin:
+    """I am on the signin page."""
     p_page = PageSignin(
         browser=the_browser, config=the_config['urls'],
-        user=DisabledUserFactory().initialize(the_config["data"]["users"]))
-    p_page.visit()
+        user=None)
+    if p_page.on_page() is False:
+        p_page.visit()
     return p_page
 
 
-@given('I am the <type> user', target_fixture="signin_page")
-def signin_page(type, the_browser, the_config, the_database):
+@when('I am the deactivated user')
+def deactivated_user(the_config, page_signin) -> None:
+    """I am the deactivated user."""
+    page_signin.set_user(DisabledUserFactory().initialize(the_config["data"]["users"])).fill_credential().click()
+
+
+@when('I am the <type> user')
+def type_user(type, the_config, page_signin) -> None:
     """I am the <type> user."""
     assert isinstance(type, str)
-    # Create the user
-    switcher = {
+    switcher={
         "admin": AdminUserFactory().initialize(the_config["data"]["users"]),
         "simple": SimpleUserFactory().initialize(the_config["data"]["users"]),
         "deactivated": DisabledUserFactory().initialize(the_config["data"]["users"]),
     }
-    p_user = switcher.get(type, None)
-    # Create the page
-    p_page = PageSignin(
-        browser=the_browser, config=the_config['urls'],
-        user=p_user)
-    p_page.visit()
-    return p_page
-
-
-@when('I fill the credentials')
-def fill_the_credentials(signin_page):
-    """I fill the credentials."""
-    signin_page.fill_name().fill_password().click()
+    page_signin.set_user(switcher.get(type, None)).fill_credential().click()
 
 
 @then('I should be connected')
-def connected(signin_page):
+def connected(page_signin) -> None:
     """I should be connected."""
-    assert signin_page.connected() is True
+    assert page_signin.connected() is True
 
 
 @then('I should not be connected')
-def not_connected(signin_page):
+def not_connected(page_signin) -> None:
     """I should not be connected."""
-    assert signin_page.has_failed() is True
+    assert page_signin.has_failed() is True
