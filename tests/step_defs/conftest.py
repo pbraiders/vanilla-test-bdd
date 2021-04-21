@@ -62,7 +62,7 @@ def the_database(the_config):
     p_database.quit()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def the_browser(the_driver):
     """Loads firefox or chrome"""
     p_browser = Browser(the_driver, incognito=True, wait_time=2, headless=False)

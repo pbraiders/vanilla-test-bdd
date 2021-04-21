@@ -15,7 +15,8 @@ BUTTON_SEND = 'new'
 FAILURE_MESSAGE = "Le nom d\'utilisateur ou les mots de passe que vous avez saisis sont incorrects."
 EXIST_MESSAGE = 'Cet utilisateur existe déjà.'
 SUCCESS_MESSAGE = "Enregistrement réussi."
-USER_LIST = ' • JAMAIS • Actif'
+USER_LIST_ACTIF = ' • JAMAIS • Actif'
+USER_LIST_NAME = ' • '
 
 
 @dataclass
@@ -32,7 +33,7 @@ class PageUsers(object):
 
     def on_page(self) -> bool:
         """Test if we already are on the page"""
-        return self.browser.title == TITLE is True
+        return self.browser.title.lower() == TITLE.lower()
 
     def visit(self) -> PageUsers:
         """Goes to the page"""
@@ -62,16 +63,16 @@ class PageUsers(object):
 
     def exists(self) -> bool:
         """Test if the user already exists in the list"""
-        return self.browser.is_text_present(self.user.login + USER_LIST) is True
+        return self.browser.is_text_present(self.user.login + USER_LIST_NAME, wait_time=1)
 
     def has_failed(self) -> bool:
         """Test if the new user creation has failed"""
-        return self.browser.is_text_present(FAILURE_MESSAGE) is True and self.exists() is False
+        return self.browser.is_text_present(FAILURE_MESSAGE, wait_time=1) and self.exists() is False
 
     def has_failed_exist(self) -> bool:
         """Test if the new user creation has failed because he's already exist"""
-        return self.browser.is_text_present(EXIST_MESSAGE) is True and self.exists() is True
+        return self.browser.is_text_present(EXIST_MESSAGE, wait_time=1) and self.exists() is True
 
     def has_succeeded(self) -> bool:
         """Test if the new user creation has successded"""
-        return self.browser.is_text_present(SUCCESS_MESSAGE) is True and self.exists() is True
+        return self.browser.is_text_present(SUCCESS_MESSAGE, wait_time=1) and self.exists() is True
