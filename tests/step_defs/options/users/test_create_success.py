@@ -17,12 +17,12 @@ scenario = partial(scenario, 'options/users/create_success.feature')
 
 
 @scenario('Create the user')
-def test_successful():
+def test_successful() -> None:
     """Create the user."""
 
 
 @scenario('Successfully sign in with a new created user')
-def test_connect():
+def test_connect() -> None:
     """Successfully sign in with a new created user."""
 
 
@@ -55,25 +55,25 @@ def new_user(the_faker) -> User:
 
 
 @when('I send the credential')
-def send_credential(page_users, new_user):
+def send_credential(page_users, new_user) -> None:
     """I send the new credential."""
     page_users.set_user(new_user).fill_name().fill_password().confirm_password().click()
 
 
 @when('I successfully create the new user')
-def creates_user(page_users, new_user):
+def creates_user(page_users, new_user) -> None:
     """I successfully create the new user."""
     assert page_users.set_user(new_user).fill_name().fill_password().confirm_password().click().has_succeeded() is True
 
 
 @then('I should see the success message')
-def success_message(page_users):
+def success_message(page_users) -> None:
     """I should see the success message."""
     assert page_users.has_succeeded() is True
 
 
 @then('I can sign in to this new user account')
-def connect(the_config, the_browser, page_users):
+def connect(the_config, the_browser, page_users) -> None:
     """ I can sign in to this new user account."""
     p_page = PageSignin(
         browser=the_browser, config=the_config['urls'],

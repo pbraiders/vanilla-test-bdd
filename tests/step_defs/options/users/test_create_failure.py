@@ -17,22 +17,22 @@ scenario = partial(scenario, 'options/users/create_failure.feature')
 
 
 @scenario('Name is mandatory')
-def test_name_is_mandatory():
+def test_name_is_mandatory() -> None:
     """Name is mandatory."""
 
 
 @scenario('Password is mandatory')
-def test_password_is_mandatory():
+def test_password_is_mandatory() -> None:
     """Password is mandatory."""
 
 
 @scenario('Confirmed password is mandatory')
-def test_confirmed_password_is_mandatory():
+def test_confirmed_password_is_mandatory() -> None:
     """Confirmed password is mandatory."""
 
 
 @scenario('User already exists')
-def test_user_exists():
+def test_user_exists() -> None:
     """User already exists."""
 
 
@@ -65,37 +65,37 @@ def new_user(the_faker) -> User:
 
 
 @when('I send the credential without the name')
-def send_credential_without_name(page_users, new_user):
+def send_credential_without_name(page_users, new_user) -> None:
     """I send the credential without the name."""
     page_users.set_user(new_user).fill_password().confirm_password().click()
 
 
 @when('I send the credential without the password')
-def send_credential_without_password(page_users, new_user):
+def send_credential_without_password(page_users, new_user) -> None:
     """I send the credential without the password."""
     page_users.set_user(new_user).fill_name().confirm_password().click()
 
 
 @when('I send the credential without the confirmed password')
-def send_credential_without_confirmed_password(page_users, new_user):
+def send_credential_without_confirmed_password(page_users, new_user) -> None:
     """I send the credential without the confirmed password."""
     page_users.set_user(new_user).fill_name().fill_password().click()
 
 
 @when('I send the credential of an already existing user')
-def send_credential(the_config, page_users):
+def send_credential(the_config, page_users) -> None:
     """I send the credential of an already existing user."""
     page_users.set_user(AdminUserFactory().initialize(
         the_config["data"]["users"])).fill_name().fill_password().confirm_password().click()
 
 
 @then('I should see the error message')
-def error_message(page_users):
+def error_message(page_users) -> None:
     """I should see the error message."""
     assert page_users.has_failed() is True
 
 
 @then('I should see the already exist error message')
-def error_exist_message(page_users):
+def error_exist_message(page_users) -> None:
     """I should see the already exist error message."""
     assert page_users.has_failed_exist() is True

@@ -71,7 +71,7 @@ def the_browser(the_driver):
 
 
 @pytest.fixture(scope="function")
-def the_faker():
+def the_faker() -> Faker:
     """Loads the faker"""
     # I do not use the default faker fixtures because it does not work. I can't do what I want to do
     # And if I follow the doc I've got many:
@@ -88,6 +88,6 @@ def the_faker():
     return p_faker
 
 
-def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
+def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception) -> None:
     """Called when step function failed to execute"""
     print(f'Step failed: {step}')
