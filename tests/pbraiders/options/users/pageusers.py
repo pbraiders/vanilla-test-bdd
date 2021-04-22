@@ -8,6 +8,7 @@ from splinter import Browser
 from pbraiders.user import User
 
 TITLE = 'PBRaiders - Utilisateurs'
+HEADER = '<h1>Utilisateurs</h1>'
 FIELD_NAME = 'usr'
 FIELD_PASSWD = 'pwd'
 FIELD_CONF_PASSWD = 'pwdc'
@@ -33,7 +34,7 @@ class PageUsers(object):
 
     def on_page(self) -> bool:
         """Test if we already are on the page"""
-        return self.browser.title.lower() == TITLE.lower()
+        return self.browser.title.lower() == TITLE.lower() and self.browser.is_text_present(HEADER, wait_time=1)
 
     def visit(self) -> PageUsers:
         """Goes to the page"""
