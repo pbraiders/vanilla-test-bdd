@@ -12,7 +12,7 @@ class PyMySQLAdapter(AbstractAdapter):
     def __del__(self):
         self.quit()
 
-    def connect(self):
+    def connect(self) -> None:
         self.quit()
         self._pConnection = pymysql.connect(
             host=self.host,
@@ -23,16 +23,16 @@ class PyMySQLAdapter(AbstractAdapter):
             charset=self.charset,
             cursorclass=pymysql.cursors.DictCursor
         )
-        assert True == self._pConnection.open
+        assert self._pConnection.open is True
 
-    def quit(self):
+    def quit(self) -> None:
         if isinstance(self._pConnection, pymysql.connections.Connection):
             if self._pConnection.open:
                 self._pConnection.close()
             del self._pConnection
         self._pConnection = None
 
-    def execute(self, query: str, args: dict = None):
+    def execute(self, query: str, args: dict = None) -> None:
         try:
             self.connect()
             with self._pConnection:
@@ -43,7 +43,7 @@ class PyMySQLAdapter(AbstractAdapter):
         except Exception as e:
             print("Exception occured while running execute command:{}".format(e))
 
-    def executemany(self, query: str, args: dict = None):
+    def executemany(self, query: str, args: dict = None) -> None:
         try:
             self.connect()
             with self._pConnection:
