@@ -9,6 +9,7 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
+from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageAccount  # pylint: disable=import-error
 from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
 from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
@@ -40,13 +41,10 @@ def page_user_account(the_config, the_browser, the_database) -> PageAccount:
         config=the_config['urls'],
         user=SimpleUserFactory().initialize(the_config["data"]["users"]))
     if p_page_account.on_page() is False:
-        print('Not on the account page. Sign in ...')
-        # Sign in
-        p_pagesignin = PageSignin(
-            browser=the_browser, config=the_config['urls'],
-            user=AdminUserFactory().initialize(the_config["data"]["users"]))
-        p_pagesignin.connect_success()
-        del p_pagesignin
+        # Not on the account page. Sign in as admin
+        p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+        sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+        del p_page_signin
         # Visit simple user account page
         p_page_account.visit()
     return p_page_account

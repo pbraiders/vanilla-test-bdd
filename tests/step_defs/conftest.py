@@ -26,6 +26,7 @@ from faker import Faker
 from faker.providers import person
 from splinter import Browser
 from pbraiders.database.adapter import PyMySQLAdapterFactory  # pylint: disable=import-error
+from pbraiders.user import User  # pylint: disable=import-error
 
 CONFIG_PATH = 'config.json'
 
@@ -65,12 +66,12 @@ def the_database(the_config):
 @pytest.fixture(scope="session")
 def the_browser(the_driver):
     """Loads firefox or chrome"""
-    p_browser = Browser(the_driver, incognito=True, wait_time=2, headless=False)
+    p_browser = Browser(the_driver, incognito=True, wait_time=2, headless=True)
     yield p_browser
     p_browser.quit()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def the_faker() -> Faker:
     """Loads the faker"""
     # I do not use the default faker fixtures because it does not work. I can't do what I want to do
@@ -80,12 +81,21 @@ def the_faker() -> Faker:
     # Locale choice
     d_locales = {0: "fr_FR", 1: "ja_JP", 2: "ru_RU"}
     s_local = d_locales[random.randint(0, 2)]
-    print('locale choice:' + s_local)
+    print(' \u2592 Faker locale choice:' + s_local)
     # Faker
     p_faker = Faker(s_local)
     p_faker.add_provider(person)
     p_faker.seed_instance(random.randint(0, 999))
     return p_faker
+
+
+@pytest.fixture(scope="function")
+def new_user(the_faker) -> User:
+    """Generates user data."""
+    s_name = the_faker.first_name()
+    s_passwd = s_name + 'password'
+    print('\u2592 Faker firstname:' + s_name)
+    return User(login=s_name, password=s_passwd, passwordc=s_passwd)
 
 
 def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception) -> None:

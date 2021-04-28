@@ -1,5 +1,5 @@
 # coding=utf-8
-"""Password update, success cases feature tests."""
+"""Activate deactivate user feature tests."""
 
 import pytest
 from functools import partial
@@ -10,18 +10,29 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageAccount  # pylint: disable=import-error
 from pbraiders.options.users import PageUsers  # pylint: disable=import-error
-from pbraiders.options.users import new_account  # pylint: disable=import-error
 from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
+from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
+from pbraiders.user import User  # pylint: disable=import-error
 
-scenario = partial(scenario, 'options/users/password_update_success.feature')
+scenario = partial(scenario, 'options/users/activate.feature')
 
 
 @scenario('Update a password')
 def test_update_password():
     """Update a password."""
+
+
+def sign_in(p_page_signin: PageSignin, p_user: User) -> None:
+    """Sign in."""
+    p_page_signin.set_user(p_user).connect_success()
+
+
+def new_account(p_page_users: PageUsers, p_user: User) -> None:
+    """Creates account."""
+    p_page_users.set_user(p_user).visit().fill_name().fill_password().confirm_password().click()
+    assert p_page_users.has_succeeded() is True
 
 
 @given('I am on an activated user account page', target_fixture="page_user_account")

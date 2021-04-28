@@ -1,4 +1,4 @@
-@admin @usermgnt @onlyone
+@admin @usermgnt
 Feature: Password update, success cases
 
     Scenario: Update a password
