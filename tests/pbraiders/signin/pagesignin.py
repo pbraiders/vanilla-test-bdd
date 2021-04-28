@@ -63,14 +63,6 @@ class PageSignin(object):
         self.browser.find_by_name(LOGIN_BUTTON).first.click()
         return self
 
-    def connect_success(self):
-        """Connecting"""
-        self.visit()
-        self.fill_name()
-        self.fill_password()
-        self.click()
-        assert self.connected() is True
-
     def connected(self) -> bool:
         """Tests if user is connected"""
         return self.browser.is_text_present(

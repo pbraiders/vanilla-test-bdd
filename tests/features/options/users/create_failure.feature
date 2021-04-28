@@ -3,7 +3,6 @@ Feature: User creation, failure cases
 
     Background:
         Given I am on the users page
-        And I have a new user to create
 
     Scenario: Name is mandatory
         When I send the credential without the name

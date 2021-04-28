@@ -9,6 +9,7 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
+from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageUsers  # pylint: disable=import-error
 from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
 from pbraiders.user import User  # pylint: disable=import-error
@@ -39,29 +40,15 @@ def test_user_exists() -> None:
 @given('I am on the users page', target_fixture="page_users")
 def page_users(the_config, the_browser, the_database) -> PageUsers:
     """I am on the users page."""
-    p_pageusers = PageUsers(
-        browser=the_browser,
-        config=the_config['urls'],
-        user=None)
-    if p_pageusers.on_page() is False:
-        # Sign in
-        p_pagesignin = PageSignin(
-            browser=the_browser, config=the_config['urls'],
-            user=AdminUserFactory().initialize(the_config["data"]["users"]))
-        p_pagesignin.connect_success()
-        del p_pagesignin
+    p_page_users = PageUsers(browser=the_browser, config=the_config['urls'], user=None)
+    if p_page_users.on_page() is False:
+        # Sign in as admin
+        p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+        sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+        del p_page_signin
         # Visit users page
-        p_pageusers.visit()
-    return p_pageusers
-
-
-@given('I have a new user to create', target_fixture="new_user")
-def new_user(the_faker) -> User:
-    """I have a new user to create."""
-    # Generate test data
-    s_name = the_faker.first_name()
-    s_passwd = s_name + 'password'
-    return User(login=s_name, password=s_passwd, passwordc=s_passwd)
+        p_page_users.visit()
+    return p_page_users
 
 
 @when('I send the credential without the name')
