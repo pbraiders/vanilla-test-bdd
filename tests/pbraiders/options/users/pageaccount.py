@@ -11,6 +11,7 @@ TITLE = 'PBRaiders - Utilisateurs'
 FIELD_PASSWD = 'pwd'
 FIELD_CONF_PASSWD = 'pwdc'
 BUTTON_SEND = 'new'
+CHECKBOX_ACTIVATE = 'sta'
 FAILURE_MESSAGE = "Le nom d\'utilisateur ou les mots de passe que vous avez saisis sont incorrects."
 SUCCESS_MESSAGE = "Enregistrement réussi."
 USER_LIST_LOCATOR = "//*[contains(text(),'{} • ')]/.."
@@ -68,6 +69,22 @@ class PageAccount(object):
     def click(self) -> PageAccount:
         """Clicks the button"""
         self.browser.find_by_name(BUTTON_SEND).first.click()
+        return self
+
+    def check(self) -> PageAccount:
+        """Activate the account"""
+        # self.browser.find_by_name(CHECKBOX_ACTIVATE).first.check()
+        # self.dump(element)
+        self.browser.check(CHECKBOX_ACTIVATE)
+        return self
+
+    def checked(self) -> bool:
+        """Return true if the the checkbox is checked"""
+        return self.browser.find_by_name(CHECKBOX_ACTIVATE).first.checked
+
+    def uncheck(self) -> PageAccount:
+        """Deactivate the account"""
+        self.browser.uncheck(CHECKBOX_ACTIVATE)
         return self
 
     def has_failed(self) -> bool:
