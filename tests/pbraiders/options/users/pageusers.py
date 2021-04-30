@@ -34,15 +34,12 @@ class PageUsers(object):
 
     def on_page(self) -> bool:
         """Test if we already are on the page"""
-        return self.browser.title.lower() == TITLE.lower() and self.browser.find_by_tag(
-            'h1').first.text.lower() == HEADER.lower()
+        return self.browser.title.lower() == TITLE.lower() and self.browser.find_by_tag('h1').first.text.lower() == HEADER.lower()
 
-    def visit(self) -> PageUsers:
+    def visit(self) -> bool:
         """Goes to the page"""
-        self.browser.visit(
-            urljoin(str(self.config['home']), str(self.config['users'])))
-        assert self.on_page() is True
-        return self
+        self.browser.visit(urljoin(str(self.config['home']), str(self.config['users'])))
+        return self.on_page()
 
     def fill_name(self) -> PageUsers:
         """Fills the name field"""

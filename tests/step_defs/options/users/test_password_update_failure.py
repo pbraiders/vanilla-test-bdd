@@ -38,22 +38,15 @@ def test_password_is_mandatory():
 def page_user_account(the_config, the_browser, the_database) -> PageAccount:
     """I am on the simple user account page."""
     p_page_account = PageAccount(
-        browser=the_browser,
-        config=the_config['urls'],
+        browser=the_browser, config=the_config['urls'],
         user=SimpleUserFactory().initialize(the_config["data"]["users"]))
     if p_page_account.on_page() is False:
         # Not on the account page. Sign in as admin
-        p_page_signin = PageSignin(
-            browser=the_browser,
-            config=the_config['urls'],
-            user=None)
-        sign_in(
-            p_page_signin,
-            AdminUserFactory().initialize(
-                the_config["data"]["users"]))
+        p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+        sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
         del p_page_signin
         # Visit simple user account page
-        p_page_account.visit()
+        assert p_page_account.visit() is True
     return p_page_account
 
 

@@ -40,23 +40,14 @@ def test_user_exists() -> None:
 @given('I am on the users page', target_fixture="page_users")
 def page_users(the_config, the_browser, the_database) -> PageUsers:
     """I am on the users page."""
-    p_page_users = PageUsers(
-        browser=the_browser,
-        config=the_config['urls'],
-        user=None)
+    p_page_users = PageUsers(browser=the_browser, config=the_config['urls'], user=None)
     if p_page_users.on_page() is False:
         # Sign in as admin
-        p_page_signin = PageSignin(
-            browser=the_browser,
-            config=the_config['urls'],
-            user=None)
-        sign_in(
-            p_page_signin,
-            AdminUserFactory().initialize(
-                the_config["data"]["users"]))
+        p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+        sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
         del p_page_signin
         # Visit users page
-        p_page_users.visit()
+        assert p_page_users.visit() is True
     return p_page_users
 
 

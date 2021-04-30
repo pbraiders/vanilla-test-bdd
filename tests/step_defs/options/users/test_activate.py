@@ -31,30 +31,15 @@ def test_activate():
 
 @given(parsers.parse('I am on the {status} user account page'),
        target_fixture="page_user_account")
-def page_user_account(
-        the_config,
-        the_browser,
-        the_database,
-        status) -> PageAccount:
+def page_user_account(the_config, the_browser, the_database, status) -> PageAccount:
     """I am on an activated /deactivated user account page"""
     # Sign in as admin
-    p_page_signin = PageSignin(
-        browser=the_browser,
-        config=the_config['urls'],
-        user=None)
-    sign_in(
-        p_page_signin,
-        AdminUserFactory().initialize(
-            the_config["data"]["users"]))
+    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+    sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
     del p_page_signin
     # Go to the simple user account page
-    p_page_account = PageAccount(
-        browser=the_browser,
-        config=the_config['urls'],
-        user=None)
-    p_page_account.set_user(
-        SimpleUserFactory().initialize(
-            the_config["data"]["users"])).visit()
+    p_page_account = PageAccount(browser=the_browser, config=the_config['urls'], user=None)
+    assert p_page_account.set_user(SimpleUserFactory().initialize(the_config["data"]["users"])).visit() is True
     # Chech the status
     if "activated" == status:
         assert p_page_account.checked() is True
@@ -77,25 +62,14 @@ def change_status(page_user_account, action) -> None:
 @then('I can sign in to this account again')
 def can_sign_in(the_config, the_browser) -> None:
     """I can sign in to this account again."""
-    p_page_signin = PageSignin(
-        browser=the_browser,
-        config=the_config['urls'],
-        user=None)
-    sign_in(
-        p_page_signin,
-        SimpleUserFactory().initialize(
-            the_config["data"]["users"]))
+    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+    sign_in(p_page_signin, SimpleUserFactory().initialize(the_config["data"]["users"]))
 
 
 @then('I cannot sign in to this account anymore')
 def cannot_sign_in(the_config, the_browser, page_user_account) -> None:
     """I cannot sign in to this account anymore."""
-    p_page_signin = PageSignin(
-        browser=the_browser,
-        config=the_config['urls'],
-        user=None)
-    p_page_signin.set_user(
-        SimpleUserFactory().initialize(
-            the_config["data"]["users"]))
-    p_page_signin.visit().fill_credential().click()
+    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+    assert p_page_signin.visit() is True
+    p_page_signin.set_user(SimpleUserFactory().initialize(the_config["data"]["users"])).fill_credential().click()
     assert p_page_signin.has_failed() is True
