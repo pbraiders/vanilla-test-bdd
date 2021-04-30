@@ -40,14 +40,15 @@ def page_signin(the_browser, the_config, the_database) -> PageSignin:
 @when('I am the deactivated user')
 def deactivated_user(the_config, page_signin) -> None:
     """I am the deactivated user."""
-    page_signin.set_user(DisabledUserFactory().initialize(the_config["data"]["users"])).fill_credential().click()
+    page_signin.set_user(DisabledUserFactory().initialize(
+        the_config["data"]["users"])).fill_credential().click()
 
 
 @when('I am the <type> user')
 def type_user(type, the_config, page_signin) -> None:
     """I am the <type> user."""
     assert isinstance(type, str)
-    switcher={
+    switcher = {
         "admin": AdminUserFactory().initialize(the_config["data"]["users"]),
         "simple": SimpleUserFactory().initialize(the_config["data"]["users"]),
         "deactivated": DisabledUserFactory().initialize(the_config["data"]["users"]),

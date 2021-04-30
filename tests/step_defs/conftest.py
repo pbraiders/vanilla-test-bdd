@@ -20,8 +20,9 @@ Hooks
 """
 
 import json
-import pytest
 import random
+import sys
+import pytest
 from faker import Faker
 from faker.providers import person
 from splinter import Browser
@@ -50,15 +51,17 @@ def the_config():
     try:
         with open(CONFIG_PATH) as s_config:
             data = json.load(s_config)
-    except:
-        print(f'Something goes wrong when loading data from the config file: {CONFIG_PATH}')
+    except OSError as err:
+        print("OS error: {0}".format(err))
+        raise
     return data
 
 
 @pytest.fixture(scope="session")
 def the_database(the_config):
     """Loads and initialize the database"""
-    p_database = PyMySQLAdapterFactory().initialize(the_config['db'], the_config['data'])
+    p_database = PyMySQLAdapterFactory().initialize(
+        the_config['db'], the_config['data'])
     yield p_database
     p_database.quit()
 
@@ -98,6 +101,13 @@ def new_user(the_faker) -> User:
     return User(login=s_name, password=s_passwd, passwordc=s_passwd)
 
 
-def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception) -> None:
+def pytest_bdd_step_error(
+        request,
+        feature,
+        scenario,
+        step,
+        step_func,
+        step_func_args,
+        exception) -> None:
     """Called when step function failed to execute"""
     print(f'Step failed: {step}')

@@ -33,7 +33,8 @@ class PageAccount(object):
         """Test if we already are on the page"""
         if self.user is None:
             return False
-        return self.browser.title.lower() == TITLE.lower() and self.browser.find_by_tag('h1').first.text.lower() == self.user.login.lower()
+        return self.browser.title.lower() == TITLE.lower() and self.browser.find_by_tag(
+            'h1').first.text.lower() == self.user.login.lower()
 
     def dump(self, obj):
         for attr in dir(obj):
@@ -43,12 +44,15 @@ class PageAccount(object):
     def visit(self) -> PageAccount:
         """Goes to the account page"""
         # Go to users page
-        self.browser.visit(urljoin(str(self.config['home']), str(self.config['users'])))
+        self.browser.visit(
+            urljoin(str(self.config['home']), str(self.config['users'])))
         assert self.browser.title.lower() == TITLE.lower()
         # Go to the named account
         if self.user is None:
             raise TypeError("User is not set!")
-        self.browser.find_by_xpath(USER_LIST_LOCATOR.format(self.user.login)).first.click()
+        self.browser.find_by_xpath(
+            USER_LIST_LOCATOR.format(
+                self.user.login)).first.click()
         assert self.on_page() is True
         return self
 

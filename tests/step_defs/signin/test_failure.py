@@ -54,13 +54,15 @@ def connect(page_signin) -> None:
 @when('I send the credential without the name')
 def send_without_name(the_config, page_signin) -> None:
     """I send the credential without the name."""
-    page_signin.set_user(AdminUserFactory().initialize(the_config["data"]["users"])).fill_password().click()
+    page_signin.set_user(AdminUserFactory().initialize(
+        the_config["data"]["users"])).fill_password().click()
 
 
 @when('I send the credential without the password')
 def send_without_password(the_config, page_signin) -> None:
     """I send the credential without the password."""
-    page_signin.set_user(AdminUserFactory().initialize(the_config["data"]["users"])).fill_name().click()
+    page_signin.set_user(AdminUserFactory().initialize(
+        the_config["data"]["users"])).fill_name().click()
 
 
 @when('I send the credential with a wrong password')
