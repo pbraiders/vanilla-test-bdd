@@ -70,6 +70,6 @@ def can_sign_in(the_config, the_browser) -> None:
 def cannot_sign_in(the_config, the_browser, page_user_account) -> None:
     """I cannot sign in to this account anymore."""
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    assert p_page_signin.visit() is True
+    assert p_page_signin.sign_out().visit() is True
     p_page_signin.set_user(SimpleUserFactory().initialize(the_config["data"]["users"])).fill_credential().click()
     assert p_page_signin.has_failed() is True
