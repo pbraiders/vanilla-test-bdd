@@ -37,11 +37,9 @@ def test_wrong_password() -> None:
 @given('I am on the signin page', target_fixture="page_signin")
 def page_signin(the_browser, the_config, the_database) -> PageSignin:
     """I am on the signin page."""
-    p_page = PageSignin(
-        browser=the_browser, config=the_config['urls'],
-        user=None)
+    p_page = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
     if p_page.on_page() is False:
-        p_page.visit()
+        assert p_page.visit() is True
     return p_page
 
 
@@ -54,15 +52,13 @@ def connect(page_signin) -> None:
 @when('I send the credential without the name')
 def send_without_name(the_config, page_signin) -> None:
     """I send the credential without the name."""
-    page_signin.set_user(AdminUserFactory().initialize(
-        the_config["data"]["users"])).fill_password().click()
+    page_signin.set_user(AdminUserFactory().initialize(the_config["data"]["users"])).fill_password().click()
 
 
 @when('I send the credential without the password')
 def send_without_password(the_config, page_signin) -> None:
     """I send the credential without the password."""
-    page_signin.set_user(AdminUserFactory().initialize(
-        the_config["data"]["users"])).fill_name().click()
+    page_signin.set_user(AdminUserFactory().initialize(the_config["data"]["users"])).fill_name().click()
 
 
 @when('I send the credential with a wrong password')

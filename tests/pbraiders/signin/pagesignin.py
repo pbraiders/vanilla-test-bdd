@@ -28,32 +28,27 @@ class PageSignin(object):
         return self
 
     def on_page(self) -> bool:
-        """Test if we already are on the page"""
+        """Test if we are on the page"""
         return self.browser.title.lower() == TITLE.lower()
 
-    def visit(self) -> PageSignin:
+    def visit(self) -> bool:
         """Goes to the page"""
-        self.browser.visit(
-            urljoin(str(self.config['home']), str(self.config['signin'])))
-        assert self.browser.title == TITLE
-        return self
+        self.browser.visit(urljoin(str(self.config['home']), str(self.config['signin'])))
+        return self.on_page()
 
     def sign_out(self) -> PageSignin:
         """Goes to the sign out page"""
-        self.browser.visit(
-            urljoin(str(self.config['home']), str(self.config['signout'])))
+        self.browser.visit(urljoin(str(self.config['home']), str(self.config['signout'])))
         return self
 
     def fill_name(self) -> PageSignin:
         """Fills the name field"""
-        self.browser.find_by_id(USERNAME_FIELD).first.fill(
-            str(self.user.login))
+        self.browser.find_by_id(USERNAME_FIELD).first.fill(str(self.user.login))
         return self
 
     def fill_password(self) -> PageSignin:
         """Fills the password field"""
-        self.browser.find_by_id(PASSWORD_FIELD).first.fill(
-            str(self.user.password))
+        self.browser.find_by_id(PASSWORD_FIELD).first.fill(str(self.user.password))
         return self
 
     def fill_credential(self) -> PageSignin:
