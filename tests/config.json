@@ -13,6 +13,7 @@
     },
     "urls": {
         "home": "https://www.pbraiders.fr",
+        "logs": "logs.php",
         "signin": "login.php",
         "signout": "logout.php",
         "users": "users.php"

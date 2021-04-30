@@ -60,8 +60,7 @@ def the_config():
 @pytest.fixture(scope="session")
 def the_database(the_config):
     """Loads and initialize the database"""
-    p_database = PyMySQLAdapterFactory().initialize(
-        the_config['db'], the_config['data'])
+    p_database = PyMySQLAdapterFactory().initialize(the_config['db'], the_config['data'])
     yield p_database
     p_database.quit()
 
@@ -69,7 +68,7 @@ def the_database(the_config):
 @pytest.fixture(scope="session")
 def the_browser(the_driver):
     """Loads firefox or chrome"""
-    p_browser = Browser(the_driver, incognito=True, wait_time=2, headless=True)
+    p_browser = Browser(the_driver, incognito=True, wait_time=3, headless=True)
     yield p_browser
     p_browser.quit()
 
