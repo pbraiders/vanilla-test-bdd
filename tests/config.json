@@ -17,6 +17,7 @@
         "logs": "logs.php",
         "signin": "login.php",
         "signout": "logout.php",
+        "parameters": "parameters.php",
         "users": "users.php"
     },
     "data": {

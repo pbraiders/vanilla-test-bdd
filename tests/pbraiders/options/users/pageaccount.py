@@ -89,5 +89,5 @@ class PageAccount(object):
         return self.browser.is_text_present(FAILURE_MESSAGE, wait_time=1)
 
     def has_succeeded(self) -> bool:
-        """Test if the password update has successded"""
+        """Test if the password update has succeded"""
         return self.browser.is_text_present(SUCCESS_MESSAGE, wait_time=1)

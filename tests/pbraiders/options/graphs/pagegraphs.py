@@ -21,7 +21,7 @@ class PageGraphs(object):
         return self.browser.title.lower().find(TITLE.lower()) >= 0
 
     def visit(self) -> bool:
-        """Goes to the logs page"""
+        """Goes to the graphs page"""
         self.browser.visit(
             urljoin(str(self.config['home']), str(self.config['graphs'])))
         return self.on_page()
