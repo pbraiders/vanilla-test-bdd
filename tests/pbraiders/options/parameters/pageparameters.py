@@ -13,6 +13,8 @@ FIELD_PURGE = 'rey'
 BUTTON_SEND = 'Envoyer'
 PURGE_FAILURE_MESSAGE = "La date saisie n'est pas valide."
 PURGE_SUCCESS_MESSAGE = "Suppression réussie."
+MAX_FAILURE_MESSAGE = "La date saisie n'est pas valide."
+MAX_SUCCESS_MESSAGE = "Suppression réussie."
 
 
 @dataclass
@@ -44,4 +46,19 @@ class PageParameters(object):
 
     def purge_has_succeeded(self) -> bool:
         """Test if the purge has succeded"""
+        return self.browser.is_text_present(PURGE_SUCCESS_MESSAGE, wait_time=1)
+
+    def max(self, value: str = None) -> PageParameters:
+        """Fills the  max update fields and clicks the button."""
+        if value is not None:
+            self.browser.fill(FIELD_PURGE, int(value))
+        self.browser.find_by_value(BUTTON_SEND).first.click()
+        return self
+
+    def max_has_failed(self) -> bool:
+        """Test if the max update has failed"""
+        return self.browser.is_text_present(PURGE_FAILURE_MESSAGE, wait_time=1)
+
+    def max_has_succeeded(self) -> bool:
+        """Test if the max update has succeded"""
         return self.browser.is_text_present(PURGE_SUCCESS_MESSAGE, wait_time=1)

@@ -9,7 +9,7 @@ from pbraiders.database.adapter import AbstractAdapter
 @dataclass
 class AbstractProcessor(ABC):
 
-    _pAdapter: AbstractAdapter = None
+    _pAdapter: AbstractAdapter
 
     @abstractmethod
     def execute(self, config: dict = None):

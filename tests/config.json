@@ -40,6 +40,68 @@
                 "role": 10,
                 "state": 0
             }
-        }
+        },
+        "config": [
+            {
+                "name": "max_rent_1",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_2",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_3",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_4",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_5",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_6",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_7",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_8",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_9",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_10",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_11",
+                "value": "300",
+                "role": 10
+            },
+            {
+                "name": "max_rent_12",
+                "value": "300",
+                "role": 10
+            }
+        ]
     }
 }

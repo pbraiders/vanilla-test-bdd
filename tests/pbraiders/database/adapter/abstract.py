@@ -8,7 +8,7 @@ from dataclasses import dataclass
 @dataclass
 class AbstractAdapter(ABC):
     host: str = 'localhost'
-    port: str = 3306
+    port: int = 3306
     user: str = ''
     password: str = ''
     database: str = ''
@@ -23,5 +23,9 @@ class AbstractAdapter(ABC):
         pass
 
     @abstractmethod
-    def execute(self, query: str, args: dict = None):
+    def execute(self, query: str, args: dict = None) -> None:
+        pass
+
+    @abstractmethod
+    def executemany(self, query: str, args) -> None:
         pass

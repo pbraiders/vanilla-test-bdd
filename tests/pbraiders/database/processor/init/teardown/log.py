@@ -1,7 +1,7 @@
 # coding=utf-8
 """Delete all logs in database"""
 
-from pbraiders.database.processor import AbstractProcessor
+from pbraiders.database.processor.abstract import AbstractProcessor
 
 
 class Log(AbstractProcessor):

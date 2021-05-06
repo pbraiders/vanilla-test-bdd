@@ -1,13 +1,14 @@
 # coding=utf-8
 """PyMySQL adapter"""
 
+from typing import Optional
 from pbraiders.database.adapter import AbstractAdapter
 import pymysql
 import pymysql.cursors
 
 
 class PyMySQLAdapter(AbstractAdapter):
-    _pConnection: pymysql.connections.Connection = None
+    _pConnection: Optional[pymysql.connections.Connection] = None
 
     def __del__(self):
         self.quit()
@@ -16,7 +17,7 @@ class PyMySQLAdapter(AbstractAdapter):
         self.quit()
         self._pConnection = pymysql.connect(
             host=self.host,
-            port=self.port,
+            port=int(self.port),
             user=self.user,
             password=self.password,
             database=self.database,
@@ -35,21 +36,21 @@ class PyMySQLAdapter(AbstractAdapter):
     def execute(self, query: str, args: dict = None) -> None:
         try:
             self.connect()
-            with self._pConnection:
-                with self._pConnection.cursor() as pCursor:
-                    sSql = query.format(d=self.database)
-                    pCursor.execute(sSql, args)
-                self._pConnection.commit()
+#            with self._pConnection:
+            with self._pConnection.cursor() as pCursor:
+                sSql = query.format(d=self.database)
+                pCursor.execute(sSql, args)
+            self._pConnection.commit()
         except Exception as e:
             print("Exception occured while running execute command:{}".format(e))
 
-    def executemany(self, query: str, args: dict = None) -> None:
+    def executemany(self, query: str, args) -> None:
         try:
             self.connect()
-            with self._pConnection:
-                with self._pConnection.cursor() as pCursor:
-                    sSql = query.format(d=self.database)
-                    pCursor.executemany(sSql, args)
-                self._pConnection.commit()
+#            with self._pConnection:
+            with self._pConnection.cursor() as pCursor:
+                sSql = query.format(d=self.database)
+                pCursor.executemany(sSql, args)
+            self._pConnection.commit()
         except Exception as e:
             print("Exception occured while running executemany command:{}".format(e))
