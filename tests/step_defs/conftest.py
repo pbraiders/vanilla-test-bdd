@@ -21,10 +21,12 @@ Hooks
 
 import json
 import random
-import sys
 import pytest
 from faker import Faker
 from faker.providers import person
+from faker.providers import address
+from faker.providers import internet
+from faker.providers import phone_number
 from splinter import Browser
 from pbraiders.database.adapter import PyMySQLAdapterFactory  # pylint: disable=import-error
 from pbraiders.user import User  # pylint: disable=import-error
