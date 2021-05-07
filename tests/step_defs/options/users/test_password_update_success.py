@@ -1,7 +1,6 @@
 # coding=utf-8
 """Password update, success cases feature tests."""
 
-import pytest
 from functools import partial
 from pytest_bdd import (
     given,

@@ -2,6 +2,7 @@
 """Sign in page."""
 
 from __future__ import annotations
+from typing import Optional
 from urllib.parse import urljoin
 from dataclasses import dataclass
 from pbraiders.user import User
@@ -20,7 +21,7 @@ class PageSignin(object):
     """Signin page html elements and actions"""
     browser: Browser
     config: dict
-    user: User = None
+    user: Optional[User] = None
 
     def set_user(self, user: User = None) -> PageSignin:
         """User setter"""

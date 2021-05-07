@@ -22,7 +22,7 @@ def test_sign_out() -> None:
 
 
 @given('I am using the app', target_fixture="page_signout")
-def page_signout(the_browser, the_config, the_database) -> None:
+def page_signout(the_browser, the_config, the_database) -> PageSignout:
     """I am using the app."""
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
     sign_in(p_page_signin, SimpleUserFactory().initialize(the_config["data"]["users"]))

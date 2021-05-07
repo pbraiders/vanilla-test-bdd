@@ -89,6 +89,9 @@ def the_faker() -> Faker:
     # Faker
     p_faker = Faker(s_local)
     p_faker.add_provider(person)
+    p_faker.add_provider(address)
+    p_faker.add_provider(internet)
+    p_faker.add_provider(phone_number)
     p_faker.seed_instance(random.randint(0, 999))
     return p_faker
 

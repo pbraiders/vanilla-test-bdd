@@ -12,7 +12,6 @@ from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageUsers  # pylint: disable=import-error
 from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
-from pbraiders.user import User  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/create_failure.feature')
 

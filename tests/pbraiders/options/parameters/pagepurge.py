@@ -2,7 +2,6 @@
 """Parameters page."""
 
 from __future__ import annotations
-from urllib.parse import urljoin
 from dataclasses import dataclass
 from splinter import Browser
 

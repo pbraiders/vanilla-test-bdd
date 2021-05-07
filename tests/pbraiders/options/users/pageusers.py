@@ -2,6 +2,7 @@
 """Users page."""
 
 from __future__ import annotations
+from typing import Optional
 from urllib.parse import urljoin
 from dataclasses import dataclass
 from splinter import Browser
@@ -25,7 +26,7 @@ class PageUsers(object):
     """Users page html elements and actions"""
     browser: Browser
     config: dict
-    user: User = None
+    user: Optional[User] = None
 
     def set_user(self, user: User = None) -> PageUsers:
         """User setter"""

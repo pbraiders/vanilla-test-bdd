@@ -2,6 +2,7 @@
 """Users page."""
 
 from __future__ import annotations
+from typing import Optional
 from urllib.parse import urljoin
 from dataclasses import dataclass
 from splinter import Browser
@@ -22,7 +23,7 @@ class PageAccount(object):
     """User account page html elements and actions"""
     browser: Browser
     config: dict
-    user: User = None
+    user: Optional[User] = None
 
     def set_user(self, user: User = None) -> PageAccount:
         """User setter"""
@@ -40,7 +41,7 @@ class PageAccount(object):
             if hasattr(obj, attr):
                 print("obj.%s = %s" % (attr, getattr(obj, attr)))
 
-    def visit(self) -> PageAccount:
+    def visit(self) -> bool:
         """Goes to the account page"""
         # Go to users page
         self.browser.visit(urljoin(str(self.config['home']), str(self.config['users'])))

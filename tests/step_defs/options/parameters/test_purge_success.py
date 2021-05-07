@@ -39,14 +39,14 @@ def page_parameters(the_browser, the_config, the_database) -> PageParameters:
         sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
         del p_page_signin
         assert p_page_parameters.visit() is True
-    p_page_parameters.purge(date.today().year)
+    p_page_parameters.purge(str(date.today().year))
     return p_page_parameters
 
 
 @when('I confirm the deletion')
 def confirm_deletion(the_browser, page_parameters) -> None:
     """I confirm the deletion."""
-    p_page_confirmation = PagePurge(browser=the_browser, year=date.today().year)
+    p_page_confirmation = PagePurge(browser=the_browser, year=str(date.today().year))
     assert p_page_confirmation.on_page() is True
     p_page_confirmation.confirm()
 
@@ -54,7 +54,7 @@ def confirm_deletion(the_browser, page_parameters) -> None:
 @when('I cancel the deletion')
 def cancel_deletion(the_browser, page_parameters) -> None:
     """I cancel the deletion."""
-    p_page_confirmation = PagePurge(browser=the_browser, year=date.today().year)
+    p_page_confirmation = PagePurge(browser=the_browser, year=str(date.today().year))
     assert p_page_confirmation.on_page() is True
     p_page_confirmation.cancel()
 

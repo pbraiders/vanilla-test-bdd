@@ -1,7 +1,6 @@
 # coding=utf-8
 """Activate deactivate user feature tests."""
 
-import pytest
 from functools import partial
 from pytest_bdd import (
     given,
