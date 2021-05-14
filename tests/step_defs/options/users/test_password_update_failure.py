@@ -13,7 +13,6 @@ from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageAccount  # pylint: disable=import-error
 from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
 from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
-from pbraiders.user import User  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/password_update_failure.feature')
 
