@@ -1,9 +1,9 @@
 autopep8==1.5.7
-Faker==8.1.2
-pycodestyle==2.7.0
+Faker==8.1.4
+flake8==3.9.2
 pylint==2.8.2
 PyMySQL==1.0.2
-pytest==6.2.3
+pytest==6.2.4
 pytest-bdd==4.0.2
 pytest-splinter==3.3.1
 splinter==0.14.0
