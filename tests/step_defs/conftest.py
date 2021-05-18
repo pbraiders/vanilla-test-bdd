@@ -49,7 +49,6 @@ def the_driver(pytestconfig):
 @pytest.fixture(scope="session")
 def the_config():
     """Loads the config file"""
-    data = '{}'
     try:
         with open(CONFIG_PATH) as s_config:
             data = json.load(s_config)

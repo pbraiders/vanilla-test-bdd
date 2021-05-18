@@ -32,7 +32,6 @@ def i_am_the_admin_user(the_config, the_browser, the_database) -> None:
     """I am the admin user."""
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
     sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
-    del p_page_signin
 
 
 @when('I am the <type> user')
@@ -48,7 +47,6 @@ def i_am_the_type_user(the_config, the_browser, type) -> None:
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
     assert p_page_signin.sign_out().visit() is True
     p_page_signin.set_user(switcher.get(type, None)).fill_credential().click()
-    del p_page_signin
 
 
 @then('I cannot access to the parameters page')
