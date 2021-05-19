@@ -5,7 +5,19 @@ from dataclasses import dataclass
 
 
 @dataclass
-class User(object):
-    login: str = ''
-    password: str = ''
-    passwordc: str = ''
+class Contact(object):
+    """Contact."""
+    lastname: str = ''
+    firstname: str = ''
+    tel: str = ''
+    email: str = ''
+    address: str = ''
+    address_more: str = ''
+    city: str = ''
+    zip: str = ''
+    comment: str = ''
+
+    def dump(self, obj):
+        for attr in dir(obj):
+            if hasattr(obj, attr):
+                print("obj.%s = %s" % (attr, getattr(obj, attr)))

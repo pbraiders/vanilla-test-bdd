@@ -15,6 +15,7 @@
         "home": "https://www.pbraiders.fr",
         "graphs": "graphs.php",
         "logs": "logs.php",
+        "newcontact": "contactnew.php",
         "signin": "login.php",
         "signout": "logout.php",
         "parameters": "parameters.php",
