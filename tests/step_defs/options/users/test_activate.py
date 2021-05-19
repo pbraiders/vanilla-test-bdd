@@ -12,8 +12,8 @@ from pytest_bdd import (
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageAccount  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
-from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/activate.feature')
 
@@ -34,11 +34,11 @@ def page_user_account(the_config, the_browser, the_database, status) -> PageAcco
     """I am on an activated /deactivated user account page"""
     # Sign in as admin
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+    sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
     del p_page_signin
     # Go to the simple user account page
     p_page_account = PageAccount(browser=the_browser, config=the_config['urls'], user=None)
-    assert p_page_account.set_user(SimpleUserFactory().initialize(the_config["data"]["users"])).visit() is True
+    assert p_page_account.set_user(UserSimpleFactory().initialize(the_config["data"]["users"])).visit() is True
     # Chech the status
     if "activated" == status:
         assert p_page_account.checked() is True
@@ -62,7 +62,7 @@ def change_status(page_user_account, action) -> None:
 def can_sign_in(the_config, the_browser) -> None:
     """I can sign in to this account again."""
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, SimpleUserFactory().initialize(the_config["data"]["users"]))
+    sign_in(p_page_signin, UserSimpleFactory().initialize(the_config["data"]["users"]))
 
 
 @then('I cannot sign in to this account anymore')
@@ -70,5 +70,5 @@ def cannot_sign_in(the_config, the_browser, page_user_account) -> None:
     """I cannot sign in to this account anymore."""
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
     assert p_page_signin.sign_out().visit() is True
-    p_page_signin.set_user(SimpleUserFactory().initialize(the_config["data"]["users"])).fill_credential().click()
+    p_page_signin.set_user(UserSimpleFactory().initialize(the_config["data"]["users"])).fill_credential().click()
     assert p_page_signin.has_failed() is True

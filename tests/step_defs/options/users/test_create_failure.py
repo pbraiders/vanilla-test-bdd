@@ -11,7 +11,7 @@ from pytest_bdd import (
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageUsers  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/create_failure.feature')
 
@@ -43,7 +43,7 @@ def page_users(the_config, the_browser, the_database) -> PageUsers:
     if p_page_users.on_page() is False:
         # Sign in as admin
         p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-        sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+        sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
         del p_page_signin
         # Visit users page
         assert p_page_users.visit() is True
@@ -71,7 +71,7 @@ def send_credential_without_confirmed_password(page_users, new_user) -> None:
 @when('I send the credential of an already existing user')
 def send_credential(the_config, page_users) -> None:
     """I send the credential of an already existing user."""
-    page_users.set_user(AdminUserFactory().initialize(
+    page_users.set_user(UserAdminFactory().initialize(
         the_config["data"]["users"])).fill_name().fill_password().confirm_password().click()
 
 

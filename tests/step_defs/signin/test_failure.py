@@ -9,7 +9,7 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'signin/failure.feature')
 
@@ -52,19 +52,19 @@ def connect(page_signin) -> None:
 @when('I send the credential without the name')
 def send_without_name(the_config, page_signin) -> None:
     """I send the credential without the name."""
-    page_signin.set_user(AdminUserFactory().initialize(the_config["data"]["users"])).fill_password().click()
+    page_signin.set_user(UserAdminFactory().initialize(the_config["data"]["users"])).fill_password().click()
 
 
 @when('I send the credential without the password')
 def send_without_password(the_config, page_signin) -> None:
     """I send the credential without the password."""
-    page_signin.set_user(AdminUserFactory().initialize(the_config["data"]["users"])).fill_name().click()
+    page_signin.set_user(UserAdminFactory().initialize(the_config["data"]["users"])).fill_name().click()
 
 
 @when('I send the credential with a wrong password')
 def send_wrong_password(the_config, page_signin) -> None:
     """I send the credential with a wrong password."""
-    p_user = AdminUserFactory().initialize(the_config["data"]["users"])
+    p_user = UserAdminFactory().initialize(the_config["data"]["users"])
     p_user.password = p_user.password + ' wrong password'
     page_signin.set_user(p_user).fill_credential().click()
 

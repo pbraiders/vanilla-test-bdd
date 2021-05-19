@@ -11,7 +11,7 @@ from pytest_bdd import (
 from pbraiders.options.parameters import PageParameters  # pylint: disable=import-error
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/parameters/headcount.feature')
 
@@ -34,7 +34,7 @@ def page_parameters(the_browser, the_config, the_database) -> PageParameters:
     if p_page_parameters.on_page() is False and p_page_parameters.visit() is False:
         # Signin
         p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-        sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+        sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
         del p_page_signin
         assert p_page_parameters.visit() is True
     return p_page_parameters
@@ -68,7 +68,7 @@ def error_merssage(page_parameters) -> None:
 def permanent_update(the_browser, the_config) -> None:
     """The update should be permanent."""
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+    sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
     del p_page_signin
     p_page_parameters = PageParameters(browser=the_browser, config=the_config['urls'])
     assert p_page_parameters.visit() is True

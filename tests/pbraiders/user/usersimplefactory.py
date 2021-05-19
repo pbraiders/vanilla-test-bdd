@@ -1,11 +1,12 @@
 # coding=utf-8
-"""Factory used to create simple user."""
+"""Factory used to create simple user from config."""
 
 from pbraiders.user import User
 from pbraiders.user import UserAbstractFactory
 
 
-class SimpleUserFactory(UserAbstractFactory):
+class UserSimpleFactory(UserAbstractFactory):
+    """Factory used to create simple user from config."""
 
     def create(self, config: dict) -> User:
         return User(login=config['simple']['login'],

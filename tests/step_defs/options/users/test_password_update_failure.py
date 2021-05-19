@@ -11,8 +11,8 @@ from pytest_bdd import (
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageAccount  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
-from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/password_update_failure.feature')
 
@@ -38,11 +38,11 @@ def page_user_account(the_config, the_browser, the_database) -> PageAccount:
     """I am on the simple user account page."""
     p_page_account = PageAccount(
         browser=the_browser, config=the_config['urls'],
-        user=SimpleUserFactory().initialize(the_config["data"]["users"]))
+        user=UserSimpleFactory().initialize(the_config["data"]["users"]))
     if p_page_account.on_page() is False:
         # Not on the account page. Sign in as admin
         p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-        sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+        sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
         del p_page_signin
         # Visit simple user account page
         assert p_page_account.visit() is True
