@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from pbraiders.user import User
 
 
-class UserFactory(ABC):
+class UserAbstractFactory(ABC):
 
     @abstractmethod
     def create(self, config: dict) -> User:
