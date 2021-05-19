@@ -9,9 +9,9 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
-from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
-from pbraiders.user import DisabledUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
+from pbraiders.user import UserClosedFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'signin/success.feature')
 
@@ -38,7 +38,7 @@ def page_signin(the_browser, the_config, the_database) -> PageSignin:
 @when('I am the deactivated user')
 def deactivated_user(the_config, page_signin) -> None:
     """I am the deactivated user."""
-    page_signin.set_user(DisabledUserFactory().initialize(the_config["data"]["users"])).fill_credential().click()
+    page_signin.set_user(UserClosedFactory().initialize(the_config["data"]["users"])).fill_credential().click()
 
 
 @when('I am the <type> user')
@@ -46,9 +46,9 @@ def type_user(type, the_config, page_signin) -> None:
     """I am the <type> user."""
     assert isinstance(type, str)
     switcher = {
-        "admin": AdminUserFactory().initialize(the_config["data"]["users"]),
-        "simple": SimpleUserFactory().initialize(the_config["data"]["users"]),
-        "deactivated": DisabledUserFactory().initialize(the_config["data"]["users"]),
+        "admin": UserAdminFactory().initialize(the_config["data"]["users"]),
+        "simple": UserSimpleFactory().initialize(the_config["data"]["users"]),
+        "deactivated": UserClosedFactory().initialize(the_config["data"]["users"]),
     }
     page_signin.set_user(switcher.get(type, None)).fill_credential().click()
 

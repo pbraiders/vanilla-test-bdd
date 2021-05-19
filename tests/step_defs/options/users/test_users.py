@@ -10,9 +10,9 @@ from pytest_bdd import (
 from pbraiders.options.users import PageUsers  # pylint: disable=import-error
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
-from pbraiders.user import SimpleUserFactory  # pylint: disable=import-error
-from pbraiders.user import DisabledUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
+from pbraiders.user import UserClosedFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/users.feature')
 
@@ -31,7 +31,7 @@ def test_not_accessing_the_users_page():
 def i_am_the_admin_user(the_config, the_browser, the_database) -> None:
     """I am the admin user."""
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+    sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
 
 
 @when('I am the <type> user')
@@ -39,9 +39,9 @@ def i_am_the_type_user(the_config, the_browser, type) -> None:
     """I am the <type> user."""
     assert isinstance(type, str)
     switcher = {
-        "admin": AdminUserFactory().initialize(the_config["data"]["users"]),
-        "simple": SimpleUserFactory().initialize(the_config["data"]["users"]),
-        "deactivated": DisabledUserFactory().initialize(the_config["data"]["users"]),
+        "admin": UserAdminFactory().initialize(the_config["data"]["users"]),
+        "simple": UserSimpleFactory().initialize(the_config["data"]["users"]),
+        "deactivated": UserClosedFactory().initialize(the_config["data"]["users"]),
     }
     # Connect
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)

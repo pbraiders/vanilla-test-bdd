@@ -1,11 +1,12 @@
 # coding=utf-8
-"""Factory used to create deactivated user."""
+"""Factory used to create deactivated user from config."""
 
 from pbraiders.user import User
 from pbraiders.user import UserAbstractFactory
 
 
-class DisabledUserFactory(UserAbstractFactory):
+class UserClosedFactory(UserAbstractFactory):
+    """Factory used to create deactivated user from config."""
 
     def create(self, config: dict) -> User:
         return User(login=config['disabled']['login'],

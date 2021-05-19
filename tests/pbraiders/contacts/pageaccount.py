@@ -42,11 +42,6 @@ class PageAccount(object):
             return False
         return self.browser.title.lower() == TITLE.lower() and self.browser.find_by_tag('h1').first.text.lower() == self.user.login.lower()
 
-    def dump(self, obj):
-        for attr in dir(obj):
-            if hasattr(obj, attr):
-                print("obj.%s = %s" % (attr, getattr(obj, attr)))
-
     def visit(self) -> bool:
         """Goes to the account page"""
         # Go to users page

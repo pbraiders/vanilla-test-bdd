@@ -11,7 +11,7 @@ from pytest_bdd import (
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
 from pbraiders.options.users import PageUsers  # pylint: disable=import-error
-from pbraiders.user import AdminUserFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/create_success.feature')
 
@@ -26,7 +26,7 @@ def page_users(the_config, the_browser, the_database) -> PageUsers:
     """I am on the users page."""
     # Sign in as admin
     p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, AdminUserFactory().initialize(the_config["data"]["users"]))
+    sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
     del p_page_signin
     # Go to Users page
     p_page_users = PageUsers(browser=the_browser, config=the_config['urls'], user=None)
