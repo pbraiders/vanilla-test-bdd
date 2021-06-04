@@ -1,5 +1,5 @@
 autopep8==1.5.7
-Faker==8.4.0
+Faker==8.5.1
 flake8==3.9.2
 pycodestyle==2.7.0
 pylint==2.8.3
