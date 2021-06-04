@@ -19,7 +19,7 @@ FIELD_ADDRESS_MORE = 'ctm'
 FIELD_CITY = 'ctc'
 FIELD_ZIP = 'ctz'
 BUTTON_SEND = 'new'
-FAILURE_MESSAGE = "le nom,le prénom et le numéro de téléphone doivent être renseignés."
+FAILURE_MESSAGE = "Le nom,le prénom et le numéro de téléphone doivent être renseignés."
 SUCCESS_MESSAGE = "Enregistrement réussi."
 
 
@@ -102,6 +102,8 @@ class PageContactNew(object):
 
     def click(self) -> PageContactNew:
         """Clicks the button"""
+        import time
+        time.sleep(5)
         self.browser.find_by_name(BUTTON_SEND).first.click()
         return self
 
