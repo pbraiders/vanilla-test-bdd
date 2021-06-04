@@ -37,7 +37,7 @@ def type_user(the_config, the_browser, type) -> None:
 
 
 @then('I <permission> access to the contacts page')
-def access_to_the_contacts_page(the_config, the_browser, permission) -> None:
+def access_page(the_config, the_browser, permission) -> None:
     """I <permission> access to the contacts page."""
     assert isinstance(permission, str)
     p_page_contacts = PageContactNew(browser=the_browser, config=the_config['urls'])

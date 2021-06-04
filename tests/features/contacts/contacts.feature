@@ -1,11 +1,11 @@
-@contact @onlyone
+@contact
 Feature: Try to access the contact pages.
 
     Scenario Outline: Accessing the contacts page.
         When I am the <type> user
         Then I <permission> access to the contacts page
 
-        Examples: Connecting
+        Examples: Accessing
         | type        | permission |
         | admin       | can        |
         | simple      | can        |
