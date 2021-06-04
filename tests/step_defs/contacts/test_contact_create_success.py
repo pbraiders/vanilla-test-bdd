@@ -37,10 +37,19 @@ def page_contact_new(the_config, the_browser, the_database) -> PageContactNew:
 
 
 @when('I create a new contact')
-def send_data_without_lastname(page_contact_new, the_faker) -> None:
+def contact_new(page_contact_new, the_faker) -> None:
     """I create a new contact."""
     pFactory = ContactFakerFactory(faker=the_faker)
-    page_contact_new.set_contact(pFactory.create(config={})).fill_lastname().fill_firstname().fill_phone().click()
+    page_contact_new.set_contact(pFactory.create(config={})) \
+        .fill_lastname() \
+        .fill_firstname() \
+        .fill_phone() \
+        .fill_zip() \
+        .fill_city() \
+        .fill_address_more() \
+        .fill_address() \
+        .fill_email() \
+        .click()
 
 
 @then('I should see the success message')
