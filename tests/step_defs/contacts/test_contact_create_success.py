@@ -8,7 +8,10 @@ from pytest_bdd import (
     then,
     when,
 )
+from pbraiders.contact import Contact  # pylint: disable=import-error
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
+from pbraiders.contacts import PageContact  # pylint: disable=import-error
+from pbraiders.contacts import PageContacts  # pylint: disable=import-error
 from pbraiders.contacts import PageContactNew  # pylint: disable=import-error
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.signin import sign_in  # pylint: disable=import-error
@@ -36,11 +39,18 @@ def page_contact_new(the_config, the_browser, the_database) -> PageContactNew:
     return p_page_contact_new
 
 
-@when('I create a new contact')
-def contact_new(page_contact_new, the_faker) -> None:
-    """I create a new contact."""
-    pFactory = ContactFakerFactory(faker=the_faker)
-    page_contact_new.set_contact(pFactory.create(config={})) \
+@given('I have a new contact to create', target_fixture="contact_new")
+def contact_new(the_faker) -> Contact:
+    """I have a new contact to create."""
+    p_Factory = ContactFakerFactory(faker=the_faker)
+    p_Contact = p_Factory.create(config={})
+    return p_Contact
+
+
+@when('I create the contact')
+def contact_create(page_contact_new, contact_new) -> None:
+    """I create the contact."""
+    page_contact_new.set_contact(contact_new) \
         .fill_lastname() \
         .fill_firstname() \
         .fill_phone() \
@@ -56,3 +66,19 @@ def contact_new(page_contact_new, the_faker) -> None:
 def success_message(page_contact_new) -> None:
     """I should see the success message."""
     assert page_contact_new.has_succeeded() is True
+
+
+@then('It should appear on the contact list')
+def contact_list(the_config, the_browser, contact_new):
+    """It should appear on the contact list."""
+    p_page_contacts = PageContacts(browser=the_browser, config=the_config['urls'], contact=contact_new)
+    if p_page_contacts.on_page() is False:
+        assert p_page_contacts.visit() is True
+    assert p_page_contacts.is_on_list() is True
+
+
+@then('I should access to this contact page')
+def conctact_page(the_config, the_browser, contact_new):
+    """I should access to this contact page."""
+    p_page_contact = PageContact(browser=the_browser, config=the_config['urls'], contact=contact_new)
+    assert p_page_contact.visit() is True and p_page_contact.is_contact_present() is True

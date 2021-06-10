@@ -102,8 +102,6 @@ class PageContactNew(object):
 
     def click(self) -> PageContactNew:
         """Clicks the button"""
-        import time
-        time.sleep(5)
         self.browser.find_by_name(BUTTON_SEND).first.click()
         return self
 
