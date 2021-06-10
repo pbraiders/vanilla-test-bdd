@@ -49,8 +49,8 @@ class PageContact(object):
         """Goes to the page."""
         if self.contact is None:
             raise TypeError("User is not set!")
-        self.browser.visit(urljoin(str(self.config['home']), str(self.config['contacts'])))
         try:
+            self.browser.visit(urljoin(str(self.config['home']), str(self.config['contacts'])))
             self.browser.find_by_xpath(CONTACT_LIST_LOCATOR.format(lastname=self.contact.lastname,
                                        firstname=self.contact.firstname, phone=self.contact.tel)).first.click()
         except Exception:
