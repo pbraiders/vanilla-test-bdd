@@ -46,8 +46,6 @@ class PageContacts(object):
         """Test if the contact is on the list."""
         if self.contact is None:
             raise TypeError("Contact is not set!")
-        import time
-        time.sleep(5)
         return self.browser.is_text_present(
             CONTACTS_LIST.format(lastname=self.contact.lastname, firstname=self.contact.firstname, phone=self.contact.tel),
             wait_time=1) is True

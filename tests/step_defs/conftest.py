@@ -71,7 +71,7 @@ def the_database(the_config):
 @pytest.fixture(scope="session")
 def the_browser(the_driver):
     """Loads firefox or chrome"""
-    p_browser = Browser(the_driver, incognito=True, wait_time=3, headless=True)
+    p_browser = Browser(the_driver, incognito=True, wait_time=3, headless=False)
     yield p_browser
     p_browser.quit()
 

@@ -18,7 +18,8 @@ FIELD_ADDRESS = 'cta'
 FIELD_ADDRESS_MORE = 'ctm'
 FIELD_CITY = 'ctc'
 FIELD_ZIP = 'ctz'
-BUTTON_SEND = 'new'
+FIELD_COMMENT = 'ctk'
+BUTTON_SEND = 'upd'
 FAILURE_MESSAGE = "Le nom,le prénom et le numéro de téléphone doivent être renseignés."
 SUCCESS_MESSAGE = "Enregistrement réussi."
 CONTACT_LIST_LOCATOR = "//*[contains(text(),'{lastname} {firstname} • {phone}')]/.."
@@ -65,6 +66,9 @@ class PageContact(object):
             and self.browser.is_element_present_by_value(self.contact.address_more) \
             and self.browser.is_element_present_by_value(self.contact.city) \
             and self.browser.is_element_present_by_value(self.contact.zip)
+
+    def is_contact_comments_present(self) -> bool:
+        return self.browser.is_element_present_by_value(self.contact.comment)
 
     def fill_zip(self) -> PageContact:
         """Fills the zip field"""
@@ -124,8 +128,6 @@ class PageContact(object):
 
     def click(self) -> PageContact:
         """Clicks the button"""
-        import time
-        time.sleep(5)
         self.browser.find_by_name(BUTTON_SEND).first.click()
         return self
 
