@@ -1,5 +1,6 @@
 @admin @parameters
 Feature: Try to access the parameters page.
+    SMART: ✔️
 
     Scenario Outline: Accessing the parameters page.
         When I am the <type> user

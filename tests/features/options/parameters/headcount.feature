@@ -1,5 +1,6 @@
 @admin @parameters @headcount
 Feature: Update the maximum headcount per month.
+    SMART: ✔️
 
     Background:
         Given I want to update the headcount per month

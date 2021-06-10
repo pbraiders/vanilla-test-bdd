@@ -1,5 +1,6 @@
 @signin
 Feature: Sign in, success cases
+    SMART: ✔️
 
     Background:
         Given I am on the signin page

@@ -1,5 +1,6 @@
 @admin @parameters @purge
 Feature: Delete old reservations failure cases.
+    SMART: ✔️
 
     Background:
         Given I want to delete old reservations

@@ -1,5 +1,6 @@
 @admin @logs
 Feature: Try to access the logs page.
+    SMART: ✔️
 
     Scenario Outline: Accessing the logs page.
         When I am the <type> user

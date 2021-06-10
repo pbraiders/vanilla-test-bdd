@@ -1,5 +1,6 @@
 @admin @usermgnt
 Feature: Activate deactivate user.
+    SMART: ✔️
 
     Scenario: Deactivate an user
         Given I am on the activated user account page

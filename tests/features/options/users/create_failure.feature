@@ -1,5 +1,6 @@
 @admin @usermgnt
 Feature: User creation, failure cases
+    SMART: ✔️
 
     Background:
         Given I am on the users page

@@ -1,5 +1,6 @@
 @admin @usermgnt
 Feature: Password update, success cases
+    SMART: ✔️
 
     Scenario: Update a password
         Given I am on an activated user account page

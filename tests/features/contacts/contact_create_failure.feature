@@ -1,5 +1,6 @@
 @contact
 Feature: Contact creation, failure cases
+    SMART: ✔️
 
     Background:
         Given I am on the new contact page

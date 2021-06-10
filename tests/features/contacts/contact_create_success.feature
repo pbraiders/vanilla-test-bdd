@@ -1,5 +1,6 @@
 @contact @onlyone
 Feature: Contact creation, success cases
+    SMART: ❔
 
     Scenario: Create the contact
         Given I am on the new contact page

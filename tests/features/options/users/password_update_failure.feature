@@ -1,5 +1,6 @@
 @admin @usermgnt
 Feature: Password update, failure cases
+    SMART: ✔️
 
     Background:
         Given I am on the simple user account page
