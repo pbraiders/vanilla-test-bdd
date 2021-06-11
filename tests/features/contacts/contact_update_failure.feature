@@ -1,4 +1,4 @@
-@contact @onlyone
+@contact
 Feature: Contact update, failure cases
     SMART: ✔️
 
