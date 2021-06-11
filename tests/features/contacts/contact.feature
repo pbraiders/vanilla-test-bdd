@@ -1,4 +1,4 @@
-@contact @onlyone
+@contact
 Feature: Try to access the contact page.
     SMART: ✔️
 
