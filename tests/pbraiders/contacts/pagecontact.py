@@ -98,6 +98,13 @@ class PageContact(object):
         self.browser.fill(FIELD_ADDRESS, self.contact.address)
         return self
 
+    def fill_comment(self) -> PageContact:
+        """Fills the comment field"""
+        if self.contact is None:
+            raise TypeError("Contact is not set!")
+        self.browser.fill(FIELD_COMMENT, self.contact.comment)
+        return self
+
     def fill_email(self) -> PageContact:
         """Fills the email field"""
         if self.contact is None:
