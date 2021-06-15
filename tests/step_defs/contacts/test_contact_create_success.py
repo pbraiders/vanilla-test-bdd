@@ -11,6 +11,7 @@ from pytest_bdd import (
 from pbraiders.contact import Contact  # pylint: disable=import-error
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
 from pbraiders.contacts import PageContact  # pylint: disable=import-error
+from pbraiders.contacts import PageContactUpdate  # pylint: disable=import-error
 from pbraiders.contacts import PageContacts  # pylint: disable=import-error
 from pbraiders.contacts import PageContactNew  # pylint: disable=import-error
 from pbraiders.signin import PageSignin  # pylint: disable=import-error
@@ -81,4 +82,6 @@ def contact_list(the_config, the_browser, contact_new):
 def conctact_page(the_config, the_browser, contact_new):
     """I should access to this contact page."""
     p_page_contact = PageContact(browser=the_browser, config=the_config['urls'], contact=contact_new)
-    assert p_page_contact.visit() is True and p_page_contact.is_contact_present() is True
+    assert p_page_contact.visit() is True
+    p_page_contact_update = PageContactUpdate(parent=p_page_contact)
+    assert p_page_contact_update.is_contact_present() is True

@@ -10,6 +10,7 @@ from pytest_bdd import (
 )
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
 from pbraiders.contacts import PageContact  # pylint: disable=import-error
+from pbraiders.contacts import PageContactUpdate  # pylint: disable=import-error
 from pbraiders.contacts import PageContacts  # pylint: disable=import-error
 from pbraiders.contacts import new_contact  # pylint: disable=import-error
 from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
@@ -39,7 +40,10 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> PageContac
     del p_page_contacts
 
     p_page_contact = PageContact(browser=the_browser, config=the_config['urls'], contact=p_contact)
-    assert p_page_contact.visit() is True and p_page_contact.is_contact_present() is True
+    assert p_page_contact.visit() is True
+
+    p_page_contact_update = PageContactUpdate(parent=p_page_contact)
+    assert p_page_contact_update.is_contact_present() is True
 
     return p_page_contact
 
@@ -57,7 +61,8 @@ def update_data(page_contact) -> None:
     page_contact.contact.zip += '*'
     page_contact.contact.comment = 'updated'
 
-    page_contact.fill_lastname() \
+    p_page_contact = PageContactUpdate(parent=page_contact)
+    p_page_contact.fill_lastname() \
         .fill_firstname() \
         .fill_phone() \
         .fill_zip() \
@@ -66,15 +71,14 @@ def update_data(page_contact) -> None:
         .fill_address() \
         .fill_email() \
         .fill_comment() \
-        .click()
+        .update()
 
 
 @then('I should see the success message')
 def success_message(page_contact) -> None:
     """I should see the success message."""
-    import time
-    time.sleep(3)
-    assert page_contact.has_succeeded() is True
+    p_page_contact = PageContactUpdate(parent=page_contact)
+    assert p_page_contact.has_succeeded() is True
 
 
 @then('I should see the update on the contacts list')
@@ -82,8 +86,6 @@ def check_contacts_list(the_browser, the_config, page_contact) -> None:
     """I should see the update on the contacts list."""
     p_page_contacts = PageContacts(browser=the_browser, config=the_config['urls'], contact=page_contact.contact)
     assert p_page_contacts.visit() is True
-    import time
-    time.sleep(3)
     assert p_page_contacts.is_on_list() is True
 
 
@@ -91,6 +93,5 @@ def check_contacts_list(the_browser, the_config, page_contact) -> None:
 def check_contact_page(page_contact) -> None:
     """I should see the update on the contact page."""
     assert page_contact.visit() is True
-    import time
-    time.sleep(3)
-    assert page_contact.is_contact_present() is True and page_contact.is_contact_comments_present() is True
+    p_page_contact = PageContactUpdate(parent=page_contact)
+    assert p_page_contact.is_contact_present() is True and p_page_contact.is_contact_comments_present() is True
