@@ -1,12 +1,8 @@
 # coding=utf-8
-"""Contacts page."""
+"""Contacts list page - main responsabilities."""
 
-from __future__ import annotations
-from typing import Optional
 from urllib.parse import urljoin
-from dataclasses import dataclass
-from splinter import Browser
-from pbraiders.contact import Contact
+from pbraiders.contacts import ContactPageAbstract
 
 TITLE = 'PBRaiders - Contacts'
 HEADER = 'Contacts'
@@ -14,17 +10,8 @@ CONTACTS_LIST = '{lastname} {firstname} • {phone}'
 CONTACT_LIST_LOCATOR = "//*[contains(text(),'{lastname} {firstname} • {phone}')]/.."
 
 
-@dataclass
-class PageContacts(object):
-    """Contacts page html elements and actions"""
-    browser: Browser
-    config: dict
-    contact: Optional[Contact] = None
-
-    def set_contact(self, contact: Contact = None) -> PageContacts:
-        """Contact setter"""
-        self.contact = contact
-        return self
+class ContactsPage(ContactPageAbstract):
+    """Contacts list page - main responsabilities."""
 
     def on_page(self) -> bool:
         """Test if we already are on the page."""

@@ -1,29 +1,16 @@
 # coding=utf-8
 """Contact page - main responsabilities."""
 
-from __future__ import annotations
-from typing import Optional
 from urllib.parse import urljoin
-from dataclasses import dataclass
-from splinter import Browser
-from pbraiders.contact import Contact
+from pbraiders.contacts import ContactPageAbstract
 
 TITLE = 'PBRaiders - {lastname} {firstname}'
 HEADER = '{lastname} {firstname}'
 CONTACT_LIST_LOCATOR = "//*[contains(text(),'{lastname} {firstname} • {phone}')]/.."
 
 
-@dataclass
-class PageContact(object):
+class ContactPage(ContactPageAbstract):
     """Contact page - main responsabilities."""
-    browser: Browser
-    config: dict
-    contact: Optional[Contact] = None
-
-    def set_contact(self, contact: Contact = None) -> PageContact:
-        """Contact setter"""
-        self.contact = contact
-        return self
 
     def on_page(self) -> bool:
         """Test if we already are on the page"""
@@ -44,3 +31,20 @@ class PageContact(object):
         except Exception:
             pass
         return self.on_page()
+
+    def is_contact_present(self) -> bool:
+        """Returns true if all the contact's values can be found on the page."""
+        if self.contact is None:
+            raise TypeError("Contact is not set!")
+        return self.browser.is_element_present_by_value(self.contact.firstname) \
+            and self.browser.is_element_present_by_value(self.contact.lastname) \
+            and self.browser.is_element_present_by_value(self.contact.tel) \
+            and self.browser.is_element_present_by_value(self.contact.email) \
+            and self.browser.is_element_present_by_value(self.contact.address) \
+            and self.browser.is_element_present_by_value(self.contact.address_more) \
+            and self.browser.is_element_present_by_value(self.contact.city) \
+            and self.browser.is_element_present_by_value(self.contact.zip)
+
+    def is_contact_comments_present(self) -> bool:
+        """Returns true if all the contact's comment can be found on the page."""
+        return self.browser.is_element_present_by_value(self.contact.comment)

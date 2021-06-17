@@ -10,6 +10,8 @@ from pytest_bdd import (
 )
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
 from pbraiders.contacts import PageContact  # pylint: disable=import-error
+from pbraiders.contacts import PageContactDelete  # pylint: disable=import-error
+from pbraiders.contacts import PageContactUpdate  # pylint: disable=import-error
 from pbraiders.contacts import PageContacts  # pylint: disable=import-error
 from pbraiders.contacts import new_contact  # pylint: disable=import-error
 from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
@@ -39,7 +41,10 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> PageContac
     del p_page_contacts
 
     p_page_contact = PageContact(browser=the_browser, config=the_config['urls'], contact=p_contact)
-    assert p_page_contact.visit() is True and p_page_contact.is_contact_present() is True
+    assert p_page_contact.visit() is True
+
+    p_page_contact_update = PageContactUpdate(parent=p_page_contact)
+    assert p_page_contact_update.is_contact_present() is True
 
     return p_page_contact
 
@@ -47,7 +52,8 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> PageContac
 @when('I delete the contact')
 def delete_contact(page_contact) -> None:
     """I delete the contact."""
-    page_contact.delete()
+    p_page_contact_delete = PageContactDelete(parent=page_contact)
+    p_page_contact_delete.delete().confirm()
 
 
 @then('I should not see the contact on the list anymore')
