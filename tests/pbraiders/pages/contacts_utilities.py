@@ -12,12 +12,13 @@ from pbraiders.pages import sign_in
 
 
 def new_contact(driver: DriverAPI, config: dict, contact: Contact, user: User) -> bool:
-    """Creates a contact."""
+    """Creates a contact.
+       config=config['urls']"""
 
     # Visit new contact page
-    p_page = ContactNewPage(_driver=driver, _config=config['urls'])
+    p_page = ContactNewPage(_driver=driver, _config=config)
     if p_page.visit() is False:
-        assert sign_in(driver=driver, config=config['urls'], user=user) is True
+        assert sign_in(driver=driver, config=config, user=user) is True
         assert p_page.visit() is True
 
     # Fill the fields
