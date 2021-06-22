@@ -17,7 +17,7 @@ scenario = partial(scenario, 'contacts/contacts.feature')
 
 
 @scenario('Accessing the contacts page.', example_converters=dict(type=str, permission=str))
-def test_accessing_the_contacts_page():
+def test_accessing_the_contacts_page() -> None:
     """Accessing the contacts page."""
 
 

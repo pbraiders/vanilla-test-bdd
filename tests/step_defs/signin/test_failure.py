@@ -8,8 +8,9 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
 from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.pages.signin import SigninPage  # pylint: disable=import-error
+from pbraiders.pages.signin.actions import SigninAction  # pylint: disable=import-error
 
 scenario = partial(scenario, 'signin/failure.feature')
 
@@ -35,9 +36,9 @@ def test_wrong_password() -> None:
 
 
 @given('I am on the signin page', target_fixture="page_signin")
-def page_signin(the_browser, the_config, the_database) -> PageSignin:
+def page_signin(the_browser, the_config, the_database) -> SigninPage:
     """I am on the signin page."""
-    p_page = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
+    p_page = SigninPage(_driver=the_browser, _config=the_config['urls'], _user=None)
     if p_page.on_page() is False:
         assert p_page.visit() is True
     return p_page
@@ -46,19 +47,28 @@ def page_signin(the_browser, the_config, the_database) -> PageSignin:
 @when('I send no credential')
 def connect(page_signin) -> None:
     """I press the connect button."""
-    page_signin.click()
+    p_action = SigninAction(_page=page_signin)
+    p_action.click()
 
 
 @when('I send the credential without the name')
 def send_without_name(the_config, page_signin) -> None:
     """I send the credential without the name."""
-    page_signin.set_user(UserAdminFactory().initialize(the_config["data"]["users"])).fill_password().click()
+    p_user = UserAdminFactory().initialize(the_config["data"]["users"])
+    p_user.login = ''
+    page_signin.set_user(p_user)
+    p_action = SigninAction(_page=page_signin)
+    p_action.fill_password().click()
 
 
 @when('I send the credential without the password')
 def send_without_password(the_config, page_signin) -> None:
     """I send the credential without the password."""
-    page_signin.set_user(UserAdminFactory().initialize(the_config["data"]["users"])).fill_name().click()
+    p_user = UserAdminFactory().initialize(the_config["data"]["users"])
+    p_user.password = ''
+    page_signin.set_user(p_user)
+    p_action = SigninAction(_page=page_signin)
+    p_action.fill_name().click()
 
 
 @when('I send the credential with a wrong password')
@@ -66,10 +76,13 @@ def send_wrong_password(the_config, page_signin) -> None:
     """I send the credential with a wrong password."""
     p_user = UserAdminFactory().initialize(the_config["data"]["users"])
     p_user.password = p_user.password + ' wrong password'
-    page_signin.set_user(p_user).fill_credential().click()
+    page_signin.set_user(p_user)
+    p_action = SigninAction(_page=page_signin)
+    p_action.fill_credential().click()
 
 
 @then('I should see the error message')
 def error_message(page_signin) -> None:
     """I should see the error message."""
-    assert page_signin.has_failed() is True
+    p_action = SigninAction(_page=page_signin)
+    assert p_action.has_failed() is True
