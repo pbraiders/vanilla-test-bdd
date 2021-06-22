@@ -17,6 +17,5 @@ class ParametersPage(PageAbstract):
 
     def visit(self) -> bool:
         """Goes to the parameters page"""
-        self.page.visit(
-            urljoin(str(self.config['home']), str(self.config['parameters'])))
+        self.page.visit(urljoin(str(self.config['home']), str(self.config['parameters'])))
         return self.on_page()
