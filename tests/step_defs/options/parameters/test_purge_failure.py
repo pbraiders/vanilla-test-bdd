@@ -9,10 +9,9 @@ from pytest_bdd import (
     when,
 )
 from datetime import date
-from pbraiders.options.parameters import PageParameters  # pylint: disable=import-error
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.signin import sign_in  # pylint: disable=import-error
-from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.pages.options.parameters import ParametersPage  # pylint: disable=import-error
+from pbraiders.pages.options.parameters.actions import PurgeAction  # pylint: disable=import-error
+from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/parameters/purge_failure.feature')
 
@@ -28,23 +27,22 @@ def test_purge_invalid_year():
 
 
 @given('I want to delete old reservations', target_fixture="page_parameters")
-def page_parameters(the_browser, the_config, the_database) -> PageParameters:
+def page_parameters(the_browser, the_config, the_database) -> ParametersPage:
     """I want to delete old reservations."""
     # Parameters page
-    p_page_parameters = PageParameters(browser=the_browser, config=the_config['urls'])
-    if p_page_parameters.on_page() is False and p_page_parameters.visit() is False:
+    p_page = ParametersPage(_driver=the_browser, _config=the_config['urls'])
+    if p_page.on_page() is False and p_page.visit() is False:
         # Signin
-        p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-        sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
-        del p_page_signin
-        assert p_page_parameters.visit() is True
-    return p_page_parameters
+        assert sign_in(driver=the_browser, config=the_config, user="admin") is True
+        assert p_page.visit() is True
+    return p_page
 
 
 @when('I do not enter a year')
 def enter_not_a_year(page_parameters) -> None:
     """I do not enter a year."""
-    assert page_parameters.purge().purge_has_failed() is True
+    p_action = PurgeAction(_page=page_parameters)
+    assert p_action.purge().has_failed() is True
 
 
 @when('I enter the <year>')
@@ -54,10 +52,12 @@ def enter_the_year(page_parameters, year) -> None:
     switcher = {
         "future": date.today().year + 1,
     }
-    page_parameters.purge(switcher.get(year, year))
+    p_action = PurgeAction(_page=page_parameters)
+    p_action.fill(str(switcher.get(year, year))).purge()
 
 
-@ then('I should see the error message')
+@then('I should see the error message')
 def error_message(page_parameters) -> None:
     """I should see the error message."""
-    assert page_parameters.purge_has_failed() is True
+    p_action = PurgeAction(_page=page_parameters)
+    assert p_action.has_failed() is True

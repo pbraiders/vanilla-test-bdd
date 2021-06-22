@@ -11,3 +11,8 @@ class User(object):
     login: str = ''
     password: str = ''
     passwordc: str = ''
+
+    def dump(self, obj):
+        for attr in dir(obj):
+            if hasattr(obj, attr):
+                print("obj.%s = %s" % (attr, getattr(obj, attr)))

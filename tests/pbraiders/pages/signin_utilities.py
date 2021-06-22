@@ -2,14 +2,15 @@
 """Sign in utilities."""
 
 from splinter.driver import DriverAPI
-from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
-from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
-from pbraiders.user import UserClosedFactory  # pylint: disable=import-error
+from pbraiders.user import UserAdminFactory
+from pbraiders.user import UserSimpleFactory
+from pbraiders.user import UserClosedFactory
+from pbraiders.user import UserDictFactory
 from pbraiders.pages.signin import SigninPage
 from pbraiders.pages.signin.actions import SigninAction
 
 
-def sign_in(driver: DriverAPI, config: dict, user: str) -> bool:
+def sign_in(driver: DriverAPI, config: dict, user: str, password: str = '') -> bool:
     """Sign in.
         user= 'admin | simple | deactivated'"""
     switcher = {
@@ -17,9 +18,10 @@ def sign_in(driver: DriverAPI, config: dict, user: str) -> bool:
         "simple": UserSimpleFactory().initialize(config["data"]["users"]),
         "deactivated": UserClosedFactory().initialize(config["data"]["users"]),
     }
+    d_user = {"login": user, "password": password}
     p_page = SigninPage(_driver=driver,
                         _config=config['urls'],
-                        _user=switcher.get(user, UserClosedFactory().initialize(config["data"]["users"])))
+                        _user=switcher.get(user, UserDictFactory().initialize(d_user)))
     assert p_page.sign_out().visit() is True
     p_action = SigninAction(_page=p_page)
     p_action.fill_credential().click()
