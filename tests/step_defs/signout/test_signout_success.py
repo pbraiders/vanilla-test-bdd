@@ -8,10 +8,9 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.signin import sign_in  # pylint: disable=import-error
-from pbraiders.signout import PageSignout  # pylint: disable=import-error
+from pbraiders.pages.signout import SignoutPage  # pylint: disable=import-error
 from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
+from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
 
 scenario = partial(scenario, 'signout/signout_success.feature')
 
@@ -22,12 +21,12 @@ def test_sign_out() -> None:
 
 
 @given('I am using the app', target_fixture="page_signout")
-def page_signout(the_browser, the_config, the_database) -> PageSignout:
+def page_signout(the_browser, the_config, the_database) -> SignoutPage:
     """I am using the app."""
-    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, UserSimpleFactory().initialize(the_config["data"]["users"]))
-    del p_page_signin
-    return PageSignout(browser=the_browser, config=the_config['urls'])
+    sign_in(driver=the_browser,
+            config=the_config['urls'],
+            user=UserSimpleFactory().initialize(the_config["data"]["users"]))
+    return SignoutPage(_driver=the_browser, _config=the_config['urls'])
 
 
 @when('I sign out of the app')
