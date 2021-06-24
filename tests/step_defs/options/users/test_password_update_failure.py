@@ -10,7 +10,10 @@ from pytest_bdd import (
 )
 from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
 from pbraiders.pages.options.users import UserPage  # pylint: disable=import-error
-from pbraiders.user import UserSimpleFactory
+from pbraiders.pages.options.users.actions import FillUserAction  # pylint: disable=import-error
+from pbraiders.pages.options.users.actions import UpdateUserAction  # pylint: disable=import-error
+from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
+
 
 scenario = partial(scenario, 'options/users/password_update_failure.feature')
 
@@ -47,26 +50,53 @@ def page_user(the_config, the_browser, the_database) -> UserPage:
 @when('I send the credential with a different confirmed password')
 def send_credential_with_different_confirmed_password(page_user) -> None:
     """I send the credential with a different confirmed password."""
+
+    # Save and set new current user password
     s_confirmed_password = page_user.user.passwordc
-    
-    page_user.user.passwordc = s_confirmed_password + 'not the same'
-    page_user.fill_password().confirm_password().click()
+    page_user.user.passwordc = s_confirmed_password + '*'
+
+    # Fill the fields
+    p_action = FillUserAction(_page=page_user)
+    p_action.fill_password() \
+            .confirm_password()
+    del p_action
+
+    # Update
+    p_action = UpdateUserAction(_page=page_user)
+    p_action.update()
+
+    # Set password
     page_user.user.passwordc = s_confirmed_password
 
 
 @when('I send the credential without the confirmed password')
 def send_credential_without_confirmed_password(page_user) -> None:
     """I send the credential without the confirmed password."""
-    page_user.fill_password().click()
+    # Fill the fields
+    p_action = FillUserAction(_page=page_user)
+    p_action.fill_password()
+    del p_action
+
+    # Update
+    p_action = UpdateUserAction(_page=page_user)
+    p_action.update()
 
 
 @when('I send the credential without the password')
 def send_credential_without_password(page_user) -> None:
     """I send the credential without the password."""
-    page_user.confirm_password().click()
+    # Fill the fields
+    p_action = FillUserAction(_page=page_user)
+    p_action.fill_password()
+    del p_action
+
+    # Update
+    p_action = UpdateUserAction(_page=page_user)
+    p_action.update()
 
 
 @then('I should see the error message')
 def error_message(page_user) -> None:
     """I should see the error message."""
-    assert page_user.has_failed() is True
+    p_action = UpdateUserAction(_page=page_user)
+    assert p_action.has_failed() is True

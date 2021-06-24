@@ -13,6 +13,16 @@ SUCCESS_MESSAGE = "Enregistrement réussi."
 class UpdateUserAction(UserActionAbstract):
     """User page - update responsability."""
 
+    def check(self) -> UpdateUserAction:
+        """Activate the account"""
+        self.page.check(CHECKBOX_ACTIVATE)
+        return self
+
+    def uncheck(self) -> UpdateUserAction:
+        """Deactivate the account"""
+        self.page.uncheck(CHECKBOX_ACTIVATE)
+        return self
+
     def update(self) -> None:
         """Clicks the update button"""
         self.page.find_by_name(BUTTON_SEND).first.click()

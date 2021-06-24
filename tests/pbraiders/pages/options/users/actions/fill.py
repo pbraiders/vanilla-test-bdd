@@ -27,13 +27,3 @@ class FillUserAction(UserActionAbstract):
         """Fills the second password field"""
         self.page.fill(FIELD_CONF_PASSWD, self.user.passwordc)
         return self
-
-    def check(self) -> FillUserAction:
-        """Activate the account"""
-        self.page.check(CHECKBOX_ACTIVATE)
-        return self
-
-    def uncheck(self) -> FillUserAction:
-        """Deactivate the account"""
-        self.page.uncheck(CHECKBOX_ACTIVATE)
-        return self

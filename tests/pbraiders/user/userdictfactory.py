@@ -1,8 +1,8 @@
 # coding=utf-8
 """Factory used to create user from dict."""
 
-from pbraiders.user import User
-from pbraiders.user import UserAbstractFactory
+from pbraiders.user import User  # pylint: disable=import-error
+from pbraiders.user import UserAbstractFactory  # pylint: disable=import-error
 
 
 class UserDictFactory(UserAbstractFactory):
