@@ -14,7 +14,6 @@ from pbraiders.pages.users_utilities import new_deactivated_account  # pylint: d
 from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
 from pbraiders.pages.options.users import UserPage  # pylint: disable=import-error
 from pbraiders.pages.options.users.actions import UpdateUserAction  # pylint: disable=import-error
-from pbraiders.user import UserFakerFactory  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/activate.feature')
 
@@ -30,12 +29,11 @@ def test_activate():
 
 
 @given(parsers.parse('I am on the {status} user account page'), target_fixture="page_user")
-def page_user(the_config, the_browser, the_database, the_faker, new_user, status) -> UserPage:
+def page_user(the_config, the_browser, the_database, new_user, status) -> UserPage:
     """I am on an activated/deactivated user account page"""
     # Sign in as admin
     assert sign_in(driver=the_browser, config=the_config, user="admin") is True
-    p_user = UserFakerFactory(_faker=the_faker).initialize(the_config["data"]["users"])
-    # p_user = new_user
+    p_user = new_user
 
     # New account
     if "activated" == status:

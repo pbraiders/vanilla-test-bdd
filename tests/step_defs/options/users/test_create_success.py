@@ -1,5 +1,5 @@
 # coding=utf-8
-"""Creating a new user feature tests."""
+"""User creation, success cases."""
 
 from functools import partial
 from pytest_bdd import (
