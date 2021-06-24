@@ -9,12 +9,12 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
-from pbraiders.contacts import ActionContactFill  # pylint: disable=import-error
-from pbraiders.contacts import ActionContactUpdate  # pylint: disable=import-error
-from pbraiders.contacts import ContactPage  # pylint: disable=import-error
-from pbraiders.contacts import ContactsPage  # pylint: disable=import-error
-from pbraiders.contacts import new_contact  # pylint: disable=import-error
-from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import FillContactAction  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import UpdateContactAction  # pylint: disable=import-error
+from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
+from pbraiders.pages.contacts import ContactsPage  # pylint: disable=import-error
+from pbraiders.pages import new_contact  # pylint: disable=import-error
+from pbraiders.pages import sign_in  # pylint: disable=import-error
 
 scenario = partial(scenario, 'contacts/contact_update_success.feature')
 
@@ -29,13 +29,12 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> ContactPag
     """I am on the contact page."""
 
     # Create new contact
-    p_contact = new_contact(p_driver=the_browser,
-                            a_config=the_config,
-                            p_contact_factory=ContactFakerFactory(faker=the_faker),
-                            p_user_factory=UserSimpleFactory())
+    p_contact = ContactFakerFactory(_faker=the_faker).initialize(config={})
+    assert sign_in(driver=the_browser, config=the_config, user="simple") is True
+    assert new_contact(driver=the_browser, config=the_config['urls'], contact=p_contact) is True
 
     # Access the contact page
-    p_page = ContactPage(browser=the_browser, config=the_config['urls'], contact=p_contact)
+    p_page = ContactPage(_driver=the_browser, _config=the_config['urls'], _contact=p_contact)
     assert p_page.visit() is True
     assert p_page.is_contact_present() is True
 
@@ -57,8 +56,8 @@ def update_data(page_contact) -> None:
     page_contact.contact.comment = 'updated'
 
     # Fill the fields
-    p_page = ActionContactFill(parent=page_contact)
-    p_page.fill_lastname() \
+    p_action = FillContactAction(_page=page_contact)
+    p_action.fill_lastname() \
         .fill_firstname() \
         .fill_phone() \
         .fill_zip() \
@@ -67,25 +66,28 @@ def update_data(page_contact) -> None:
         .fill_address() \
         .fill_email() \
         .fill_comment()
-    del p_page
+    del p_action
 
     # Update
-    p_page = ActionContactUpdate(parent=page_contact)
-    p_page.update()
+    p_action = UpdateContactAction(_page=page_contact)
+    import time
+    time.sleep(3)
+    p_action.update()
 
 
 @then('I should see the success message')
 def success_message(page_contact) -> None:
     """I should see the success message."""
-    p_page = ActionContactUpdate(parent=page_contact)
-    assert p_page.has_succeeded() is True
+    p_action = UpdateContactAction(_page=page_contact)
+    assert p_action.has_succeeded() is True
 
 
 @then('I should see the update on the contacts list')
 def check_contacts_list(the_browser, the_config, page_contact) -> None:
     """I should see the update on the contacts list."""
-    p_page = ContactsPage(browser=the_browser, config=the_config['urls'], contact=page_contact.contact)
-    assert p_page.visit() is True
+    p_page = ContactsPage(_driver=the_browser, _config=the_config['urls'], _contact=page_contact.contact)
+    if p_page.on_page() is False:
+        assert p_page.visit() is True
     assert p_page.is_on_list() is True
 
 

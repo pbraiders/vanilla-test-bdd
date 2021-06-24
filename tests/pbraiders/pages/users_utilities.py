@@ -27,7 +27,6 @@ def new_account(driver: DriverAPI, config: dict, user: User) -> bool:
 
     # Create
     p_action = CreateUserAction(_page=p_page)
-
     p_action.click()
 
     return p_action.has_succeeded() is True and p_page.is_on_list() is True

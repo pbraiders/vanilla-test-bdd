@@ -4,25 +4,20 @@
 
 from splinter.driver import DriverAPI
 from pbraiders.contact import Contact
-from pbraiders.user import User
 from pbraiders.pages.contacts import ContactNewPage
 from pbraiders.pages.contacts.actions import CreateContactAction
 from pbraiders.pages.contacts.actions import FillContactAction
-from pbraiders.pages import sign_in
 
 
-def new_contact(driver: DriverAPI, config: dict, contact: Contact, user: User) -> bool:
+def new_contact(driver: DriverAPI, config: dict, contact: Contact) -> bool:
     """Creates a contact.
        config=config['urls']"""
 
     # Visit new contact page
-    p_page = ContactNewPage(_driver=driver, _config=config)
-    if p_page.visit() is False:
-        assert sign_in(driver=driver, config=config, user=user) is True
-        assert p_page.visit() is True
+    p_page = ContactNewPage(_driver=driver, _config=config, _contact=contact)
+    assert p_page.visit() is True
 
     # Fill the fields
-    p_page.set_contact(contact)
     p_action = FillContactAction(_page=p_page)
     p_action.fill_lastname() \
             .fill_firstname() \
