@@ -70,8 +70,6 @@ def update_data(page_contact) -> None:
 
     # Update
     p_action = UpdateContactAction(_page=page_contact)
-    import time
-    time.sleep(3)
     p_action.update()
 
 
