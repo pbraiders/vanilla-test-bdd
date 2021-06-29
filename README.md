@@ -8,9 +8,9 @@ Behavioral driven development library for [PBRaiders Vanilla](https://github.com
 ## Requirements
 
 - pbraiders: latest vanilla
-- python: ^3.8
-- python3-pip: ^20.1
-- python3-venv: ^3.8
+- python: ^3.9
+- python3-pip: ^21.1
+- python3-venv: ^3.9
 - python modules: selenium, pytest, pytest-bdd, pytest-splinter
 - web drivers: chromium-chromedriver or/and firefox-geckodriver
 
@@ -66,7 +66,7 @@ To generate a report, run the command pipenv run python -m pytest -k automated -
 
 ## Documentation
 
-- [Python](https://docs.python.org/3.8/)
+- [Python](https://docs.python.org/3.9/)
 - [pip](https://pip.pypa.io/en/stable/)
 - [pipenv](https://pipenv.pypa.io/en/latest/install/#installing-pipenv)
 - [pytest](https://docs.pytest.org/en/stable/contents.html)

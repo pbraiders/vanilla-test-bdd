@@ -23,7 +23,7 @@ class ContactPage(ContactPageAbstract):
     def visit(self) -> bool:
         """Goes to the page."""
         if self.contact is None:
-            raise TypeError("User is not set!")
+            raise TypeError("Contact is not set!")
 
         try:
             self.page.visit(urljoin(str(self.config['home']), str(self.config['contacts'])))
