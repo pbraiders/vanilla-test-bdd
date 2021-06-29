@@ -11,4 +11,4 @@ class UserSimpleFactory(UserAbstractFactory):
     def create(self, config: dict) -> User:
         return User(login=config['simple']['login'],
                     password=config['simple']['password'],
-                    passwordc=config['admin']['password'])
+                    passwordc=config['simple']['password'])

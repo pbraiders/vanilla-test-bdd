@@ -9,11 +9,11 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.signin import sign_in  # pylint: disable=import-error
-from pbraiders.options.users import PageAccount  # pylint: disable=import-error
-from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
-from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
+from pbraiders.pages.users_utilities import new_account  # pylint: disable=import-error
+from pbraiders.pages.users_utilities import new_deactivated_account  # pylint: disable=import-error
+from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
+from pbraiders.pages.options.users import UserPage  # pylint: disable=import-error
+from pbraiders.pages.options.users.actions import UpdateUserAction  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/activate.feature')
 
@@ -28,47 +28,63 @@ def test_activate():
     """Activate an user."""
 
 
-@given(parsers.parse('I am on the {status} user account page'),
-       target_fixture="page_user_account")
-def page_user_account(the_config, the_browser, the_database, status) -> PageAccount:
-    """I am on an activated /deactivated user account page"""
+@given(parsers.parse('I am on the {status} user account page'), target_fixture="page_user")
+def page_user(the_config, the_browser, the_database, new_user, status) -> UserPage:
+    """I am on an activated/deactivated user account page"""
     # Sign in as admin
-    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
-    del p_page_signin
-    # Go to the simple user account page
-    p_page_account = PageAccount(browser=the_browser, config=the_config['urls'], user=None)
-    assert p_page_account.set_user(UserSimpleFactory().initialize(the_config["data"]["users"])).visit() is True
+    assert sign_in(driver=the_browser, config=the_config, user="admin") is True
+    p_user = new_user
+
+    # New account
+    if "activated" == status:
+        # Create an account
+        assert new_account(driver=the_browser,
+                           config=the_config['urls'],
+                           user=p_user)
+    else:
+        # Create a deactivated account
+        assert new_deactivated_account(driver=the_browser,
+                                       config=the_config['urls'],
+                                       user=p_user)
+
+    # Go to this new user account page
+    p_page = UserPage(_driver=the_browser,
+                      _config=the_config['urls'],
+                      _user=p_user)
+    assert p_page.visit() is True
+
     # Chech the status
     if "activated" == status:
-        assert p_page_account.checked() is True
-    if "deactivated" == status:
-        assert p_page_account.checked() is False
-    return p_page_account
+        assert p_page.checked() is True
+
+    else:
+        assert p_page.checked() is False
+
+    return p_page
 
 
 @when(parsers.parse('I {action} this user account'))
-def change_status(page_user_account, action) -> None:
+def change_status(page_user, action) -> None:
     """I activate/deactivate this user account."""
+    p_action = UpdateUserAction(_page=page_user)
+
     if "deactivate" == action:
-        page_user_account.uncheck()
+        p_action.uncheck()
     else:
-        page_user_account.check()
-    page_user_account.click()
-    assert page_user_account.has_succeeded() is True
+        p_action.check()
+
+    p_action.update()
+
+    assert p_action.has_succeeded() is True
 
 
 @then('I can sign in to this account again')
-def can_sign_in(the_config, the_browser) -> None:
+def can_sign_in(the_config, the_browser, page_user) -> None:
     """I can sign in to this account again."""
-    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, UserSimpleFactory().initialize(the_config["data"]["users"]))
+    assert sign_in(driver=the_browser, config=the_config, user=page_user.user.login, password=page_user.user.password) is True
 
 
 @then('I cannot sign in to this account anymore')
-def cannot_sign_in(the_config, the_browser, page_user_account) -> None:
+def cannot_sign_in(the_config, the_browser, page_user) -> None:
     """I cannot sign in to this account anymore."""
-    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    assert p_page_signin.sign_out().visit() is True
-    p_page_signin.set_user(UserSimpleFactory().initialize(the_config["data"]["users"])).fill_credential().click()
-    assert p_page_signin.has_failed() is True
+    assert sign_in(driver=the_browser, config=the_config, user=page_user.user.login, password=page_user.user.password) is False

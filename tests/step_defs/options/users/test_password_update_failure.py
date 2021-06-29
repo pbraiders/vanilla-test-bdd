@@ -8,11 +8,12 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.signin import sign_in  # pylint: disable=import-error
-from pbraiders.options.users import PageAccount  # pylint: disable=import-error
-from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
+from pbraiders.pages.options.users import UserPage  # pylint: disable=import-error
+from pbraiders.pages.options.users.actions import FillUserAction  # pylint: disable=import-error
+from pbraiders.pages.options.users.actions import UpdateUserAction  # pylint: disable=import-error
 from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
+
 
 scenario = partial(scenario, 'options/users/password_update_failure.feature')
 
@@ -32,46 +33,70 @@ def test_password_is_mandatory():
     """Password is mandatory."""
 
 
-@given('I am on the simple user account page',
-       target_fixture="page_user_account")
-def page_user_account(the_config, the_browser, the_database) -> PageAccount:
+@given('I am on the simple user account page', target_fixture="page_user")
+def page_user(the_config, the_browser, the_database) -> UserPage:
     """I am on the simple user account page."""
-    p_page_account = PageAccount(
-        browser=the_browser, config=the_config['urls'],
-        user=UserSimpleFactory().initialize(the_config["data"]["users"]))
-    if p_page_account.on_page() is False:
-        # Not on the account page. Sign in as admin
-        p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-        sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
-        del p_page_signin
+    p_page = UserPage(_driver=the_browser,
+                      _config=the_config['urls'],
+                      _user=UserSimpleFactory().initialize(the_config["data"]["users"]))
+    if p_page.on_page() is False:
+        # Sign in as admin
+        assert sign_in(driver=the_browser, config=the_config, user="admin") is True
         # Visit simple user account page
-        assert p_page_account.visit() is True
-    return p_page_account
+        assert p_page.visit() is True
+    return p_page
 
 
 @when('I send the credential with a different confirmed password')
-def send_credential_with_different_confirmed_password(
-        page_user_account) -> None:
+def send_credential_with_different_confirmed_password(page_user) -> None:
     """I send the credential with a different confirmed password."""
-    s_confirmed_password = page_user_account.user.passwordc
-    page_user_account.user.passwordc = s_confirmed_password + 'not the same'
-    page_user_account.fill_password().confirm_password().click()
-    page_user_account.user.passwordc = s_confirmed_password
+
+    # Save and set new current user password
+    s_confirmed_password = page_user.user.passwordc
+    page_user.user.passwordc = s_confirmed_password + '*'
+
+    # Fill the fields
+    p_action = FillUserAction(_page=page_user)
+    p_action.fill_password() \
+            .confirm_password()
+    del p_action
+
+    # Update
+    p_action = UpdateUserAction(_page=page_user)
+    p_action.update()
+
+    # Set password
+    page_user.user.passwordc = s_confirmed_password
 
 
 @when('I send the credential without the confirmed password')
-def send_credential_without_confirmed_password(page_user_account) -> None:
+def send_credential_without_confirmed_password(page_user) -> None:
     """I send the credential without the confirmed password."""
-    page_user_account.fill_password().click()
+    # Fill the fields
+    p_action = FillUserAction(_page=page_user)
+    p_action.fill_password()
+    del p_action
+
+    # Update
+    p_action = UpdateUserAction(_page=page_user)
+    p_action.update()
 
 
 @when('I send the credential without the password')
-def send_credential_without_password(page_user_account) -> None:
+def send_credential_without_password(page_user) -> None:
     """I send the credential without the password."""
-    page_user_account.confirm_password().click()
+    # Fill the fields
+    p_action = FillUserAction(_page=page_user)
+    p_action.fill_password()
+    del p_action
+
+    # Update
+    p_action = UpdateUserAction(_page=page_user)
+    p_action.update()
 
 
 @then('I should see the error message')
-def error_message(page_user_account) -> None:
+def error_message(page_user) -> None:
     """I should see the error message."""
-    assert page_user_account.has_failed() is True
+    p_action = UpdateUserAction(_page=page_user)
+    assert p_action.has_failed() is True

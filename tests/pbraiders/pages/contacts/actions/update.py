@@ -9,7 +9,7 @@ FAILURE_MESSAGE = "Le nom,le prénom et le numéro de téléphone doivent être 
 SUCCESS_MESSAGE = "Enregistrement réussi."
 
 
-class UpdateActionContact(ContactActionAbstract):
+class UpdateContactAction(ContactActionAbstract):
     """Contact page - update responsability."""
 
     def update(self) -> None:

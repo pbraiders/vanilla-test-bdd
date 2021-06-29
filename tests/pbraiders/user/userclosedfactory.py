@@ -11,4 +11,4 @@ class UserClosedFactory(UserAbstractFactory):
     def create(self, config: dict) -> User:
         return User(login=config['disabled']['login'],
                     password=config['disabled']['password'],
-                    passwordc=config['admin']['password'])
+                    passwordc=config['disabled']['password'])

@@ -7,11 +7,8 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.options.graphs import PageGraphs  # pylint: disable=import-error
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
-from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
-from pbraiders.user import UserClosedFactory  # pylint: disable=import-error
+from pbraiders.pages.options.graphs import GraphsPage  # pylint: disable=import-error
+from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/graphs/graphs.feature')
 
@@ -25,23 +22,15 @@ def test_accessing_the_graphs_page():
 def type_user(the_config, the_browser, type) -> None:
     """I am the <type> user."""
     assert isinstance(type, str)
-    switcher = {
-        "admin": UserAdminFactory().initialize(the_config["data"]["users"]),
-        "simple": UserSimpleFactory().initialize(the_config["data"]["users"]),
-        "deactivated": UserClosedFactory().initialize(the_config["data"]["users"]),
-    }
-    # Connect
-    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    assert p_page_signin.sign_out().visit() is True
-    p_page_signin.set_user(switcher.get(type, None)).fill_credential().click()
+    sign_in(driver=the_browser, config=the_config, user=type)
 
 
 @then('I <permission> access to the graphs page')
 def access_page(the_config, the_browser, permission) -> None:
     """I <permission> access to the graphs page."""
     assert isinstance(permission, str)
-    p_page_graphs = PageGraphs(browser=the_browser, config=the_config['urls'])
+    p_page = GraphsPage(_driver=the_browser, _config=the_config['urls'])
     if permission.lower() == 'can':
-        assert p_page_graphs.visit() is True
+        assert p_page.visit() is True
     else:
-        assert p_page_graphs.visit() is False
+        assert p_page.visit() is False

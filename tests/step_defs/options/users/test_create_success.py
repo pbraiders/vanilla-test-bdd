@@ -1,5 +1,5 @@
 # coding=utf-8
-"""Creating a new user feature tests."""
+"""User creation, success cases."""
 
 from functools import partial
 from pytest_bdd import (
@@ -8,10 +8,10 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
-from pbraiders.signin import sign_in  # pylint: disable=import-error
-from pbraiders.options.users import PageUsers  # pylint: disable=import-error
-from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
+from pbraiders.pages.options.users import UsersPage  # pylint: disable=import-error
+from pbraiders.pages.signin_utilities import sign_in  # pylint: disable=import-error
+from pbraiders.pages.options.users.actions import CreateUserAction  # pylint: disable=import-error
+from pbraiders.pages.options.users.actions import FillUserAction  # pylint: disable=import-error
 
 scenario = partial(scenario, 'options/users/create_success.feature')
 
@@ -22,33 +22,41 @@ def test_successful() -> None:
 
 
 @given('I am on the users page', target_fixture="page_users")
-def page_users(the_config, the_browser, the_database) -> PageUsers:
+def page_users(the_config, the_browser, the_database) -> UsersPage:
     """I am on the users page."""
     # Sign in as admin
-    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, UserAdminFactory().initialize(the_config["data"]["users"]))
-    del p_page_signin
+    assert sign_in(driver=the_browser, config=the_config, user="admin") is True
     # Go to Users page
-    p_page_users = PageUsers(browser=the_browser, config=the_config['urls'], user=None)
-    assert p_page_users.visit() is True
-    return p_page_users
+    p_page = UsersPage(_driver=the_browser, _config=the_config['urls'], _user=None)
+    assert p_page.visit() is True
+    return p_page
 
 
 @when('I create a new user')
 def creates_user(page_users, new_user) -> None:
     """I create a new user."""
-    assert page_users.set_user(new_user).visit() is True
-    page_users.fill_name().fill_password().confirm_password().click()
+    page_users.set_user(new_user)
+
+    # Fill the fields
+    p_action = FillUserAction(_page=page_users)
+    p_action.fill_name() \
+            .fill_password() \
+            .confirm_password()
+    del p_action
+
+    # Create
+    p_action = CreateUserAction(_page=page_users)
+    p_action.click()
 
 
 @then('I should see the success message')
 def success_message(page_users) -> None:
     """I should see the success message."""
-    assert page_users.has_succeeded() is True
+    p_action = CreateUserAction(_page=page_users)
+    assert p_action.has_succeeded() is True
 
 
 @then('I can sign in to this new user account')
 def connect(the_config, the_browser, page_users) -> None:
     """ I can sign in to this new user account."""
-    p_page_signin = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    sign_in(p_page_signin, page_users.user)
+    assert sign_in(driver=the_browser, config=the_config, user=page_users.user.login, password=page_users.user.password) is True

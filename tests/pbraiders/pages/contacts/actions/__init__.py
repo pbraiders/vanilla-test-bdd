@@ -2,4 +2,4 @@
 from .abstract import ContactActionAbstract
 from .create import CreateContactAction
 from .fill import FillContactAction
-from .update import UpdateActionContact
+from .update import UpdateContactAction

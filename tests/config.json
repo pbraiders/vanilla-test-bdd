@@ -52,7 +52,7 @@
             "disabled": {
                 "login": "test-disabled",
                 "password": "disabledpassword",
-                "role": 10,
+                "role": 1,
                 "state": 0
             }
         },

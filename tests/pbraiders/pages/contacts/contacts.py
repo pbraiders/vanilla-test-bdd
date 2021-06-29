@@ -23,7 +23,7 @@ class ContactsPage(ContactPageAbstract):
         return self.on_page()
 
     def visit_contact(self) -> None:
-        """Goes to the page."""
+        """Goes to the contact page."""
         if self.contact is None:
             raise TypeError("User is not set!")
         self.page.find_by_xpath(CONTACT_LIST_LOCATOR.format(lastname=self.contact.lastname,
@@ -31,7 +31,7 @@ class ContactsPage(ContactPageAbstract):
                                                             phone=self.contact.tel)).first.click()
 
     def is_on_list(self) -> bool:
-        """Test if the contact is on the list."""
+        """Return true if the contact is on the list."""
         if self.contact is None:
             raise TypeError("Contact is not set!")
         return self.page.is_text_present(

@@ -50,4 +50,6 @@ class ContactPage(ContactPageAbstract):
 
     def is_contact_comments_present(self) -> bool:
         """Returns true if all the contact's comment can be found on the page."""
+        if self.contact is None:
+            raise TypeError("User is not set!")
         return self.page.is_element_present_by_value(self.contact.comment)

@@ -8,41 +8,23 @@ from pytest_bdd import (
     then,
     when,
 )
-from pbraiders.signin import PageSignin  # pylint: disable=import-error
+from pbraiders.pages.signin import SigninPage  # pylint: disable=import-error
+from pbraiders.pages.signin.actions import SigninAction  # pylint: disable=import-error
 from pbraiders.user import UserAdminFactory  # pylint: disable=import-error
 from pbraiders.user import UserSimpleFactory  # pylint: disable=import-error
 from pbraiders.user import UserClosedFactory  # pylint: disable=import-error
+from pbraiders.user import User  # pylint: disable=import-error
 
 scenario = partial(scenario, 'signin/success.feature')
 
 
-@scenario('Account deactivated')
-def test_deactivated() -> None:
-    """Account deactivated."""
+@scenario('Sign in', example_converters=dict(type=str, permission=str))
+def test_sign_in() -> None:
+    """Sign in."""
 
 
-@scenario('Connecting', example_converters=dict(type=str))
-def test_connecting() -> None:
-    """Connecting."""
-
-
-@given('I am on the signin page', target_fixture="page_signin")
-def page_signin(the_browser, the_config, the_database) -> PageSignin:
-    """I am on the signin page."""
-    p_page = PageSignin(browser=the_browser, config=the_config['urls'], user=None)
-    if p_page.on_page() is False:
-        assert p_page.visit() is True
-    return p_page
-
-
-@when('I am the deactivated user')
-def deactivated_user(the_config, page_signin) -> None:
-    """I am the deactivated user."""
-    page_signin.set_user(UserClosedFactory().initialize(the_config["data"]["users"])).fill_credential().click()
-
-
-@when('I am the <type> user')
-def type_user(type, the_config, page_signin) -> None:
+@given('I am the <type> user', target_fixture="type_user")
+def type_user(the_config, type) -> User:
     """I am the <type> user."""
     assert isinstance(type, str)
     switcher = {
@@ -50,16 +32,26 @@ def type_user(type, the_config, page_signin) -> None:
         "simple": UserSimpleFactory().initialize(the_config["data"]["users"]),
         "deactivated": UserClosedFactory().initialize(the_config["data"]["users"]),
     }
-    page_signin.set_user(switcher.get(type, None)).fill_credential().click()
+    return switcher.get(type, UserClosedFactory().initialize(the_config["data"]["users"]))
 
 
-@then('I should be connected')
-def connected(page_signin) -> None:
-    """I should be connected."""
-    assert page_signin.connected() is True
+@when('I sign in to the app')
+def access_page(the_config, the_browser, type_user) -> None:
+    """I sign in to the app."""
+    p_page = SigninPage(_driver=the_browser, _config=the_config['urls'], _user=type_user)
+    assert p_page.sign_out().visit() is True
+    p_action = SigninAction(_page=p_page)
+    p_action.fill_credential().click()
 
 
-@then('I should not be connected')
-def not_connected(page_signin) -> None:
-    """I should not be connected."""
-    assert page_signin.has_failed() is True
+@then('I <permission> access to the main page')
+def permission(the_config, the_browser, type_user, permission) -> None:
+    """I <permission> access to the main page."""
+    assert isinstance(permission, str)
+    p_page = SigninPage(_driver=the_browser, _config=the_config['urls'], _user=type_user)
+    p_action = SigninAction(_page=p_page)
+    if permission.lower() == 'can':
+        assert p_action.connected() is True
+    else:
+        assert p_action.connected() is False
+        assert p_action.has_failed() is True

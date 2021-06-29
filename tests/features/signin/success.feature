@@ -2,18 +2,13 @@
 Feature: Sign in, success cases
     SMART: ✔️
 
-    Background:
-        Given I am on the signin page
-
-    Scenario: Account deactivated
-        When I am the deactivated user
-        Then I should not be connected
-
-    Scenario Outline: Connecting
-        When I am the <type> user
-        Then I should be connected
+    Scenario Outline: Sign in
+        Given I am the <type> user
+        When I sign in to the app
+        Then I <permission> access to the main page
 
         Examples: Connecting
-        | type     |
-        | admin    |
-        | simple   |
+        | type        | permission |
+        | admin       | can        |
+        | simple      | can        |
+        | deactivated | cannot     |
