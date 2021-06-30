@@ -71,7 +71,7 @@ def the_database(the_config):
 @pytest.fixture(scope="session")
 def the_browser(the_driver):
     """Loads firefox or chrome"""
-    p_browser = Browser(the_driver, incognito=True, wait_time=3, headless=False)
+    p_browser = Browser(the_driver, incognito=True, wait_time=3, headless=True)
     yield p_browser
     p_browser.quit()
 
@@ -107,19 +107,19 @@ def new_user(the_faker) -> User:
     return User(login=s_name, password=s_passwd, passwordc=s_passwd)
 
 
-@pytest.fixture(scope="function")
-def new_contact(the_faker) -> Contact:
-    """Generates contact data."""
-    return Contact(
-        lastname=the_faker.last_name(),
-        firstname=the_faker.first_name(),
-        tel=the_faker.phone_number(),
-        email=the_faker.email(),
-        address=the_faker.street_address(),
-        address_more=the_faker.country(),
-        city=the_faker.city(),
-        zip=the_faker.postcode(),
-        comment=the_faker.text())
+# @pytest.fixture(scope="function")
+# def new_contact(the_faker) -> Contact:
+#    """Generates contact data."""
+#    return Contact(
+#        lastname=the_faker.last_name(),
+#        firstname=the_faker.first_name(),
+#        tel=the_faker.phone_number(),
+#        email=the_faker.email(),
+#        address=the_faker.street_address(),
+#        address_more=the_faker.country(),
+#        city=the_faker.city(),
+#        zip=the_faker.postcode(),
+#        comment=the_faker.text())
 
 
 def pytest_bdd_step_error(
