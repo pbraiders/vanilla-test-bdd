@@ -6,7 +6,9 @@ from pbraiders.pages.events import EventPageAbstract
 
 TITLE = 'PBRaiders - {date}'
 HEADER = '{date}'
+EVENTS_LIST = '{lastname} {firstname} • {phone}'
 DAY_LIST_LOCATOR = "//*/text()[normalize-space(.)='{date}']/.."
+EVENT_LIST_LOCATOR = "//*[contains(text(),'{lastname} {firstname} • {phone}')]/.."
 
 
 class EventsPage(EventPageAbstract):
@@ -32,3 +34,21 @@ class EventsPage(EventPageAbstract):
             return False
 
         return self.on_page()
+
+    def visit_event(self) -> None:
+        """Goes to the event page."""
+        if self.contact is None:
+            raise TypeError("Contact is not set!")
+        self.page.find_by_xpath(EVENT_LIST_LOCATOR.format(lastname=self.contact.lastname,
+                                                          firstname=self.contact.firstname,
+                                                          phone=self.contact.tel)).first.click()
+
+    def is_on_list(self) -> bool:
+        """Return true if the event is on the list."""
+        if self.contact is None:
+            raise TypeError("Contact is not set!")
+        return self.page.is_text_present(
+            EVENTS_LIST.format(lastname=self.contact.lastname,
+                               firstname=self.contact.firstname,
+                               phone=self.contact.tel),
+            wait_time=1) is True
