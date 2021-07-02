@@ -18,7 +18,12 @@ class ContactPageAbstract(PageAbstract):
         """Contact getter."""
         return self._contact
 
-    def set_contact(self, contact: Contact = None) -> ContactPageAbstract:
+    @contact.setter
+    def contact(self, contact: Contact) -> None:
         """Contact setter."""
         self._contact = contact
-        return self
+
+    @contact.deleter
+    def contact(self) -> None:
+        """Contact deleter."""
+        self._contact = None

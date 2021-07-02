@@ -9,11 +9,13 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
-from pbraiders.pages.contacts.actions import FillContactAction  # pylint: disable=import-error
-from pbraiders.pages.contacts.actions import UpdateContactAction  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import ContactWriteAction  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import ContactUpdateAction  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactsPage  # pylint: disable=import-error
 from pbraiders.pages import new_contact  # pylint: disable=import-error
+from pbraiders.pages import verify_contact  # pylint: disable=import-error
+from pbraiders.pages import verify_contact_with_comment  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
 
 scenario = partial(scenario, 'contacts/contact_update_success.feature')
@@ -35,8 +37,7 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> ContactPag
 
     # Access the contact page
     p_page = ContactPage(_driver=the_browser, _config=the_config['urls'], _contact=p_contact)
-    assert p_page.visit() is True
-    assert p_page.is_contact_present() is True
+    assert p_page.visit() is True and verify_contact(p_page) is True
 
     return p_page
 
@@ -56,7 +57,7 @@ def update_data(page_contact) -> None:
     page_contact.contact.comment = 'updated'
 
     # Fill the fields
-    p_action = FillContactAction(_page=page_contact)
+    p_action = ContactWriteAction(_page=page_contact)
     p_action.fill_lastname() \
         .fill_firstname() \
         .fill_phone() \
@@ -69,14 +70,14 @@ def update_data(page_contact) -> None:
     del p_action
 
     # Update
-    p_action = UpdateContactAction(_page=page_contact)
+    p_action = ContactUpdateAction(_page=page_contact)
     p_action.update()
 
 
 @then('I should see the success message')
 def success_message(page_contact) -> None:
     """I should see the success message."""
-    p_action = UpdateContactAction(_page=page_contact)
+    p_action = ContactUpdateAction(_page=page_contact)
     assert p_action.has_succeeded() is True
 
 
@@ -93,5 +94,4 @@ def check_contacts_list(the_browser, the_config, page_contact) -> None:
 def check_contact_page(page_contact) -> None:
     """I should see the update on the contact page."""
     assert page_contact.visit() is True
-    assert page_contact.is_contact_present() is True
-    assert page_contact.is_contact_comments_present() is True
+    assert verify_contact_with_comment(page_contact) is True
