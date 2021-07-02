@@ -2,6 +2,7 @@
 from .abstract import EventActionAbstract
 from .constants import *
 from .create import EventCreateAction
+from .delete import EventDeleteAction
 from .update import EventUpdateAction
 from .age_read import EventAgeReadAction
 from .age_write import EventAgeWriteAction
