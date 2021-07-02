@@ -20,17 +20,27 @@ class EventPageAbstract(PageAbstract):
         """Event getter."""
         return self._event
 
+    @event.setter
+    def event(self, event: Event) -> None:
+        """Event setter."""
+        self._event = event
+
+    @event.deleter
+    def event(self) -> None:
+        """Event deleter."""
+        self._event = None
+
     @property
     def contact(self) -> Contact | None:
         """Contact getter."""
         return self._contact
 
-    def set_event(self, event: Event = None) -> EventPageAbstract:
-        """Event setter."""
-        self._event = event
-        return self
-
-    def set_contact(self, contact: Contact = None) -> EventPageAbstract:
+    @contact.setter
+    def contact(self, contact: Contact) -> None:
         """Contact setter."""
         self._contact = contact
-        return self
+
+    @contact.deleter
+    def contact(self) -> None:
+        """Contact deleter."""
+        self._contact = None

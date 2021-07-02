@@ -33,7 +33,7 @@ def access_page(the_config, the_browser, permission) -> None:
     """I <permission> access to the events page."""
     assert isinstance(permission, str)
     p_page = EventsPage(_driver=the_browser, _config=the_config['urls'])
-    p_page.set_event(Event(Date(), headcount=Headcount()))
+    p_page.event = Event(Date(), headcount=Headcount())
     if permission.lower() == 'can':
         assert p_page.visit() is True
     else:

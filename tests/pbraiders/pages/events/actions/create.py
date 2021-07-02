@@ -9,7 +9,7 @@ FAILURE_MESSAGE = "Le nom,le prénom et le numéro de téléphone doivent être 
 SUCCESS_MESSAGE = "Enregistrement réussi."
 
 
-class CreateEventAction(EventActionAbstract):
+class EventCreateAction(EventActionAbstract):
     """Event page - creation responsability."""
 
     def click(self) -> None:

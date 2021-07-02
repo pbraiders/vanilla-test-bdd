@@ -16,11 +16,11 @@ from pbraiders.event import Event  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactsPage  # pylint: disable=import-error
 from pbraiders.pages.events import EventsPage  # pylint: disable=import-error
-from pbraiders.pages.events.actions import CreateEventAction  # pylint: disable=import-error
-from pbraiders.pages.events.actions import FillEventAgeAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventCreateAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventAgeWriteAction  # pylint: disable=import-error
 from pbraiders.pages.events.actions import FillEventContactAction  # pylint: disable=import-error
-from pbraiders.pages.events.actions import FillEventHeadcountAction  # pylint: disable=import-error
-from pbraiders.pages.events.actions import FillEventMoneyAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventHeadcountWriteAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventMoneyWriteAction  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
 
 scenario = partial(scenario, 'events/event_create_success.feature')
@@ -35,7 +35,7 @@ def test_create_event_for_new_contact() -> None:
 def page_event_new(the_config, the_browser, the_database) -> EventsPage:
     """I am on the new event page."""
     p_page = EventsPage(_driver=the_browser, _config=the_config['urls'])
-    p_page.set_event(Event(Date(), headcount=Headcount()))
+    p_page.event = Event(Date(), headcount=Headcount())
     if p_page.visit() is False:
         assert sign_in(driver=the_browser, config=the_config, user="simple") is True
         assert p_page.visit() is True
@@ -46,8 +46,8 @@ def page_event_new(the_config, the_browser, the_database) -> EventsPage:
 def create_event_for_new_contact(page_event_new, the_faker) -> None:
     """I create an event for a new contact."""
     # Create contact and event
-    page_event_new.set_contact(ContactFakerFactory(_faker=the_faker).initialize(config={}))
-    page_event_new.set_event(EventFakerFactory(_faker=the_faker).initialize(config={}))
+    page_event_new.contact = ContactFakerFactory(_faker=the_faker).initialize(config={})
+    page_event_new.event = EventFakerFactory(_faker=the_faker).initialize(config={})
     # Fill contact fields
     p_action = FillEventContactAction(_page=page_event_new)
     p_action.fill_lastname() \
@@ -60,27 +60,27 @@ def create_event_for_new_contact(page_event_new, the_faker) -> None:
             .fill_email()
     del p_action
     # Fill event headcount fields
-    p_action = FillEventHeadcountAction(_page=page_event_new)
+    p_action = EventHeadcountWriteAction(_page=page_event_new)
     p_action.fill_real() \
             .fill_planned()
     del p_action
     # Fill event age fields
-    p_action = FillEventAgeAction(_page=page_event_new)
+    p_action = EventAgeWriteAction(_page=page_event_new)
     p_action.choose()
     del p_action
     # Fill event arrh fields
-    p_action = FillEventMoneyAction(_page=page_event_new)
+    p_action = EventMoneyWriteAction(_page=page_event_new)
     p_action.choose()
     del p_action
     # Create
-    p_action = CreateEventAction(_page=page_event_new)
+    p_action = EventCreateAction(_page=page_event_new)
     p_action.click()
 
 
 @then('I should see the success message')
 def success_message(page_event_new) -> None:
     """I should see the success message."""
-    p_action = CreateEventAction(_page=page_event_new)
+    p_action = EventCreateAction(_page=page_event_new)
     assert p_action.has_succeeded() is True
 
 
