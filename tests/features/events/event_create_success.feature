@@ -1,4 +1,4 @@
-@contact @onlyone
+@event
 Feature: Event creation, success cases
     SMART: ✔️
 

@@ -9,8 +9,8 @@ from pytest_bdd import (
     when,
 )
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
-from pbraiders.pages.contacts.actions import FillContactAction  # pylint: disable=import-error
-from pbraiders.pages.contacts.actions import UpdateContactAction  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import ContactWriteAction  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import ContactUpdateAction  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
 from pbraiders.pages import new_contact  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
@@ -45,7 +45,6 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> ContactPag
     # Access the contact page
     p_page = ContactPage(_driver=the_browser, _config=the_config['urls'], _contact=p_contact)
     assert p_page.visit() is True
-    assert p_page.is_contact_present() is True
 
     return p_page
 
@@ -55,17 +54,17 @@ def send_data_without_lastname(page_contact, the_faker) -> None:
     """I send the data without the lastname."""
     p_contact = ContactFakerFactory(_faker=the_faker).create(config={})
     p_contact.lastname = ''
-    page_contact.set_contact(p_contact)
+    page_contact.contact = p_contact
 
     # Fill the fields
-    p_action = FillContactAction(_page=page_contact)
+    p_action = ContactWriteAction(_page=page_contact)
     p_action.fill_lastname() \
         .fill_firstname() \
         .fill_phone()
     del p_action
 
     # Update
-    p_action = UpdateContactAction(_page=page_contact)
+    p_action = ContactUpdateAction(_page=page_contact)
     p_action.update()
 
 
@@ -74,17 +73,17 @@ def send_data_without_firstname(page_contact, the_faker) -> None:
     """I send the data without the firstname."""
     p_contact = ContactFakerFactory(_faker=the_faker).create(config={})
     p_contact.firstname = ''
-    page_contact.set_contact(p_contact)
+    page_contact.contact = p_contact
 
     # Fill the fields
-    p_action = FillContactAction(_page=page_contact)
+    p_action = ContactWriteAction(_page=page_contact)
     p_action.fill_lastname() \
         .fill_firstname() \
         .fill_phone()
     del p_action
 
     # Update
-    p_action = UpdateContactAction(_page=page_contact)
+    p_action = ContactUpdateAction(_page=page_contact)
     p_action.update()
 
 
@@ -93,22 +92,22 @@ def send_data_without_phone_number(page_contact, the_faker) -> None:
     """I send the data without the phone number."""
     p_contact = ContactFakerFactory(_faker=the_faker).create(config={})
     p_contact.tel = ''
-    page_contact.set_contact(p_contact)
+    page_contact.contact = p_contact
 
     # Fill the fields
-    p_action = FillContactAction(_page=page_contact)
+    p_action = ContactWriteAction(_page=page_contact)
     p_action.fill_lastname() \
         .fill_firstname() \
         .fill_phone()
     del p_action
 
     # Update
-    p_action = UpdateContactAction(_page=page_contact)
+    p_action = ContactUpdateAction(_page=page_contact)
     p_action.update()
 
 
 @then('I should see the error message')
 def error_message(page_contact) -> None:
     """I should see the error message."""
-    p_action = UpdateContactAction(_page=page_contact)
+    p_action = ContactUpdateAction(_page=page_contact)
     assert p_action.has_failed() is True

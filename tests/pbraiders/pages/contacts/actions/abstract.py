@@ -17,6 +17,8 @@ class ContactActionAbstract(ABC):
     @property
     def page(self) -> DriverAPI:
         """Returns driver instance."""
+        if self._page.page is None:
+            raise TypeError("Driver is not set!")
         return self._page.page
 
     @property
