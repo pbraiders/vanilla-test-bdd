@@ -1,4 +1,4 @@
-@event
+@event @onlyone
 Feature: Event creation, success cases
     SMART: ✔️
 

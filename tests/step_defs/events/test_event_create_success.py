@@ -15,13 +15,19 @@ from pbraiders.event import Headcount  # pylint: disable=import-error
 from pbraiders.event import Event  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactsPage  # pylint: disable=import-error
+from pbraiders.pages.events import EventPage  # pylint: disable=import-error
 from pbraiders.pages.events import EventsPage  # pylint: disable=import-error
 from pbraiders.pages.events.actions import EventCreateAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventAgeReadAction  # pylint: disable=import-error
 from pbraiders.pages.events.actions import EventAgeWriteAction  # pylint: disable=import-error
-from pbraiders.pages.events.actions import FillEventContactAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventContactReadAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventContactWriteAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventHeadcountReadAction  # pylint: disable=import-error
 from pbraiders.pages.events.actions import EventHeadcountWriteAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventMoneyReadAction  # pylint: disable=import-error
 from pbraiders.pages.events.actions import EventMoneyWriteAction  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
+from pbraiders.pages import verify_contact  # pylint: disable=import-error
 
 scenario = partial(scenario, 'events/event_create_success.feature')
 
@@ -49,7 +55,7 @@ def create_event_for_new_contact(page_event_new, the_faker) -> None:
     page_event_new.contact = ContactFakerFactory(_faker=the_faker).initialize(config={})
     page_event_new.event = EventFakerFactory(_faker=the_faker).initialize(config={})
     # Fill contact fields
-    p_action = FillEventContactAction(_page=page_event_new)
+    p_action = EventContactWriteAction(_page=page_event_new)
     p_action.fill_lastname() \
             .fill_firstname() \
             .fill_phone() \
@@ -74,6 +80,8 @@ def create_event_for_new_contact(page_event_new, the_faker) -> None:
     del p_action
     # Create
     p_action = EventCreateAction(_page=page_event_new)
+    import time
+    time.sleep(3)
     p_action.click()
 
 
@@ -93,11 +101,35 @@ def on_list_event(page_event_new) -> None:
 
 
 @then('I should access to this event page')
-def access_event(page_event_new) -> None:
+def access_event(the_config, the_browser, page_event_new) -> None:
     """I should access to this event page."""
-    if page_event_new.on_page() is False:
-        assert page_event_new.visit() is True
-    page_event_new.visit_event()
+    p_page = EventPage(_driver=the_browser,
+                       _config=the_config['urls'],
+                       _event=page_event_new.event,
+                       _contact=page_event_new.contact)
+    assert p_page.visit() is True
+    # Check contact
+    p_action = EventContactReadAction(_page=p_page)
+    assert p_action.is_equal_lastname() is True and \
+        p_action.is_equal_firstname() is True and\
+        p_action.is_equal_phone() is True and\
+        p_action.is_equal_zip() is True and\
+        p_action.is_equal_city() is True and \
+        p_action.is_equal_address_more() is True and \
+        p_action.is_equal_address() is True and \
+        p_action.is_equal_email() is True
+    del p_action
+    # Check headcount
+    p_action = EventHeadcountReadAction(_page=page_event_new)
+    assert p_action.is_valid_real() is True and p_action.is_valid_planned()
+    del p_action
+    # check age
+    p_action = EventAgeReadAction(_page=page_event_new)
+    assert p_action.is_valid() is True
+    del p_action
+    # check arrh
+    p_action = EventMoneyReadAction(_page=page_event_new)
+    assert p_action.is_valid() is True
 
 
 @then('the contact should appear on the contact list')
@@ -114,4 +146,4 @@ def access_contact(the_config, the_browser, page_event_new) -> None:
     """I should access to the contact page."""
     p_page = ContactPage(_driver=the_browser, _config=the_config['urls'], _contact=page_event_new.contact)
     assert p_page.visit() is True
-    assert p_page.is_contact_present() is True
+    assert verify_contact(p_page) is True

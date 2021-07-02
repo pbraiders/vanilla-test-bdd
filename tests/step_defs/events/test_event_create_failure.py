@@ -14,7 +14,7 @@ from pbraiders.event import Headcount  # pylint: disable=import-error
 from pbraiders.event import Event  # pylint: disable=import-error
 from pbraiders.pages.events import EventsPage  # pylint: disable=import-error
 from pbraiders.pages.events.actions import EventCreateAction  # pylint: disable=import-error
-from pbraiders.pages.events.actions import FillEventContactAction  # pylint: disable=import-error
+from pbraiders.pages.events.actions import EventContactWriteAction  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
 
 scenario = partial(scenario, 'events/event_create_failure.feature')
@@ -50,7 +50,7 @@ def page_event_new(the_config, the_browser, the_database) -> EventsPage:
 def send_data_without_lastname(page_event_new, the_faker) -> None:
     """I send the data without the lastname."""
     page_event_new.contact = ContactFakerFactory(_faker=the_faker).initialize(config={})
-    p_action = FillEventContactAction(_page=page_event_new)
+    p_action = EventContactWriteAction(_page=page_event_new)
     p_action.fill_firstname().fill_phone()
     del p_action
     p_action = EventCreateAction(_page=page_event_new)
@@ -61,7 +61,7 @@ def send_data_without_lastname(page_event_new, the_faker) -> None:
 def send_data_without_firstname(page_event_new, the_faker) -> None:
     """I send the data without the firstname."""
     page_event_new.contact = ContactFakerFactory(_faker=the_faker).initialize(config={})
-    p_action = FillEventContactAction(_page=page_event_new)
+    p_action = EventContactWriteAction(_page=page_event_new)
     p_action.fill_lastname().fill_phone()
     del p_action
     p_action = EventCreateAction(_page=page_event_new)
@@ -72,7 +72,7 @@ def send_data_without_firstname(page_event_new, the_faker) -> None:
 def send_data_without_phone_number(page_event_new, the_faker) -> None:
     """I send the data without the phone number."""
     page_event_new.contact = ContactFakerFactory(_faker=the_faker).initialize(config={})
-    p_action = FillEventContactAction(_page=page_event_new)
+    p_action = EventContactWriteAction(_page=page_event_new)
     p_action.fill_lastname().fill_firstname()
     del p_action
     p_action = EventCreateAction(_page=page_event_new)

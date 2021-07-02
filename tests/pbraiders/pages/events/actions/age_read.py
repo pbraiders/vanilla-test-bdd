@@ -11,7 +11,9 @@ class EventAgeReadAction(EventActionAbstract):
     def is_valid(self) -> bool:
         """Return True if the value is valid."""
         p_list = self.page.find_by_name(RADIO_AGE)
-        if p_list.is_empty():
+        if len(p_list) != 3:
             return False
         else:
-            return str(p_list.first.value).lower() == str(self.event.age).lower()
+            i_index = int(self.event.age) - 1
+            p_element = p_list[i_index]
+            return p_element.checked

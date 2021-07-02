@@ -40,16 +40,3 @@ class EventPage(EventPageAbstract):
             return False
 
         return self.on_page()
-
-    def is_contact_present(self) -> bool:
-        """Returns true if all the contact's values can be found on the page."""
-        if self.contact is None:
-            raise TypeError("Contact is not set!")
-        return self.page.is_element_present_by_value(self.contact.firstname) \
-            and self.page.is_element_present_by_value(self.contact.lastname) \
-            and self.page.is_element_present_by_value(self.contact.tel) \
-            and self.page.is_element_present_by_value(self.contact.email) \
-            and self.page.is_element_present_by_value(self.contact.address) \
-            and self.page.is_element_present_by_value(self.contact.address_more) \
-            and self.page.is_element_present_by_value(self.contact.city) \
-            and self.page.is_element_present_by_value(self.contact.zip)

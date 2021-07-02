@@ -15,8 +15,8 @@ from pbraiders.pages.contacts.actions import ContactWriteAction  # pylint: disab
 from pbraiders.pages.contacts import ContactNewPage  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactsPage  # pylint: disable=import-error
-from pbraiders.pages import verify_contact  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
+from pbraiders.pages import verify_contact  # pylint: disable=import-error
 
 scenario = partial(scenario, 'contacts/contact_create_success.feature')
 
