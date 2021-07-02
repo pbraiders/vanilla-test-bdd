@@ -80,8 +80,6 @@ def create_event_for_new_contact(page_event_new, the_faker) -> None:
     del p_action
     # Create
     p_action = EventCreateAction(_page=page_event_new)
-    import time
-    time.sleep(3)
     p_action.click()
 
 

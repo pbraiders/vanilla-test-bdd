@@ -19,7 +19,7 @@ class EventFakerFactory(EventAbstractFactory):
     def create(self, config: dict) -> Event:
         return Event(date=Date(),
                      age=str(self._faker.pyint(min_value=1, max_value=3, step=1)),
-                     arrh=str(self._faker.pyint(min_value=0, max_value=3, step=1)),
+                     arrh=str(self._faker.pyint(min_value=1, max_value=3, step=1)),
                      comment=self._faker.text(),
                      headcount=Headcount(real=str(self._faker.pyint(min_value=0, max_value=99, step=1)),
                                          planned=str(self._faker.pyint(min_value=0, max_value=99, step=1)),
