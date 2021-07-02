@@ -23,7 +23,7 @@ class ContactPage(ContactPageAbstract):
     def visit(self) -> bool:
         """Goes to the page."""
         if self.contact is None:
-            raise TypeError("User is not set!")
+            raise TypeError("Contact is not set!")
 
         try:
             self.page.visit(urljoin(str(self.config['home']), str(self.config['contacts'])))
@@ -34,22 +34,3 @@ class ContactPage(ContactPageAbstract):
             return False
 
         return self.on_page()
-
-    def is_contact_present(self) -> bool:
-        """Returns true if all the contact's values can be found on the page."""
-        if self.contact is None:
-            raise TypeError("Contact is not set!")
-        return self.page.is_element_present_by_value(self.contact.firstname) \
-            and self.page.is_element_present_by_value(self.contact.lastname) \
-            and self.page.is_element_present_by_value(self.contact.tel) \
-            and self.page.is_element_present_by_value(self.contact.email) \
-            and self.page.is_element_present_by_value(self.contact.address) \
-            and self.page.is_element_present_by_value(self.contact.address_more) \
-            and self.page.is_element_present_by_value(self.contact.city) \
-            and self.page.is_element_present_by_value(self.contact.zip)
-
-    def is_contact_comments_present(self) -> bool:
-        """Returns true if all the contact's comment can be found on the page."""
-        if self.contact is None:
-            raise TypeError("User is not set!")
-        return self.page.is_element_present_by_value(self.contact.comment)

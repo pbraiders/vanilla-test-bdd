@@ -12,6 +12,7 @@
         }
     },
     "urls": {
+        "calendar": "",
         "contacts": "contacts.php",
         "contact-new": "contactnew.php",
         "home": "https://www.pbraiders.fr",

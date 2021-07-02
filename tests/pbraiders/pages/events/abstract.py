@@ -1,17 +1,34 @@
 # coding=utf-8
-"""Contact page extended abstraction."""
+"""Event page extended abstraction."""
 
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 from pbraiders.pages import PageAbstract
 from pbraiders.contact import Contact
+from pbraiders.event import Event
 
 
 @dataclass
-class ContactPageAbstract(PageAbstract):
-    """Contact page extended abstraction."""
+class EventPageAbstract(PageAbstract):
+    """Event page extended abstraction."""
+    _event: Optional[Event] = None
     _contact: Optional[Contact] = None
+
+    @property
+    def event(self) -> Event | None:
+        """Event getter."""
+        return self._event
+
+    @event.setter
+    def event(self, event: Event) -> None:
+        """Event setter."""
+        self._event = event
+
+    @event.deleter
+    def event(self) -> None:
+        """Event deleter."""
+        self._event = None
 
     @property
     def contact(self) -> Contact | None:

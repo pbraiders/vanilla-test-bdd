@@ -25,7 +25,7 @@ class ContactsPage(ContactPageAbstract):
     def visit_contact(self) -> None:
         """Goes to the contact page."""
         if self.contact is None:
-            raise TypeError("User is not set!")
+            raise TypeError("Contact is not set!")
         self.page.find_by_xpath(CONTACT_LIST_LOCATOR.format(lastname=self.contact.lastname,
                                                             firstname=self.contact.firstname,
                                                             phone=self.contact.tel)).first.click()

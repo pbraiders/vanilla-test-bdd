@@ -1,15 +1,15 @@
 # coding=utf-8
-"""Contact page - creation responsability."""
+"""Event page - creation responsability."""
 
 from __future__ import annotations
-from pbraiders.pages.contacts.actions import BUTTON_CREATE
-from pbraiders.pages.contacts.actions import MESSAGE_FAILURE
-from pbraiders.pages.contacts.actions import MESSAGE_SUCCESS
-from pbraiders.pages.contacts.actions import ContactActionAbstract
+from pbraiders.pages.events.actions import MESSAGE_FAILURE
+from pbraiders.pages.events.actions import MESSAGE_SUCCESS
+from pbraiders.pages.events.actions import BUTTON_CREATE
+from pbraiders.pages.events.actions import EventActionAbstract
 
 
-class ContactCreateAction(ContactActionAbstract):
-    """Contact page - creation responsability."""
+class EventCreateAction(EventActionAbstract):
+    """Event page - creation responsability."""
 
     def click(self) -> None:
         """Clicks the button"""

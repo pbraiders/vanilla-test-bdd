@@ -10,7 +10,7 @@ from pytest_bdd import (
 )
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
-from pbraiders.pages.contacts.actions import DeleteContactAction  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import ContactDeleteAction  # pylint: disable=import-error
 from pbraiders.pages import new_contact  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
 
@@ -41,7 +41,7 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> ContactPag
 @when('I cancel the deletion of the contact')
 def cancel_delete_contact(page_contact) -> None:
     """I cancel the deletion of the contact."""
-    p_action = DeleteContactAction(_page=page_contact)
+    p_action = ContactDeleteAction(_page=page_contact)
     p_action.delete().cancel()
 
 

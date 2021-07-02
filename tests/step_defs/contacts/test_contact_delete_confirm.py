@@ -10,7 +10,7 @@ from pytest_bdd import (
 )
 from pbraiders.contact import ContactFakerFactory  # pylint: disable=import-error
 from pbraiders.pages.contacts import ContactPage  # pylint: disable=import-error
-from pbraiders.pages.contacts.actions import DeleteContactAction  # pylint: disable=import-error
+from pbraiders.pages.contacts.actions import ContactDeleteAction  # pylint: disable=import-error
 from pbraiders.pages import new_contact  # pylint: disable=import-error
 from pbraiders.pages import sign_in  # pylint: disable=import-error
 
@@ -41,7 +41,7 @@ def page_contact(the_config, the_browser, the_faker, the_database) -> ContactPag
 @when('I delete the contact')
 def delete_contact(page_contact) -> None:
     """I delete the contact."""
-    p_action = DeleteContactAction(_page=page_contact)
+    p_action = ContactDeleteAction(_page=page_contact)
     p_action.delete().confirm()
 
 
@@ -54,5 +54,5 @@ def no_access(page_contact) -> None:
 @then('I should see the success message')
 def success_message(page_contact) -> None:
     """I should see the success message."""
-    p_action = DeleteContactAction(_page=page_contact)
+    p_action = ContactDeleteAction(_page=page_contact)
     assert p_action.has_succeeded() is True

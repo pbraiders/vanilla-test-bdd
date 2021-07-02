@@ -23,13 +23,13 @@ import json
 import random
 import pytest
 from faker import Faker
-from faker.providers import person
 from faker.providers import address
 from faker.providers import internet
-from faker.providers import phone_number
 from faker.providers import lorem
+from faker.providers import person
+from faker.providers import phone_number
+from faker.providers import python
 from splinter import Browser
-from pbraiders.contact import Contact  # pylint: disable=import-error
 from pbraiders.database.adapter import PyMySQLAdapterFactory  # pylint: disable=import-error
 from pbraiders.user import User  # pylint: disable=import-error
 
@@ -89,11 +89,12 @@ def the_faker() -> Faker:
     print(' \u2592 Faker locale choice:' + s_local)
     # Faker
     p_faker = Faker(s_local)
-    p_faker.add_provider(lorem)
-    p_faker.add_provider(person)
     p_faker.add_provider(address)
     p_faker.add_provider(internet)
+    p_faker.add_provider(lorem)
+    p_faker.add_provider(person)
     p_faker.add_provider(phone_number)
+    p_faker.add_provider(python)
     p_faker.seed_instance(random.randint(0, 999))
     return p_faker
 
@@ -105,21 +106,6 @@ def new_user(the_faker) -> User:
     s_passwd = s_name + 'password'
     print('\u2592 Faker firstname:' + s_name)
     return User(login=s_name, password=s_passwd, passwordc=s_passwd)
-
-
-@pytest.fixture(scope="function")
-def new_contact(the_faker) -> Contact:
-    """Generates contact data."""
-    return Contact(
-        lastname=the_faker.last_name(),
-        firstname=the_faker.first_name(),
-        tel=the_faker.phone_number(),
-        email=the_faker.email(),
-        address=the_faker.street_address(),
-        address_more=the_faker.country(),
-        city=the_faker.city(),
-        zip=the_faker.postcode(),
-        comment=the_faker.text())
 
 
 def pytest_bdd_step_error(
