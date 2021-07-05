@@ -1,4 +1,4 @@
-@event @onlyone
+@event
 Feature: Event delete, cancel cases
     SMART: ✔️
 

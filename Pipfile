@@ -6,12 +6,13 @@ name = "pypi"
 [packages]
 autopep8 = "==1.5.7"
 pycodestyle = "==2.7.0"
-pylint = "==2.9.1"
+pylint = "==2.9.3"
 pytest = "==6.2.4"
-pytest-bdd = "==4.0.2"
+pytest-bdd = "==4.1.0"
+pytest-html = "==3.1.1"
 pytest-splinter = "==3.3.1"
 splinter = "==0.14.0"
-Faker = "==8.9.0"
+Faker = "==8.9.1"
 PyMySQL = "==1.0.2"
 
 [dev-packages]

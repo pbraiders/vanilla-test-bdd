@@ -3,6 +3,9 @@
 
 # PBRaiders Vanilla BDD library
 
+[![Lint](https://github.com/pbraiders/vanilla-test-bdd/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/pbraiders/vanilla-test-bdd/actions/workflows/python-package.yml)
+[![CodeQL](https://github.com/pbraiders/vanilla-test-bdd/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/pbraiders/vanilla-test-bdd/actions/workflows/codeql-analysis.yml)
+
 Behavioral driven development library for [PBRaiders Vanilla](https://github.com/pbraiders/vanilla) using [pytest-bdd](https://github.com/pytest-dev/pytest-bdd) and [pytest-splinter](https://github.com/pytest-dev/pytest-splinter)
 
 ## Requirements
@@ -51,7 +54,9 @@ To set up the project on your local machine:
 1. Clone it from this GitHub repository.
 2. Run: `python3 -m venv .venv` from the command line in the project's root directory to create the virtual environment.
 3. Run: `source .venv/bin/activate` to activate the virtual environment.
-4. Run: `pip install wheel ; pip install -r requirements.txt` to install all the necessary packages.
+4. Run: `pip install --upgrade pip` to uprade pip.
+5. Run: `pip install --upgrade setuptools` to uprade setuptools.
+6. Run: `pip install wheel ; pip install -r requirements.txt` to install all the necessary packages.
 
 ## Running the tests
 
