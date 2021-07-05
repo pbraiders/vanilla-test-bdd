@@ -1,0 +1,30 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.venv": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true
+    },
+    "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+    "python.autoComplete.extraPaths": [
+        "./tests",
+        "./tests/pbraiders/**"
+    ],
+    "python.analysis.extraPaths": [
+        "tests",
+        "tests/pbraiders"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.testing.pytestEnabled": true,
+    "python.venvFolders": [
+        ".venv"
+    ],
+    "python.formatting.autopep8Path": "${workspaceFolder}/.venv/bin/autopep8",
+    "python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
+    "python.linting.flake8Enabled": true,
+    "python.linting.pycodestylePath": "${workspaceFolder}/.venv/bin/pycodestyle",
+    "python.linting.pylintPath": "${workspaceFolder}/.venv/bin/pylint",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest"
+}
